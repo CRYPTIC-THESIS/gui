@@ -1,8 +1,5 @@
 # gui
 Cryptic thesis GUI
-
-# User-Interface-Admin
-Admin User Interface
 #
 Checking the status and what branch you are currenly on
 > git status
