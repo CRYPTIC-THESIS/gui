@@ -43,6 +43,20 @@ def insert_crypto_csv(tbl_name,csv_path):
     })
     print(csv_path+" Successdully Imported")
 
+def insert_realtime_data(tbl_name, df):
+    ref = db.reference(tbl_name,default_app)
+    for index, row in df.iterrows():
+        users_ref = ref.child(str(index))
+        users_ref.set({
+            'timestamp':row['Timestamp'],
+            'open': row['Open'],
+            'high':row['High'], 
+            'low':row['Low'], 
+            'closing':row['Closing']
+    
+    })
+    print(tbl_name+" Successdully Imported")
+
 def get_data_table(tbl_name):
     ref = db.reference(tbl_name,default_app)
     data = ref.get()
@@ -69,14 +83,30 @@ def update_crypto(tbl_name,values):
     ref = db.reference(tbl_name,default_app)
     data = ref.get()
     last_idx = len(data)
-    for i in range(len(values)):
+    for i, row in values.iterrows():
         users_ref = ref.child(str(last_idx+i))
         users_ref.set({
-                    'date':values['Date'],
-                    'price':values['Price'], 
-                    'open':values['Open'], 
-                    'high':values['High'],
-                    'low':values['Low']
+                    'date':row['Date'],
+                    'price':row['Price'], 
+                    'open':row['Open'], 
+                    'high':row['High'],
+                    'low':row['Low']
+            })
+    updated(tbl_name)
+    print("Successdully Added "+str(len(values))+ "rows to " + tbl_name)
+
+def update_realtime(tbl_name,values):
+    ref = db.reference(tbl_name,default_app)
+    data = ref.get()
+    last_idx = len(data)
+    for i, row in values.iterrows():
+        users_ref = ref.child(str(last_idx+i))
+        users_ref.set({
+                    'timestamp':row['Timestamp'],
+                    'open':row['Open'], 
+                    'high':row['High'],
+                    'low':row['Low'],
+                    'closing':row['Closing']
             })
     updated(tbl_name)
     print("Successdully Added "+str(len(values))+ "rows to " + tbl_name)
