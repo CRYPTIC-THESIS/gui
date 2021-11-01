@@ -6,6 +6,8 @@ import numpy as np
 from modules import *
 os.environ["QT_FONT_DPI"] = "96"
 
+# df = get_dataset_df('2020-01-01', '2020-01-07', ['Bitcoin (BTC)', 'Ethereum (ETH)', 'Dogecoin (DOGE)'], ['Twitter Volume', 'Reddit Volume', 'Google Trends'])
+# print(df)
 
 # Login Window
 class Login(QMainWindow):
@@ -76,7 +78,7 @@ class MainWindow(QMainWindow):
 
         # QTableWidget Stretch
         widgets.predictedTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        widgets.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        widgets.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         widgets.dataAnalysisTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         widgets.deployTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
@@ -185,9 +187,23 @@ class MainWindow(QMainWindow):
             # widgets.histoGraph.show()
             
     # /////////////////////////////////////////////////////
-    def dataset_table(self):
+    def train_dataset_table(self):
+        self.dataset_table_df = get_dataset_df(self.dataset_date_from, self.dataset_date_until,
+                                    self.dataset_crypto, self.dataset_source)
+        print(self.dataset_table_df)
 
-        widgets.trainTable.setHorizontalHeaderLabels()
+        widgets.trainTable.setColumnCount(len(self.dataset_table_df.columns))
+        widgets.trainTable.setRowCount(len(self.dataset_table_df.index))
+
+        for i in range(len(self.dataset_table_df.index)):
+            for j in range(len(self.dataset_table_df.columns)):
+                item = QTableWidgetItem(str(self.dataset_table_df.iat[i, j]))
+                item.setTextAlignment(Qt.AlignCenter)
+                widgets.trainTable.setItem(i, j, item)
+
+        widgets.trainTable.setHorizontalHeaderLabels(self.dataset_table_df.columns)
+        widgets.trainTable.resizeColumnsToContents()
+        widgets.trainTable.resizeRowsToContents()
     # /////////////////////////////////////////////////////
 
     def dashSignals(self):
@@ -411,6 +427,11 @@ class MainWindow(QMainWindow):
         widgets.testCryptoCombo.clear()
         widgets.deployCryptoCombo.clear()
 
+        widgets.trainTable.clear()
+
+        widgets.btn_proceed.setEnabled(False)
+        
+
         # DATE
         self.dataset_date_from = widgets.trainFromDateEdit.date().toString()
         self.dataset_date_from = pd.to_datetime(self.dataset_date_from).date()
@@ -428,6 +449,8 @@ class MainWindow(QMainWindow):
             if checkBox.isChecked() == True:
                 self.dataset_source.append(checkBox.text())
 
+        self.train_dataset_table()
+        widgets.trainTable.show()
         widgets.btn_startTraining.show()
 
         print(self.dataset_date_from)
@@ -478,6 +501,11 @@ class MainWindow(QMainWindow):
         widgets.deployTimeFrameList.clear()
         widgets.deployCryptoList.clear()
         widgets.deploySourceList.clear()
+
+        widgets.trainTable.clear()
+        widgets.trainTable.hide()
+
+        widgets.btn_proceed.setEnabled(True)
 
 
     def next_page(self):

@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 from . ui_login import *
 from . ui_main import *
 
+# DATABASE
+from . database import *
 
 # APP SETTINGS
 from . app_settings import *
@@ -17,5 +19,3 @@ from . ui_functions import *
 # APP FUNCTIONS
 from . app_functions import *
 
-# DATABASE
-from . database import *
