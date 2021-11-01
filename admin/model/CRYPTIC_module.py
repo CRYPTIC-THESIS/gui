@@ -5,7 +5,7 @@ import pandas as pd
 class cryptic():
     def __init__(self,crypto):
         self.network_name = crypto
-    def format_LSTM(data):
+    def format_LSTM(self,data):
         
         vals = set(data)
         vals_size = len(vals)
@@ -15,13 +15,7 @@ class cryptic():
 
         return vals_to_idx,idx_to_vals,vals,vals_size
 
-    def network_archi(network):
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\t\tCRYPTIC Network")
-        for i in network:
-            print('|\t'+i.layer_name+'\t|')
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-    def LSTM_pass(lstm,X,epoch,verbose,X_trimmed,J):
+    def LSTM_pass(self,lstm,X,epoch,verbose,X_trimmed,J):
                 
         h_prev = np.zeros((lstm.n_h, 1))
         c_prev = np.zeros((lstm.n_h, 1))
@@ -67,6 +61,7 @@ class cryptic():
         out = con1.forward(out)
         out = layer.maxpool(out)
         X_trimmed = X[: num_batches * lstm.seq_len]  # trim input to have full sequences
+        print('LSTM Block')
         for epoch in range(epochs):
             '''
             out = con.forward(data)
@@ -82,7 +77,7 @@ class cryptic():
         return J,trained_network
 
 
-    def predict_crypto(network,input):
+    def predict_crypto(self,network,input):
         #predict cryptocurrency up to 14 days
 
         #Initialize Model

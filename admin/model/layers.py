@@ -123,7 +123,7 @@ class Conv:
         
         for im_regions, i, j in self.iterate_regions(input):
             output[i, j] = np.sum(im_regions * self.filters, axis=(1,2))
-        print('Conv Block:',output.shape)
+        print('Conv Layer:',output.shape)
         return output
     
     def backward(self, d_l_d_out, learn_rate):
@@ -171,7 +171,7 @@ def maxpool(data, f=3, s=1):
             curr_y += s
             out_y += 1
     downsampled = downsampled.reshape(downsampled.shape[0], (downsampled.shape[1]*downsampled.shape[2]))
-    print('Maxpooling Layer:',downsampled.shape)
+    print('Maxpool Layer:',downsampled.shape)
     return downsampled
 
 class LSTM:
