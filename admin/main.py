@@ -213,9 +213,6 @@ class MainWindow(QMainWindow):
                 x.append(item)
             for item in df_price:
                 y.append(item)
-            
-            print(x)
-            print(y)
 
             # widgets.histoGraph.axis.plot(x, y)
             # widgets.histoGraph.canvas.draw()
