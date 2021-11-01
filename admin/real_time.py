@@ -1,5 +1,6 @@
 from pycoingecko import CoinGeckoAPI
 from datetime import datetime, timedelta
+from time import sleep
 import calendar
 import pandas as pd
 
@@ -54,6 +55,7 @@ def get_cur():
 def update_realtime_data():
     
     btc, eth, doge = get_cur()
+    print('update 15 mins')
     update_realtime('Realtime_BTC', btc)
     update_realtime('Realtime_ETH', eth)
     update_realtime('Realtime_DOGE', doge)
@@ -85,3 +87,15 @@ def update_crypto_data():
     update_crypto('Bitcoin_Data', btc)
     update_crypto('Ethereum_Data', eth)
     update_crypto('Dogecoin_Data', doge)
+
+
+while True:
+    update_realtime_data()
+
+    time = datetime.now().strftime("%H:%M")
+    print(time)
+
+    if time == '23:55':
+        update_crypto_data()
+
+    sleep(60*5)
