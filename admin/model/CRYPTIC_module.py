@@ -2,6 +2,7 @@ import numpy as np
 import layers as layer
 import pandas as pd
 
+
 class cryptic():
     def __init__(self,crypto):
         self.network_name = crypto
