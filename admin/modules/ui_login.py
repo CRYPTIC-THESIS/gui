@@ -43,19 +43,19 @@ class Login_MainWindow(object):
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.nav = QFrame(self.frame)
-        self.nav.setObjectName(u"nav")
-        self.nav.setStyleSheet(u"/* Buttons */\n"
+        self.contentTopBg = QFrame(self.frame)
+        self.contentTopBg.setObjectName(u"contentTopBg")
+        self.contentTopBg.setStyleSheet(u"/* Buttons */\n"
 "QPushButton { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
 "QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; border-radius: 4px; }\n"
 "QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }")
-        self.nav.setFrameShape(QFrame.NoFrame)
-        self.nav.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.nav)
+        self.contentTopBg.setFrameShape(QFrame.NoFrame)
+        self.contentTopBg.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.contentTopBg)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(10, 10, 10, 0)
-        self.btn_close = QPushButton(self.nav)
+        self.btn_close = QPushButton(self.contentTopBg)
         self.btn_close.setObjectName(u"btn_close")
         self.btn_close.setMinimumSize(QSize(24, 24))
         icon = QIcon()
@@ -65,7 +65,7 @@ class Login_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.btn_close, 0, Qt.AlignRight)
 
 
-        self.verticalLayout_2.addWidget(self.nav)
+        self.verticalLayout_2.addWidget(self.contentTopBg)
 
         self.content = QStackedWidget(self.frame)
         self.content.setObjectName(u"content")

@@ -161,5 +161,23 @@ class UIFunctions(MainWindow):
         self.ui.closeAppBtn.clicked.connect(lambda: self.close())
 
 
+    def ui_logindefinitions(self):
+        
+        if LoginSettings.ENABLE_CUSTOM_TITLE_BAR:
+            #STANDARD TITLE BAR
+            self.setWindowFlags(Qt.FramelessWindowHint)
+            self.setAttribute(Qt.WA_TranslucentBackground)
+
+            # MOVE WINDOW / MAXIMIZE / RESTORE
+            def moveWindow(event):
+                if event.buttons() == Qt.LeftButton:
+                    self.move(self.pos() + event.globalPos() - self.dragPos)
+                    self.dragPos = event.globalPos()
+                    event.accept()
+            self.ui.login.mouseMoveEvent = moveWindow
+
+        # CLOSE APPLICATION
+        self.ui.btn_close.clicked.connect(lambda: self.close())
+
     # ///////////////////////////////////////////////////////////////
     # END - GUI DEFINITIONS
