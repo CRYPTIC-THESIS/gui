@@ -223,6 +223,7 @@ class MainWindow(QMainWindow):
         self.dataset_table_df = get_dataset_df(self.dataset_date_from, self.dataset_date_until,
                                     self.dataset_crypto, self.dataset_source)
         print(self.dataset_table_df)
+        self.dataset_table_df.to_csv('dataset.csv')
 
         widgets.trainTable.setColumnCount(len(self.dataset_table_df.columns))
         widgets.trainTable.setRowCount(len(self.dataset_table_df.index))
