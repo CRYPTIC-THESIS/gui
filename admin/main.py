@@ -6,8 +6,6 @@ import numpy as np
 from modules import *
 os.environ["QT_FONT_DPI"] = "96"
 
-# df = get_dataset_df('2020-01-01', '2020-01-07', ['Bitcoin (BTC)', 'Ethereum (ETH)', 'Dogecoin (DOGE)'], ['Twitter Volume', 'Reddit Volume', 'Google Trends'])
-# print(df)
 
 # Login Window
 class Login(QMainWindow):
@@ -595,7 +593,7 @@ class MainWindow(QMainWindow):
             widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
             widgets.btn_startTraining.hide()
 
-            command_line = 'python admin/model/training_model.py'
+            command_line = 'python model/training_model.py'
             p = os.popen(command_line)
             if p:
                 widgets.trainTerminal.clear()
@@ -605,7 +603,7 @@ class MainWindow(QMainWindow):
         if btnName == 'btn_startTesting':
             widgets.btn_viewDataAnalysis.show()
 
-            command_line = 'python admin/model/testing_model.py'
+            command_line = 'python model/testing_model.py'
             p = os.popen(command_line)
             if p:
                 widgets.testTerminal.clear()

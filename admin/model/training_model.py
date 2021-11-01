@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import CRYPTIC_module as nn
-dataset_all = pd.read_csv('admin/model/dataset.csv')
+dataset_all = pd.read_csv('./dataset.csv')
 
 crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
