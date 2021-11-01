@@ -11,7 +11,11 @@
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from pyqtgraph import PlotWidget, DateAxisItem
+
+from pyqtgraph import PlotWidget, mkPen, DateAxisItem
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
 
 from . resources_rc import *
 
@@ -1077,10 +1081,19 @@ class Ui_MainWindow(object):
         self.predGraphFrame.setStyleSheet(u"border-radius: 0; background: transparent;")
         self.predGraphFrame.setFrameShape(QFrame.NoFrame)
         self.predGraphFrame.setFrameShadow(QFrame.Raised)
+        
+        self.predGraph = PlotWidget(self.predGraphFrame, axisItems={'bottom': DateAxisItem(orientation='bottom')})
+        brush = QBrush(QColor(44, 49, 58, 1))
+        brush.setStyle(Qt.NoBrush)
+        self.predGraph.setBackgroundBrush(brush)
+        # self.predGraph = MatplotlibWidget(width=3, height=3)
+
         self.verticalLayout_22 = QVBoxLayout(self.predGraphFrame)
         self.verticalLayout_22.setSpacing(0)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
+
+        self.verticalLayout_22.addWidget(self.predGraph)
 
         self.verticalLayout_11.addWidget(self.predGraphFrame)
 
@@ -1516,10 +1529,19 @@ class Ui_MainWindow(object):
         self.histoGraphFrame.setMinimumSize(QSize(423, 269))
         self.histoGraphFrame.setFrameShape(QFrame.NoFrame)
         self.histoGraphFrame.setFrameShadow(QFrame.Raised)
+        
+        self.histoGraph = PlotWidget(self.histoGraphFrame, axisItems={'bottom': DateAxisItem(orientation='bottom')})
+        # brush = QBrush(QColor(44, 49, 58, 1))
+        # brush.setStyle(Qt.NoBrush)
+        self.histoGraph.setBackgroundBrush(brush)
+        # self.histoGraph = MatplotlibWidget(width=4.6, height=2.35)
+        
         self.verticalLayout_17 = QVBoxLayout(self.histoGraphFrame)
         self.verticalLayout_17.setSpacing(0)
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
+
+        self.verticalLayout_17.addWidget(self.histoGraph)
 
         self.verticalLayout_16.addWidget(self.histoGraphFrame)
 
@@ -1551,11 +1573,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setSpacing(10)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.horizontalLayout_14.setContentsMargins(10, 0, 0, 0)
-        self.btn_0 = QPushButton(self.daysButtons)
-        self.btn_0.setObjectName(u"btn_0")
-        self.btn_0.setStyleSheet(u"")
+        # self.btn_0 = QPushButton(self.daysButtons)
+        # self.btn_0.setObjectName(u"btn_0")
+        # self.btn_0.setStyleSheet(u"")
 
-        self.horizontalLayout_14.addWidget(self.btn_0)
+        # self.horizontalLayout_14.addWidget(self.btn_0)
 
         self.btn_1 = QPushButton(self.daysButtons)
         self.btn_1.setObjectName(u"btn_1")
@@ -3373,7 +3395,7 @@ class Ui_MainWindow(object):
         self.btn_histo_closing.setText(QCoreApplication.translate("MainWindow", u"CLOSING", None))
         self.btn_histo_high.setText(QCoreApplication.translate("MainWindow", u"HIGH", None))
         self.btn_histo_low.setText(QCoreApplication.translate("MainWindow", u"LOW", None))
-        self.btn_0.setText(QCoreApplication.translate("MainWindow", u"1D", None))
+        # self.btn_0.setText(QCoreApplication.translate("MainWindow", u"1D", None))
         self.btn_1.setText(QCoreApplication.translate("MainWindow", u"3D", None))
         self.btn_2.setText(QCoreApplication.translate("MainWindow", u"1W", None))
         self.btn_3.setText(QCoreApplication.translate("MainWindow", u"1M", None))
@@ -3425,3 +3447,27 @@ class Ui_MainWindow(object):
         self.deployGraphDateLabel.setText("")
     # retranslateUi
 
+
+# class MatplotlibWidget(QWidget):
+#     def __init__(self, width, height, parent=None):
+#         super(MatplotlibWidget, self).__init__(parent)
+#         self.figure = Figure(figsize=(width, height), facecolor='#2c313a', dpi=100)
+#         self.canvas = FigureCanvasQTAgg(self.figure)
+#         self.axis = self.figure.add_subplot(111)
+
+#         self.axis.set_facecolor('#2c313a')
+#         self.axis.xaxis.label.set_color('w')
+#         self.axis.yaxis.grid(color='#21252b',linewidth=1)
+
+#         for label in self.axis.xaxis.get_ticklabels():
+#                 label.set_color('w')
+#         for label in self.axis.yaxis.get_ticklabels():
+#                 label.set_color('w')
+
+#         self.axis.spines['bottom'].set_color('#21252b')
+#         self.axis.spines['top'].set_color('#21252b')
+#         self.axis.spines['left'].set_color('#21252b')
+#         self.axis.spines['right'].set_color('#21252b')
+
+#         self.layoutvertical = QtWidgets.QVBoxLayout(self)
+#         self.layoutvertical.addWidget(self.canvas)
