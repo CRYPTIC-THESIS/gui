@@ -41,9 +41,10 @@ class DateAxisItem(AxisItem):
 
         if dx > 63072001:  # 3600s*24*(365+366) = 2 years (count leap year)
             d = timedelta(days=366)
-            for y in range(dt1.year + 1, dt2.year):
+            for y in range(dt1.year + 1, dt2.year + 1):
                 dt = datetime(year=y, month=1, day=1)
                 majticks.append(mktime(dt.timetuple()))
+            print(majticks)
 
         elif dx > 5270400:  # 3600s*24*61 = 61 days
             d = timedelta(days=31)
@@ -111,27 +112,27 @@ class DateAxisItem(AxisItem):
             return []
 
         if spacing >= 31622400:  # 366 days
-            fmt = "%Y"
+            fmt = "%Y %b"
 
         elif spacing >= 2678400:  # 31 days
             fmt = "%Y %b"
 
-        elif spacing >= 86400:  # = 1 day
+        else: # spacing >= 86400:  # = 1 day
             fmt = "%b/%d"
 
-        elif spacing >= 3600:  # 1 h
-            fmt = "%b/%d-%Hh"
+        # elif spacing >= 3600:  # 1 h
+        #     fmt = "%b/%d-%Hh"
 
-        elif spacing >= 60:  # 1 m
-            fmt = "%H:%M"
+        # elif spacing >= 60:  # 1 m
+        #     fmt = "%H:%M"
 
-        elif spacing >= 1:  # 1s
-            fmt = "%H:%M:%S"
+        # elif spacing >= 1:  # 1s
+        #     fmt = "%H:%M:%S"
 
-        else:
-            # less than 2s (show microseconds)
-            # fmt = '%S.%f"'
-            fmt = '[+%fms]'  # explicitly relative to last second
+        # else:
+        #     # less than 2s (show microseconds)
+        #     # fmt = '%S.%f"'
+        #     fmt = '[+%fms]'  # explicitly relative to last second
 
         for x in values:
             try:

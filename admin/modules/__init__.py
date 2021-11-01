@@ -3,6 +3,9 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from datetime import datetime, timedelta
 
+from . datetimeitem import *
+
+
 # GUI FILE
 from . ui_login import *
 from . ui_main import *

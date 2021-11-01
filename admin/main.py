@@ -123,8 +123,8 @@ class MainWindow(QMainWindow):
         self.selected_histo_price = 'Closing'
 
         # HISTORY DAYS
-        widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
-        self.selected_histo_day = 1
+        widgets.btn_1.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_1.styleSheet()))
+        self.selected_histo_day = 3
 
         # TRAIN PAGE
         widgets.trainContent.setCurrentWidget(widgets.getDataPage)
@@ -149,26 +149,42 @@ class MainWindow(QMainWindow):
         # print(self.dash_btc, self.dash_eth, self.dash_doge)
 
     def dash_histo_graph(self):
-        # widgets.histoGraph.clear()
+        widgets.histoGraph.clear()
+        widgets.histoGraph.hide()
+        
+        # axis = DateAxisItem(orientation='bottom')
+        # axis.attachToPlotItem(widgets.histoGraph.getPlotItem())
+
+        past = self.selected_date - timedelta(days=self.selected_histo_day)
 
         if self.selected_crypto == 'all':
+            widgets.histoGraph.clear()
             print('all')
         
         else:
             if self.selected_crypto == 'Bitcoin_Data':
+                widgets.histoGraph.clear()
                 print(self.dash_btc[self.selected_histo_price])
-                df_date = self.dash_btc['Date']
-                df_price = self.dash_btc[str(self.selected_histo_price)]
+                
+                df_ = self.dash_btc.loc[(self.dash_btc['Date'] >= past) & (self.dash_btc['Date'] <= self.selected_date)]
+                df_date = df_['Date']
+                df_price = df_[str(self.selected_histo_price)]
 
             if self.selected_crypto == 'Ethereum_Data':
+                widgets.histoGraph.clear()
                 print(self.dash_eth[self.selected_histo_price])
-                df_date = self.dash_eth['Date']
-                df_price = self.dash_eth[str(self.selected_histo_price)]
+                
+                df_ = self.dash_eth.loc[(self.dash_eth['Date'] >= past) & (self.dash_eth['Date'] <= self.selected_date)]
+                df_date = df_['Date']
+                df_price = df_[str(self.selected_histo_price)]
 
             if self.selected_crypto == 'Dogecoin_Data':
+                widgets.histoGraph.clear()
                 print(self.dash_doge[self.selected_histo_price])
-                df_date = self.dash_doge['Date']
-                df_price = self.dash_doge[str(self.selected_histo_price)]
+                
+                df_ = self.dash_doge.loc[(self.dash_doge['Date'] >= past) & (self.dash_doge['Date'] <= self.selected_date)]
+                df_date = df_['Date']
+                df_price = df_[str(self.selected_histo_price)]
 
             
             x = []
@@ -179,14 +195,30 @@ class MainWindow(QMainWindow):
             for item in df_price:
                 y.append(item)
 
+            # widgets.histoGraph.axis.plot(x, y)
+            # widgets.histoGraph.canvas.draw()
+
             # axis = DateAxisItem(orientation='bottom')
             # axis.attachToPlotItem(widgets.histoGraph.getPlotItem())
+
+            # labels = [ (date, datetime.fromtimestamp(date).strftime('%Y %b/%d')) for date in x ]
+
+            if self.selected_histo_day >= 30:
+                widgets.histoGraph.plot(x, y, pen=mkPen('#4ad29f', width=2.5))  # , labels=labels
+            else: 
+                widgets.histoGraph.plot(x, y, pen=mkPen('#4ad29f', width=2.5), symbol='o', symbolBrush = 0.2)
             
-            # widgets.histoGraph.plot(x, y, pen ='g', symbol ='', symbolPen ='g',
-            #             symbolBrush = 0.2, name ='green')
-            # widgets.histoGraph.show()
-            
-    # /////////////////////////////////////////////////////
+            # ax = widgets.histoGraph.getAxis('bottom')
+            # ax.setTicks([labels])
+
+            widgets.histoGraph.show()
+
+    def dash_pred_graph(self):
+        print('hello dash pred graph')
+
+    def dash_pred_table(self):
+        widgets.predictedTable.setHorizontalHeaderLabels()
+
     def train_dataset_table(self):
         self.dataset_table_df = get_dataset_df(self.dataset_date_from, self.dataset_date_until,
                                     self.dataset_crypto, self.dataset_source)
@@ -204,7 +236,7 @@ class MainWindow(QMainWindow):
         widgets.trainTable.setHorizontalHeaderLabels(self.dataset_table_df.columns)
         widgets.trainTable.resizeColumnsToContents()
         widgets.trainTable.resizeRowsToContents()
-    # /////////////////////////////////////////////////////
+
 
     def dashSignals(self):
         # BUTTON SIGNALS
@@ -225,7 +257,7 @@ class MainWindow(QMainWindow):
         widgets.btn_histo_high.clicked.connect(self.get_price)
         widgets.btn_histo_low.clicked.connect(self.get_price)
 
-        widgets.btn_0.clicked.connect(self.get_histo_day)
+        # widgets.btn_0.clicked.connect(self.get_histo_day)
         widgets.btn_1.clicked.connect(self.get_histo_day)
         widgets.btn_2.clicked.connect(self.get_histo_day)
         widgets.btn_3.clicked.connect(self.get_histo_day)
@@ -397,10 +429,26 @@ class MainWindow(QMainWindow):
         btn = self.sender()
         btnName = btn.objectName()
 
-        for i in range(5):
-            btn_ = 'btn_' + str(i)
-            if btnName == btn_:
-                self.selected_histo_day = i + 1
+        # if btnName == 'btn_0':
+        #     self.selected_histo_day = 1
+
+        if btnName == 'btn_1':
+            self.selected_histo_day = 3
+        
+        if btnName == 'btn_2':
+            self.selected_histo_day = 7
+
+        if btnName == 'btn_3':
+            self.selected_histo_day = 30
+
+        if btnName == 'btn_4':
+            self.selected_histo_day = 365
+
+
+        # for i in range(5):
+        #     btn_ = 'btn_' + str(i)
+        #     if btnName == btn_:
+        #         self.selected_histo_day = i + 1
 
         UIFunctions.resetHistoDayStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectHistoDay(btn.styleSheet()))
