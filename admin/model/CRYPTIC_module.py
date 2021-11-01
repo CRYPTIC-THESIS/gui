@@ -77,7 +77,18 @@ class cryptic():
 
         return J,trained_network
 
-
+    def test(self,data,network):
+        pred = []
+        actual = []
+        out = network[0].forward(data)
+        out = layer.maxpool(out)
+        out = network[1].forward(out)
+        out = layer.maxpool(out)
+        data_a = out.flatten()
+        for in_dat in data_a:
+            y_hat, v, h, o, c, c_bar, i, f, z = network[2].forward_step(in_dat, network[3], network[4])
+            
+            
     def predict_crypto(self,network,input):
         #predict cryptocurrency up to 14 days
 
