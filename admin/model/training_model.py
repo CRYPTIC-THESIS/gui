@@ -28,11 +28,14 @@ for i in range(len(crypto)):
     if(crypto[i]=='BTC'):
         btc_model = nn.cryptic(crypto[i])
         btc_loss,btc_trained = btc_model.train(300,dataset,X)
+        print('BTC Model Trained!!!')
     elif(crypto[i]=='ETH'):
         eth_model = nn.cryptic(crypto[i])
         eth_loss,eth_trained = eth_model.train(300,dataset,X)
+        print('ETH Model Trained!!!')
     elif(crypto[i]=='DOGE'):
         doge_model = nn.cryptic(crypto[i])
         doge_loss,doge_trained = doge_model.train(300,dataset,X)
+        print('DOGE Model Trained!!!')
     else:
         print('Invalid Crypto')
