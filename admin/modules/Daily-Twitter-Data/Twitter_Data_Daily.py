@@ -27,6 +27,10 @@ def scrape_daily_tweets(dateYesterday,dateToday):
         csvWriter = csv.writer(csvFile)
         csvWriter.writerow(['id','Date','username','tweet']) 
 
+        # DATAFRAME
+        # columns = ['id','Date','username','tweet']
+        # df_btc = pd.DataFrame(columns=columns)
+
         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(twitterScraperParams).get_items()):
                 if i > maxTweets :
                     break  

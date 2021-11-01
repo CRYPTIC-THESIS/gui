@@ -16,7 +16,11 @@ class Login(QMainWindow):
         self.ui = Login_MainWindow()
         self.ui.setupUi(self)
 
-        # LoginSettings.ENABLE_CUSTOM_TITLE_BAR = True
+        # CUSTOM TITLE BAR
+        LoginSettings.ENABLE_CUSTOM_TITLE_BAR = True
+
+        # UI FUNCTIONS DEFINITIONS
+        UIFunctions.ui_logindefinitions(self)
         
         self.ui.content.setCurrentWidget(self.ui.loginPage)
         
@@ -45,6 +49,17 @@ class Login(QMainWindow):
             password = self.ui.pass_signup.text()
             print("username: ", username, "password: ", password)
             self.ui.content.setCurrentWidget(self.ui.loginPage)
+
+    
+    def mousePressEvent(self, event):
+        # SET DRAG POS WINDOW
+        self.dragPos = event.globalPos()
+
+        # PRINT MOUSE EVENTS
+        if event.buttons() == Qt.LeftButton:
+            print('Mouse click: LEFT CLICK')
+        if event.buttons() == Qt.RightButton:
+            print('Mouse click: RIGHT CLICK')
 
 
 # Main Window Dashboard
@@ -108,8 +123,10 @@ class MainWindow(QMainWindow):
         self.dash_data()
 
         # CRYPTO
-        widgets.btn_all.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_all.styleSheet()))
-        self.selected_crypto = 'all'
+        widgets.btn_btc.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_btc.styleSheet()))
+        widgets.btc_card.setStyleSheet(UIFunctions.selectCard(widgets.btc_card.styleSheet()))
+        self.selected_crypto = 'Bitcoin_Data'
+
 
         # PREDICTED PRICE
         widgets.btn_pred_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_pred_closing.styleSheet()))
@@ -125,6 +142,8 @@ class MainWindow(QMainWindow):
         # HISTORY DAYS
         widgets.btn_1.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_1.styleSheet()))
         self.selected_histo_day = 3
+        
+        self.dash_histo_graph()
 
         # TRAIN PAGE
         widgets.trainContent.setCurrentWidget(widgets.getDataPage)
@@ -137,7 +156,6 @@ class MainWindow(QMainWindow):
         # DEPLOY PAGE
         widgets.deployPriceCombo.addItems(['Closing', 'High', 'Low'])
 
-        self.dash_histo_graph()
 
 
     def dash_data(self):
@@ -146,6 +164,7 @@ class MainWindow(QMainWindow):
         self.dash_doge = pd.DataFrame()
 
         self.dash_btc, self.dash_eth, self.dash_doge = import_data(self.selected_date)
+        print('dash_data')
         # print(self.dash_btc, self.dash_eth, self.dash_doge)
 
     def dash_histo_graph(self):
@@ -156,6 +175,8 @@ class MainWindow(QMainWindow):
         # axis.attachToPlotItem(widgets.histoGraph.getPlotItem())
 
         past = self.selected_date - timedelta(days=self.selected_histo_day)
+        df_date = []
+        df_price = []
 
         if self.selected_crypto == 'all':
             widgets.histoGraph.clear()
@@ -194,6 +215,9 @@ class MainWindow(QMainWindow):
                 x.append(item)
             for item in df_price:
                 y.append(item)
+            
+            print(x)
+            print(y)
 
             # widgets.histoGraph.axis.plot(x, y)
             # widgets.histoGraph.canvas.draw()
@@ -571,7 +595,7 @@ class MainWindow(QMainWindow):
             widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
             widgets.btn_startTraining.hide()
 
-            command_line = 'python model/training_model.py'
+            command_line = 'python admin/model/training_model.py'
             p = os.popen(command_line)
             if p:
                 widgets.trainTerminal.clear()
@@ -581,7 +605,7 @@ class MainWindow(QMainWindow):
         if btnName == 'btn_startTesting':
             widgets.btn_viewDataAnalysis.show()
 
-            command_line = 'python model/testing_model.py'
+            command_line = 'python admin/model/testing_model.py'
             p = os.popen(command_line)
             if p:
                 widgets.testTerminal.clear()
