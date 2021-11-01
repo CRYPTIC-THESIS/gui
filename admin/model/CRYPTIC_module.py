@@ -94,22 +94,4 @@ class cryptic():
             
             out = network[2].forward_step(out,network[3],network[4])
 
-    df = pd.read_csv('/home/jeremy/Documents/SCHOOL/')
-    dataset = pd.DataFrame(columns = ['Date','High','Low','Open','Closing','Twitter Volume','Reddit Volume','GoogleTrends'])
-    Y = np.array(df['Date'])
-
-    dataset['Open'] = df['Open']
-    dataset['High'] = df['High']
-    dataset['Low'] = df['Low']
-    dataset['Close'] = df['Closing']
-    dataset['Twitter'] = df['Twitter Volume']
-    dataset['Reddit'] = df['Reddit Volume']
-    dataset['Google'] = df['GoogleTrends']
-    X = np.array(dataset['Close'])
-    dataset = np.array(dataset)
-
-    labels = [i for i in range(len(dataset))]
-    labels = np.array(labels,dtype=int)
-
-    train(300,dataset,X)
 
