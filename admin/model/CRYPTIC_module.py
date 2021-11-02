@@ -13,10 +13,10 @@ class cryptic():
 
         vals_to_idx = {w: i for i,w in enumerate(vals)}
         idx_to_vals = {i: w for i,w in enumerate(vals)}
-
+ 
         return vals_to_idx,idx_to_vals,vals,vals_size
 
-    def LSTM_pass(self,lstm,X,epoch,verbose,X_trimmed,J):
+    def LSTM_pass(self,lstm,epoch,verbose,X_trimmed,J):
                 
         h_prev = np.zeros((lstm.n_h, 1))
         c_prev = np.zeros((lstm.n_h, 1))
@@ -52,27 +52,23 @@ class cryptic():
         print('CRYPTIC NETWORK TRAINING\n\n')
         con = layer.Conv(5)
         con1 = layer.Conv(3)
-        vals_to_idx,idx_to_vals,vals,vals_size = self.format_LSTM(X)
-        lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size, epochs, lr = 0.01)
-        J = []  # to store losses
-        verbose = True
-        num_batches = len(X) // lstm.seq_len
+        
         out = con.forward(data)
         out = layer.maxpool(out)
         out = con1.forward(out)
         out = layer.maxpool(out)
-        X_trimmed = X[: num_batches * lstm.seq_len]  # trim input to have full sequences
+        out = out.flatten()
+        vals_to_idx,idx_to_vals,vals,vals_size = self.format_LSTM(out)
+        lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size, epochs, lr = 0.01)
+        J = []  # to store losses
+        verbose = True
+    
+        num_batches = len(out) // lstm.seq_len
+        X_trimmed = out[: num_batches * lstm.seq_len]  # trim input to have full sequences
         print('LSTM Block')
         for epoch in range(epochs):
-            '''
-            out = con.forward(data)
-            out = layer.maxpool(out)
-            out = con1.forward(out)
-            out = layer.maxpool(out)
-            '''
-            J,h,c = self.LSTM_pass(lstm,out.flatten(),epoch,verbose,X_trimmed,J)
 
-
+            J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
             trained_network = [con,con1,lstm,h,c]
 
         return J,trained_network
@@ -85,9 +81,23 @@ class cryptic():
         out = network[1].forward(out)
         out = layer.maxpool(out)
         data_a = out.flatten()
+        
+        cu = 0
         for in_dat in data_a:
-            y_hat, v, h, o, c, c_bar, i, f, z = network[2].forward_step(in_dat, network[3], network[4])
+            print("Iter:",cu)
+            x, z = {}, {}
+            f, i, c_bar, c, o = {}, {}, {}, {}, {}
+            y_hat, v, h = {}, {}, {}
+            h[-1] = network[3]
+            c[-1] = network[4]
+
+            x[cu] = np.zeros((network[2].seq_size, 1))
+            x[cu][in_dat] = 1
+            y_hat, v, h, o, c, c_bar, i, f, z = network[2].forward_step(x[cu], h[cu - 1], c[cu - 1] )
             
+            network[3] = h[-1]
+            network[4] = c[-1]
+            cu+=1
             
     def predict_crypto(self,network,input):
         #predict cryptocurrency up to 14 days

@@ -8,7 +8,7 @@ def split_data(x,crypto):
     x_train, x_test = train_test_split(x, test_size=0.30)
     np.savetxt(str(crypto)+"_train_set.csv", x_train, delimiter=",")
     np.savetxt(str(crypto)+"_test_set.csv", x_test, delimiter=",")
-    return(x_train)
+    return x_train,x_test 
 
 dataset_all = pd.read_csv('./dataset.csv')
 
@@ -36,8 +36,9 @@ for i in range(1):
 
     if(crypto[i]=='BTC'):
         btc_model = nn.cryptic(crypto[i])
-        data = split_data(dataset,crypto[i])
-        btc_loss,btc_trained = btc_model.train(300,data,X)
+        data,bt_test = split_data(dataset,crypto[i])
+        btc_loss,btc_trained = btc_model.train(10,data,X)
+        
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
     elif(crypto[i]=='ETH'):
@@ -55,4 +56,8 @@ for i in range(1):
     else:
         print('Invalid Crypto')
 
+
+
+btc_model.test(bt_test,btc_trained)
+print()
     
