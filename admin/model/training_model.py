@@ -15,7 +15,7 @@ dataset_all = pd.read_csv('./dataset.csv')
 crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
 losses = pd.DataFrame()
-for i in range(len(crypto)):
+for i in range(1):
     data = dataset_all.loc[dataset_all['Cryptocurrency'] == crypto[i]]
     dataset = pd.DataFrame()
     dataset['Close'] = data['Closing']
@@ -54,3 +54,5 @@ for i in range(len(crypto)):
         print('DOGE Model Trained!!!')
     else:
         print('Invalid Crypto')
+
+    
