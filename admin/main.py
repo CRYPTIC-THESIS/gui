@@ -140,6 +140,11 @@ class MainWindow(QMainWindow):
         # HISTORY DAYS
         widgets.btn_1.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_1.styleSheet()))
         self.selected_histo_day = 3
+
+        # CARDS
+        widgets.btcCurrPriceLabel.setText('$'+str(self.dash_btc['Closing'].iat[-1]))
+        widgets.ethCurrPriceLabel.setText('$'+str(self.dash_eth['Closing'].iat[-1]))
+        widgets.dogeCurrPriceLabel.setText('$'+str(self.dash_doge['Closing'].iat[-1]))
         
         self.dash_histo_graph()
 
@@ -367,6 +372,15 @@ class MainWindow(QMainWindow):
         self.selected_date = date.toString()
         self.selected_date = pd.to_datetime(self.selected_date)
         self.dash_data()
+
+        widgets.btcCurrPriceLabel.clear()
+        widgets.ethCurrPriceLabel.clear()
+        widgets.dogeCurrPriceLabel.clear()
+
+        widgets.btcCurrPriceLabel.setText('$'+str(self.dash_btc['Closing'].iat[-1]))
+        widgets.ethCurrPriceLabel.setText('$'+str(self.dash_eth['Closing'].iat[-1]))
+        widgets.dogeCurrPriceLabel.setText('$'+str(self.dash_doge['Closing'].iat[-1]))
+
         self.dash_histo_graph()
 
 
