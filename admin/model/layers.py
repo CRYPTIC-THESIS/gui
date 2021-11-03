@@ -175,7 +175,7 @@ def maxpool(data, f=3, s=1):
     return downsampled
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=1,
+    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=3,
                  epochs=10, lr=0.001, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
@@ -290,8 +290,8 @@ class LSTM:
             x[idx] = 1
 
             # find the char with the sampled index and concat to the output string
-            char = self.idx_to_char[idx]
-            sample_string += str(char) + "-->"
+            char = self.idx_to_vals[idx]
+            sample_string += ' '+str(char) + " --> "
         return sample_string
 
     def forward_step(self, x, h_prev, c_prev):

@@ -45,6 +45,8 @@ class cryptic():
             if verbose:
                 if j % 400000 == 0:
                     print('Epoch:', epoch, '\tBatch:', j, "-", j + lstm.seq_len,'\tLoss:', round(lstm.smooth_loss, 2))
+                    s = lstm.sample(h_prev, c_prev, sample_size=250)
+                    print(s, "\n")
 
         return J,h_prev, c_prev
 
@@ -70,10 +72,51 @@ class cryptic():
 
             J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
             
+            net = [con,con1,lstm,h,c]
 
-        return J,con.filters,con1.filters,lstm.params
+        return J,con.filters,con1.filters,lstm.params,net
 
     def test(self,data,network):
+
+        out = network[0].forward(data)
+        out = layer.maxpool(out)
+        out = network[1].forward(out)
+        out = layer.maxpool(out)
+        out = out.flatten()
+
+        vi = len(network[2].vals_to_idx)
+        iv = len(network[2].idx_to_vals)
+        
+        for i in range(1,len(out)+1):
+            if(out[i-1] in network[2].vals_to_idx):
+                i -= 1
+                #print('existing:',network[2].vals_to_idx[out[i-1]])
+            else:
+                network[2].vals_to_idx[out[i-1]] = vi+i
+                network[2].idx_to_vals[iv+i] = out[i-1]
+                #print('added')
+        #print(network[2].params['Wf'][-1][-1])
+        data_a = [network[2].vals_to_idx[ch] for ch in out]
+        for data in data_a:
+            h_prev = network[3][-1]
+            c_prev = network[4][-1]
+            z = np.row_stack((h_prev,data))
+            
+            f = network[2].sigmoid(np.dot(network[2].params["Wf"][-1][-1], z) + network[2].params["bf"][-1][-1])
+            i = network[2].sigmoid(np.dot(network[2].params["Wi"][-1][-1], z) + network[2].params["bi"][-1][-1])
+            c_bar = np.tanh(np.dot(network[2].params["Wc"][-1][-1], z) + network[2].params["bc"][-1][-1])
+
+            c = f * c_prev + i * c_bar
+            o = network[2].sigmoid(np.dot(network[2].params["Wo"][-1][-1], z) + network[2].params["bo"][-1][-1])
+            h = o * np.tanh(c)
+
+            v = np.dot(network[2].params["Wv"][-1][-1], h) + network[2].params["bv"][-1][-1]
+            
+            y_hat = network[2].softmax(v)
+            h_prev = h[-1]
+            c_prev = c[-1]
+            print(-np.log(y_hat))
+        '''
         pred = []
         actual = []
         out = network[0].forward(data)
@@ -125,7 +168,7 @@ class cryptic():
                 loss += -np.log(y_hat[t][y_batch[t], 0])
                 network[3] = h[-1]
                 network[4] = c[-1] 
-                print('Loss:',loss)
+                print('Loss:',loss)'''
 
     def test_v(self,c_param,c2_param,l_param,data):
         con = layer.Conv(5)
@@ -141,6 +184,7 @@ class cryptic():
         out = out.flatten()
         vals_to_idx,idx_to_vals,vals,vals_size = self.format_LSTM(out)
         lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size, epochs=1, lr = 0.01)
+
         lstm.params = l_param
 
         J = []  # to store losses

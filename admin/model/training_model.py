@@ -6,8 +6,8 @@ from sklearn.model_selection import train_test_split
 
 def split_data(x,crypto):
     x_train, x_test = train_test_split(x, test_size=0.30)
-    np.savetxt(str(crypto)+"_train_set.csv", x_train, delimiter=",")
-    np.savetxt(str(crypto)+"_test_set.csv", x_test, delimiter=",")
+    #np.savetxt(str(crypto)+"_train_set.csv", x_train, delimiter=",")
+    #np.savetxt(str(crypto)+"_test_set.csv", x_test, delimiter=",")
     return x_train,x_test 
 
 dataset_all = pd.read_csv('./dataset.csv')
@@ -37,7 +37,7 @@ for i in range(1):
     if(crypto[i]=='BTC'):
         btc_model = nn.cryptic(crypto[i])
         data,bt_test = split_data(dataset,crypto[i])
-        btc_loss,c_param, c2_param, l_param = btc_model.train(10,data,X)
+        btc_loss,c_param, c2_param, l_param ,bt_net= btc_model.train(100,data,X)
         
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
@@ -58,6 +58,6 @@ for i in range(1):
 
 
 
-btc_model.test_v(c_param, c2_param, l_param, bt_test)
+#btc_model.test(bt_test,bt_net)
 
     
