@@ -2675,12 +2675,13 @@ class Ui_MainWindow(object):
         # self.corrAnalysisGraph.setBackgroundBrush(brush)
         # # self.predGraph = MatplotlibWidget(width=3, height=3)
 
-        # self.verticalLayout_corr = QVBoxLayout(self.corrAnalysisGraphFrame)
-        # self.verticalLayout_corr.setSpacing(0)
-        # self.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
-        # self.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
+        self.corrAnalysisGraph = QLabel(self.corrAnalysisGraphFrame)
+        self.verticalLayout_corr = QVBoxLayout(self.corrAnalysisGraphFrame)
+        self.verticalLayout_corr.setSpacing(0)
+        self.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
+        self.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
 
-        # self.verticalLayout_corr.addWidget(self.corrAnalysisGraph)
+        self.verticalLayout_corr.addWidget(self.corrAnalysisGraph)
 
         self.verticalLayout_91.addWidget(self.corrAnalysisGraphFrame)
 
@@ -2727,12 +2728,13 @@ class Ui_MainWindow(object):
         # self.conMatrixGraph.setBackgroundBrush(brush)
         # # self.predGraph = MatplotlibWidget(width=3, height=3)
 
-        # self.verticalLayout_conf = QVBoxLayout(self.conMatrixGraphFrame)
-        # self.verticalLayout_conf.setSpacing(0)
-        # self.verticalLayout_conf.setObjectName(u"verticalLayout_conf")
-        # self.verticalLayout_conf.setContentsMargins(0, 0, 0, 0)
+        self.conMatrixGraph = QLabel(self.conMatrixGraphFrame)
+        self.verticalLayout_conf = QVBoxLayout(self.conMatrixGraphFrame)
+        self.verticalLayout_conf.setSpacing(0)
+        self.verticalLayout_conf.setObjectName(u"verticalLayout_conf")
+        self.verticalLayout_conf.setContentsMargins(0, 0, 0, 0)
 
-        # self.verticalLayout_conf.addWidget(self.conMatrixGraph)
+        self.verticalLayout_conf.addWidget(self.conMatrixGraph, alignment=Qt.AlignCenter)
 
         self.verticalLayout_92.addWidget(self.conMatrixGraphFrame)
 
@@ -3487,7 +3489,7 @@ class Ui_MainWindow(object):
         # fig = grph.get_figure()
         # fig.savefig('images/corr.png', dpi=96)
 
-        # widgets.corrAnalysisGraphFrame.setStyleSheet(u"background-image: url(:/images/images/corr.png); background-repeat: no-repeat; background-position: center;")
+        # self.corrAnalysisGraphFrame.setStyleSheet(u"background-image: url(:/images/images/corr.png); background-repeat: no-repeat; background-position: center;")
         # correlogram = ViewBox()
         # correlogram.invertY(True)
         # imageItem = ImageItem(image=corrMatrix)
@@ -3517,17 +3519,17 @@ class Ui_MainWindow(object):
         # bar = ColorBarItem( values=(-1,1), colorMap=colorMap)
         # bar.setImageItem(imageItem, insert_in=plotItem)
         
-        # # widgets.corrAnalysisGraph.plotItem(plotItem)
+        # # self.corrAnalysisGraph.plotItem(plotItem)
 
-        # widgets.corrAnalysisGraph = PlotWidget(widgets.corrAnalysisGraphFrame, plotItem=plotItem)
+        # self.corrAnalysisGraph = PlotWidget(self.corrAnalysisGraphFrame, plotItem=plotItem)
         # brush = QBrush(QColor(44, 49, 58, 1))
         # brush.setStyle(Qt.NoBrush)
-        # widgets.corrAnalysisGraph.setBackgroundBrush(brush)
+        # self.corrAnalysisGraph.setBackgroundBrush(brush)
 
-        # widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
-        # widgets.verticalLayout_corr.setSpacing(0)
-        # widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
-        # widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
+        # self.verticalLayout_corr = QVBoxLayout(self.corrAnalysisGraphFrame)
+        # self.verticalLayout_corr.setSpacing(0)
+        # self.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
+        # self.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
 
-        # widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
-        # widgets.corrAnalysisGraph.show()
+        # self.verticalLayout_corr.addWidget(self.corrAnalysisGraph)
+        # self.corrAnalysisGraph.show()
