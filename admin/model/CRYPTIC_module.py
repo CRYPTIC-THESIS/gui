@@ -17,6 +17,7 @@ class cryptic():
         
         vals = set(data)
         vals_size = len(vals)
+        print(vals_size)
 
         vals_to_idx = {w: i for i,w in enumerate(vals)}
         idx_to_vals = {i: w for i,w in enumerate(vals)}
@@ -24,7 +25,7 @@ class cryptic():
         return vals_to_idx,idx_to_vals,vals,vals_size
 
     def LSTM_pass(self,lstm,epoch,verbose,X_trimmed,J):
-                
+        s = []         
         h_prev = np.zeros((lstm.n_h, 1))
         c_prev = np.zeros((lstm.n_h, 1))
 
@@ -59,16 +60,22 @@ class cryptic():
 
     def train(self,epochs,data,X):
         print('CRYPTIC NETWORK TRAINING\n\n')
-        con = layer.Conv(5)
-        con1 = layer.Conv(3)
         
-        out = con.forward(data)
-        out = layer.maxpool(out)
-        out = con1.forward(out)
-        out = layer.maxpool(out)
+        x = -2.1
+        progress(0, epochs, status='Aral tayo')
+        while(x>=X[0]+100)or(x<=X[0]-100):
+            con = layer.Conv(5)
+            con1 = layer.Conv(3)
+            out = con.forward(data)
+            out = layer.maxpool(out)
+            out = con1.forward(out)
+            out = layer.maxpool(out)
+            x = out[0].astype(float)
+
         out = out.flatten()
+        out = out.astype(int)
         vals_to_idx,idx_to_vals,vals,vals_size = self.format_LSTM(out)
-        lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size, epochs, lr = 0.01)
+        lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size,epochs, lr = 0.01)
         J = []  # to store losses
         verbose = True
     
@@ -81,7 +88,7 @@ class cryptic():
             progress(epoch, epochs, status='Nag-aaral pa aku beh')
             net = [con,con1,lstm,h,c]
         progress(epochs, epochs, status='Kapagod mag-aral beh')
-        #print(pred)
+        print(pred)
         return J,con.filters,con1.filters,lstm.params,net
 
     def test(self,data,network):

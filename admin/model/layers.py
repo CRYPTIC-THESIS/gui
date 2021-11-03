@@ -114,7 +114,7 @@ class Conv:
         
         for im_regions, i, j in self.iterate_regions(input):
             output[i, j] = np.sum(im_regions * self.filters, axis=(1,2))
-        print('Conv Layer:',output.shape)
+        #print('Conv Layer:',output.shape)
         return output
     
     def backward(self, d_l_d_out, learn_rate):
@@ -162,12 +162,12 @@ def maxpool(data, f=3, s=1):
             curr_y += s
             out_y += 1
     downsampled = downsampled.reshape(downsampled.shape[0], (downsampled.shape[1]*downsampled.shape[2]))
-    print('Maxpool Layer:',downsampled.shape)
+    #print('Maxpool Layer:',downsampled.shape)
     return downsampled
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=5,
-                 epochs=10, lr=0.001, beta1=0.9, beta2=0.999):
+    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=3, seq_len=30,
+                 epochs=100, lr=0.001, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
         """
@@ -267,7 +267,7 @@ class LSTM:
         """
         Outputs a sample sequence from the model
         """
-        x = np.zeros((self.seq_size, 1))
+        x = np.zeros((self.seq_size,1))
         h = h_prev
         c = c_prev
         pred = np.zeros(sample_size)
@@ -277,6 +277,7 @@ class LSTM:
 
             # get a random index within the probability distribution of y_hat(ravel())
             idx = np.random.choice(range(self.seq_size), p=y_hat.ravel())
+            
             x = np.zeros((self.seq_size, 1))
             x[idx] = 1
 

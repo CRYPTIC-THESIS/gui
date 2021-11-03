@@ -29,9 +29,10 @@ for i in range(1):
     dataset = dataset.fillna(0)
     Y = np.array(data['Date'])
     X = np.array(dataset['Close'])
+    X = X.astype(int)
 
     dataset = np.array(dataset)
-
+    dataset = dataset.astype(int)
     #print(dataset)
 
     if(crypto[i]=='BTC'):
