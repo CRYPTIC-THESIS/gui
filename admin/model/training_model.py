@@ -37,7 +37,7 @@ for i in range(1):
     if(crypto[i]=='BTC'):
         btc_model = nn.cryptic(crypto[i])
         data,bt_test = split_data(dataset,crypto[i])
-        btc_loss,c_param, c2_param, l_param ,bt_net= btc_model.train(10,data,X)
+        btc_loss,c_param, c2_param, l_param ,bt_net= btc_model.train(100,data,X)
         
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')

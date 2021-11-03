@@ -2,6 +2,13 @@ import numpy as np
 import layers as layer
 import pandas as pd
 
+def progress(count, total, status=''):
+        bar_len = 60
+        filled_len = int(round(bar_len * count / float(total)))
+
+        percents = round(100.0 * count / float(total), 1)
+        bar = '=' * filled_len + '-' * (bar_len - filled_len)
+        print('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
 
 class cryptic():
     def __init__(self,crypto):
@@ -71,9 +78,10 @@ class cryptic():
         for epoch in range(epochs):
 
             J,h,c,pred = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
-            
+            progress(epoch, epochs, status='Nag-aaral pa aku beh')
             net = [con,con1,lstm,h,c]
-        print(pred)
+        progress(epochs, epochs, status='Kapagod mag-aral beh')
+        #print(pred)
         return J,con.filters,con1.filters,lstm.params,net
 
     def test(self,data,network):

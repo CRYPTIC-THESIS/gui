@@ -2,15 +2,6 @@ import numpy as np
 import pandas as pd
 from random import uniform
 
-class progress:
-    def progress(count, total, status=''):
-        bar_len = 60
-        filled_len = int(round(bar_len * count / float(total)))
-
-        percents = round(100.0 * count / float(total), 1)
-        bar = '=' * filled_len + '-' * (bar_len - filled_len)
-        print('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
-
 class ReLU:
     def __init__(self):
         self.layer_name = "Activation Layer\t\t"
@@ -175,7 +166,7 @@ def maxpool(data, f=3, s=1):
     return downsampled
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=1,
+    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=5,
                  epochs=10, lr=0.001, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
