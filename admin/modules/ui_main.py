@@ -3483,26 +3483,51 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 
-# class MatplotlibWidget(QWidget):
-#     def __init__(self, width, height, parent=None):
-#         super(MatplotlibWidget, self).__init__(parent)
-#         self.figure = Figure(figsize=(width, height), facecolor='#2c313a', dpi=100)
-#         self.canvas = FigureCanvasQTAgg(self.figure)
-#         self.axis = self.figure.add_subplot(111)
+        # grph = sn.heatmap(corrMatrix, annot=True)
+        # fig = grph.get_figure()
+        # fig.savefig('images/corr.png', dpi=96)
 
-#         self.axis.set_facecolor('#2c313a')
-#         self.axis.xaxis.label.set_color('w')
-#         self.axis.yaxis.grid(color='#21252b',linewidth=1)
+        # widgets.corrAnalysisGraphFrame.setStyleSheet(u"background-image: url(:/images/images/corr.png); background-repeat: no-repeat; background-position: center;")
+        # correlogram = ViewBox()
+        # correlogram.invertY(True)
+        # imageItem = ImageItem(image=corrMatrix)
+        # correlogram.addItem(imageItem)
+        # plotItem = PlotItem(viewbox=correlogram)
 
-#         for label in self.axis.xaxis.get_ticklabels():
-#                 label.set_color('w')
-#         for label in self.axis.yaxis.get_ticklabels():
-#                 label.set_color('w')
+        # ticks = [ (idx+0.5, label) for idx, label in enumerate( corrColumns ) ]
+        # for side in ['left', 'top']:
+        #     ax = plotItem.getAxis(side)
+        #     ax.show()
+        #     ax.setZValue(0.1)
+        #     ax.setTicks( (ticks, []) )
+        #     if side == 'left': ax.setWidth(50)
+        #     if side == 'top' : ax.setHeight(20)
+        # for side in ['right', 'bottom']:
+        #     ax = plotItem.getAxis(side)
+        #     ax.show()
+        #     ax.setZValue(0.1)
+        #     ax.setTicks( (ticks, []) )
+        #     ax.setStyle(showValues=False)
+        #     if side == 'bottom': ax.setHeight(10)
 
-#         self.axis.spines['bottom'].set_color('#21252b')
-#         self.axis.spines['top'].set_color('#21252b')
-#         self.axis.spines['left'].set_color('#21252b')
-#         self.axis.spines['right'].set_color('#21252b')
+        # plotItem.setXRange(0, corrMatrix.shape[0], padding=0 )
+        # plotItem.setYRange(0, corrMatrix.shape[1], padding=0 )
 
-#         self.layoutvertical = QtWidgets.QVBoxLayout(self)
-#         self.layoutvertical.addWidget(self.canvas)
+        # colorMap = colormap.get("cet-d1")
+        # bar = ColorBarItem( values=(-1,1), colorMap=colorMap)
+        # bar.setImageItem(imageItem, insert_in=plotItem)
+        
+        # # widgets.corrAnalysisGraph.plotItem(plotItem)
+
+        # widgets.corrAnalysisGraph = PlotWidget(widgets.corrAnalysisGraphFrame, plotItem=plotItem)
+        # brush = QBrush(QColor(44, 49, 58, 1))
+        # brush.setStyle(Qt.NoBrush)
+        # widgets.corrAnalysisGraph.setBackgroundBrush(brush)
+
+        # widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
+        # widgets.verticalLayout_corr.setSpacing(0)
+        # widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
+        # widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
+
+        # widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
+        # widgets.corrAnalysisGraph.show()
