@@ -175,7 +175,7 @@ def maxpool(data, f=3, s=1):
     return downsampled
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=25,
+    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=1,
                  epochs=10, lr=0.001, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy

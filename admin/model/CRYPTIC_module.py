@@ -65,13 +65,13 @@ class cryptic():
     
         num_batches = len(out) // lstm.seq_len
         X_trimmed = out[: num_batches * lstm.seq_len]  # trim input to have full sequences
-        print('LSTM Block')
+        print('X_trimmed:',len(X_trimmed),'\nnum_batches:',num_batches)
         for epoch in range(epochs):
 
             J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
-            trained_network = [con,con1,lstm,h,c]
+            
 
-        return J,trained_network
+        return J,con.filters,con1.filters,lstm.params
 
     def test(self,data,network):
         pred = []
@@ -81,23 +81,105 @@ class cryptic():
         out = network[1].forward(out)
         out = layer.maxpool(out)
         data_a = out.flatten()
+        J = []  # to store losses
+        verbose = True
+        vi = len(network[2].vals_to_idx)
+        iv = len(network[2].idx_to_vals)
         
-        cu = 0
-        for in_dat in data_a:
-            print("Iter:",cu)
+        for i in range(1,len(data_a)+1):
+            if(data_a[i-1] in network[2].vals_to_idx):
+                i -= 1
+                #print('existing:',network[2].vals_to_idx[data_a[i-1]])
+            else:
+                network[2].vals_to_idx[data_a[i-1]] = vi+i
+                network[2].idx_to_vals[iv+i] = data_a[i-1]
+                #print('added')
+
+        num_batches = len(data_a) // network[2].seq_len
+        X_trimmed = data_a[: num_batches * network[2].seq_len]
+        h_prev = np.zeros((network[2].n_h, 1))
+        c_prev = np.zeros((network[2].n_h, 1))
+        network[2].seq_size = len(network[2].vals_to_idx)
+
+        for j in range(0, len(X_trimmed) - network[2].seq_len, network[2].seq_len):
+            # prepare batches
+            x_batch = [network[2].vals_to_idx[ch] for ch in X_trimmed[j: j + network[2].seq_len]]
+            y_batch = [network[2].vals_to_idx[ch] for ch in X_trimmed[j + 1: j + network[2].seq_len + 1]]
+
             x, z = {}, {}
             f, i, c_bar, c, o = {}, {}, {}, {}, {}
             y_hat, v, h = {}, {}, {}
+
+            # Values at t= - 1
             h[-1] = network[3]
             c[-1] = network[4]
 
-            x[cu] = np.zeros((network[2].seq_size, 1))
-            x[cu][in_dat] = 1
-            y_hat, v, h, o, c, c_bar, i, f, z = network[2].forward_step(x[cu], h[cu - 1], c[cu - 1] )
-            
-            network[3] = h[-1]
-            network[4] = c[-1]
-            cu+=1
+            loss = 0
+            for t in range(network[2].seq_len):
+                x[t] = np.zeros((network[2].seq_size, 1))
+                x[t][x_batch[t]] = 1
+
+                y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
+                    network[2].forward_step(x[t], h[t - 1], c[t - 1])
+
+                loss += -np.log(y_hat[t][y_batch[t], 0])
+                network[3] = h[-1]
+                network[4] = c[-1] 
+                print('Loss:',loss)
+
+    def test_v(self,c_param,c2_param,l_param,data):
+        con = layer.Conv(5)
+        con1 = layer.Conv(3)
+        con.filters = c_param
+        con1.filters = c2_param
+
+        out = con.forward(data)
+        
+        out = layer.maxpool(out)
+        out = con1.forward(out)
+        out = layer.maxpool(out)
+        out = out.flatten()
+        vals_to_idx,idx_to_vals,vals,vals_size = self.format_LSTM(out)
+        lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size, epochs=1, lr = 0.01)
+        lstm.params = l_param
+
+        J = []  # to store losses
+        verbose = False
+    
+        num_batches = len(out) // lstm.seq_len
+        X_trimmed = out[: num_batches * lstm.seq_len]
+        h_prev = np.zeros((lstm.n_h, 1))
+        c_prev = np.zeros((lstm.n_h, 1))
+        lstm.seq_size = len(lstm.vals_to_idx)
+
+        for j in range(0, len(X_trimmed) - lstm.seq_len, lstm.seq_len):
+            # prepare batches
+            x_batch = [lstm.vals_to_idx[ch] for ch in X_trimmed[j: j + lstm.seq_len]]
+            y_batch = [lstm.vals_to_idx[ch] for ch in X_trimmed[j + 1: j + lstm.seq_len + 1]]
+
+            x, z = {}, {}
+            f, i, c_bar, c, o = {}, {}, {}, {}, {}
+            y_hat, v, h = {}, {}, {}
+
+            # Values at t= - 1
+            h[-1] = h_prev
+            c[-1] = c_prev
+
+            loss = 0
+            for t in range(lstm.seq_len):
+                x[t] = np.zeros((lstm.seq_size, 1))
+                x[t][x_batch[t]] = 1
+
+                y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
+                    lstm.forward_step(x[t], h[t - 1], c[t - 1])
+
+                loss += -np.log(y_hat[t][y_batch[t], 0])
+                h_prev = h[-1]
+                c_prev = c[-1] 
+                print('Loss:',loss)
+
+
+
             
     def predict_crypto(self,network,input):
         #predict cryptocurrency up to 14 days
@@ -110,5 +192,3 @@ class cryptic():
             out = layer.maxpool(out)
             
             out = network[2].forward_step(out,network[3],network[4])
-
-
