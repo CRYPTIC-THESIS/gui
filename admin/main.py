@@ -153,6 +153,7 @@ class MainWindow(QMainWindow):
         # TEST PAGE
         widgets.testContent.setCurrentWidget(widgets.testingPage)
         widgets.btn_viewDataAnalysis.hide()
+        self.analyze_crypto = str(widgets.testCryptoCombo.currentText())
 
         # DEPLOY PAGE
         widgets.deployPriceCombo.addItems(['Closing', 'High', 'Low'])
@@ -297,6 +298,7 @@ class MainWindow(QMainWindow):
 
         # DATA ANALYSIS
         widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
+        widgets.testCryptoCombo.currentTextChanged.connect(self.get_crypto_analyze)
 
 
     def deploySignals(self):
@@ -580,47 +582,64 @@ class MainWindow(QMainWindow):
         widgets.btn_proceed.setEnabled(True)
 
 
+    def get_crypto_analyze(self, value):
+        self.analyze_crypto = str(value)
+        print(self.analyze_crypto)
+
+        self.show_data_analysis()
+
+
     def show_data_analysis(self):
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
         widgets.btn_viewDataAnalysis.hide()
 
+        crypto_df = pd.DataFrame()
+
+        if self.analyze_crypto.startswith('Bitcoin') == True:
+            crypto_df = pd.read_csv("csv/BTC_Sample.csv")
+
+        if self.analyze_crypto.startswith('Ethereum') == True:
+            crypto_df = pd.read_csv("csv/ETH_Sample.csv")
+        
+        if self.analyze_crypto.startswith('Dogecoin') == True:
+            crypto_df = pd.read_csv("csv/DOGE_Sample.csv")
+
         # CORRELATION
-        BTC_data = pd.read_csv("csv/BTC_Sample.csv")
-        corr_analysis(BTC_data)
+        corr_analysis(crypto_df)
 
         # Create Graph
-        widgets.corrAnalysisGraph = QLabel(widgets.corrAnalysisGraphFrame)
+        # widgets.corrAnalysisGraph = QLabel(widgets.corrAnalysisGraphFrame)
         pixmap = QPixmap('images/corr.png')
         pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
         widgets.corrAnalysisGraph.setPixmap(pixmap)
         # self.resize(pixmap.width(),pixmap.height())Qt.IgnoreAspectRatio,
 
-        widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
-        widgets.verticalLayout_corr.setSpacing(0)
-        widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
-        widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
+        # widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
+        # widgets.verticalLayout_corr.setSpacing(0)
+        # widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
+        # widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
 
-        widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
+        # widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
         
 
         # CONFUSION MATRIX
-        class_df = classification_analysis(BTC_data)
+        class_df = classification_analysis(crypto_df)
 
         # Create Graph
-        widgets.conMatrixGraph = QLabel(widgets.conMatrixGraphFrame)
+        # widgets.conMatrixGraph = QLabel(widgets.conMatrixGraphFrame)
         pixmap = QPixmap('images/conf.png')
         pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
         widgets.conMatrixGraph.setPixmap(pixmap)
         # self.resize(pixmap.width(),pixmap.height())Qt.IgnoreAspectRatio,
 
-        widgets.verticalLayout_conf = QVBoxLayout(widgets.conMatrixGraphFrame)
-        widgets.verticalLayout_conf.setSpacing(0)
-        widgets.verticalLayout_conf.setObjectName(u"verticalLayout_corr")
-        widgets.verticalLayout_conf.setContentsMargins(0, 0, 0, 0)
+        # widgets.verticalLayout_conf = QVBoxLayout(widgets.conMatrixGraphFrame)
+        # widgets.verticalLayout_conf.setSpacing(0)
+        # widgets.verticalLayout_conf.setObjectName(u"verticalLayout_corr")
+        # widgets.verticalLayout_conf.setContentsMargins(0, 0, 0, 0)
 
-        widgets.verticalLayout_conf.addWidget(widgets.conMatrixGraph, alignment=Qt.AlignCenter)
+        # widgets.verticalLayout_conf.addWidget(widgets.conMatrixGraph, alignment=Qt.AlignCenter)
         
-        del BTC_data
+        del crypto_df
 
 
     def show_terminal(self):
