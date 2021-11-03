@@ -587,14 +587,11 @@ class MainWindow(QMainWindow):
         # CORRELATION
         BTC_data = pd.read_csv("csv/BTC_Sample.csv")
         corr_analysis(BTC_data)
-        del BTC_data
-        # print(corrMatrix)
-
 
         # Create Graph
         widgets.corrAnalysisGraph = QLabel(widgets.corrAnalysisGraphFrame)
         pixmap = QPixmap('images/corr.png')
-        pixmap = pixmap.scaled(471, 324, Qt.IgnoreAspectRatio, Qt.FastTransformation)
+        pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
         widgets.corrAnalysisGraph.setPixmap(pixmap)
         # self.resize(pixmap.width(),pixmap.height())Qt.IgnoreAspectRatio,
 
@@ -604,59 +601,26 @@ class MainWindow(QMainWindow):
         widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
 
         widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
-
-
-        # grph = sn.heatmap(corrMatrix, annot=True)
-        # fig = grph.get_figure()
-        # fig.savefig('images/corr.png', dpi=96)
-
-        # widgets.corrAnalysisGraphFrame.setStyleSheet(u"background-image: url(:/images/images/corr.png); background-repeat: no-repeat; background-position: center;")
-        # correlogram = ViewBox()
-        # correlogram.invertY(True)
-        # imageItem = ImageItem(image=corrMatrix)
-        # correlogram.addItem(imageItem)
-        # plotItem = PlotItem(viewbox=correlogram)
-
-        # ticks = [ (idx+0.5, label) for idx, label in enumerate( corrColumns ) ]
-        # for side in ['left', 'top']:
-        #     ax = plotItem.getAxis(side)
-        #     ax.show()
-        #     ax.setZValue(0.1)
-        #     ax.setTicks( (ticks, []) )
-        #     if side == 'left': ax.setWidth(50)
-        #     if side == 'top' : ax.setHeight(20)
-        # for side in ['right', 'bottom']:
-        #     ax = plotItem.getAxis(side)
-        #     ax.show()
-        #     ax.setZValue(0.1)
-        #     ax.setTicks( (ticks, []) )
-        #     ax.setStyle(showValues=False)
-        #     if side == 'bottom': ax.setHeight(10)
-
-        # plotItem.setXRange(0, corrMatrix.shape[0], padding=0 )
-        # plotItem.setYRange(0, corrMatrix.shape[1], padding=0 )
-
-        # colorMap = colormap.get("cet-d1")
-        # bar = ColorBarItem( values=(-1,1), colorMap=colorMap)
-        # bar.setImageItem(imageItem, insert_in=plotItem)
         
-        # # widgets.corrAnalysisGraph.plotItem(plotItem)
-
-        # widgets.corrAnalysisGraph = PlotWidget(widgets.corrAnalysisGraphFrame, plotItem=plotItem)
-        # brush = QBrush(QColor(44, 49, 58, 1))
-        # brush.setStyle(Qt.NoBrush)
-        # widgets.corrAnalysisGraph.setBackgroundBrush(brush)
-
-        # widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
-        # widgets.verticalLayout_corr.setSpacing(0)
-        # widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
-        # widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
-
-        # widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
-        # widgets.corrAnalysisGraph.show()
-
 
         # CONFUSION MATRIX
+        class_df = classification_analysis(BTC_data)
+
+        # Create Graph
+        widgets.conMatrixGraph = QLabel(widgets.conMatrixGraphFrame)
+        pixmap = QPixmap('images/conf.png')
+        pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
+        widgets.conMatrixGraph.setPixmap(pixmap)
+        # self.resize(pixmap.width(),pixmap.height())Qt.IgnoreAspectRatio,
+
+        widgets.verticalLayout_conf = QVBoxLayout(widgets.conMatrixGraphFrame)
+        widgets.verticalLayout_conf.setSpacing(0)
+        widgets.verticalLayout_conf.setObjectName(u"verticalLayout_corr")
+        widgets.verticalLayout_conf.setContentsMargins(0, 0, 0, 0)
+
+        widgets.verticalLayout_conf.addWidget(widgets.conMatrixGraph, alignment=Qt.AlignCenter)
+        
+        del BTC_data
 
 
     def show_terminal(self):

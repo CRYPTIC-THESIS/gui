@@ -182,5 +182,13 @@ class UIFunctions(MainWindow):
         # CLOSE APPLICATION
         self.ui.btn_close.clicked.connect(lambda: self.close())
 
+        # DROP SHADOW
+        self.shadow = QGraphicsDropShadowEffect(self)
+        self.shadow.setBlurRadius(17)
+        self.shadow.setXOffset(0)
+        self.shadow.setYOffset(0)
+        self.shadow.setColor(QColor(0, 0, 0, 150))
+        self.ui.frame.setGraphicsEffect(self.shadow)
+
     # ///////////////////////////////////////////////////////////////
     # END - GUI DEFINITIONS
