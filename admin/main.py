@@ -160,14 +160,8 @@ class MainWindow(QMainWindow):
         widgets.deployPriceCombo.addItems(['Closing', 'High', 'Low'])
 
 
-
     def dash_data(self):
-        self.dash_btc = pd.DataFrame()
-        self.dash_eth = pd.DataFrame()
-        self.dash_doge = pd.DataFrame()
-
         self.dash_btc, self.dash_eth, self.dash_doge = import_data(self.selected_date)
-        print('dash_data')
         # print(self.dash_btc, self.dash_eth, self.dash_doge)
 
     def dash_histo_graph(self):
@@ -188,24 +182,18 @@ class MainWindow(QMainWindow):
         else:
             if self.selected_crypto == 'Bitcoin_Data':
                 widgets.histoGraph.clear()
-                print(self.dash_btc[self.selected_histo_price])
-                
                 df_ = self.dash_btc.loc[(self.dash_btc['Date'] >= past) & (self.dash_btc['Date'] <= self.selected_date)]
                 df_date = df_['Date']
                 df_price = df_[str(self.selected_histo_price)]
 
             if self.selected_crypto == 'Ethereum_Data':
                 widgets.histoGraph.clear()
-                print(self.dash_eth[self.selected_histo_price])
-                
                 df_ = self.dash_eth.loc[(self.dash_eth['Date'] >= past) & (self.dash_eth['Date'] <= self.selected_date)]
                 df_date = df_['Date']
                 df_price = df_[str(self.selected_histo_price)]
 
             if self.selected_crypto == 'Dogecoin_Data':
                 widgets.histoGraph.clear()
-                print(self.dash_doge[self.selected_histo_price])
-                
                 df_ = self.dash_doge.loc[(self.dash_doge['Date'] >= past) & (self.dash_doge['Date'] <= self.selected_date)]
                 df_date = df_['Date']
                 df_price = df_[str(self.selected_histo_price)]
@@ -246,8 +234,7 @@ class MainWindow(QMainWindow):
     def train_dataset_table(self):
         self.dataset_table_df = get_dataset_df(self.dataset_date_from, self.dataset_date_until,
                                     self.dataset_crypto, self.dataset_source)
-        print(self.dataset_table_df)
-        self.dataset_table_df.to_csv('dataset.csv')
+        self.dataset_table_df.to_csv('csv/dataset.csv')
 
         widgets.trainTable.setColumnCount(len(self.dataset_table_df.columns))
         widgets.trainTable.setRowCount(len(self.dataset_table_df.index))
@@ -318,6 +305,12 @@ class MainWindow(QMainWindow):
 
 
     def buttonClick(self):
+        # /////// Empty dataframes
+        self.dataset_table_df = pd.DataFrame()
+        self.dash_btc = pd.DataFrame()
+        self.dash_eth = pd.DataFrame()
+        self.dash_doge = pd.DataFrame()
+
         # GET BUTTON CLICKED
         btn = self.sender()
         btnName = btn.objectName()
@@ -361,6 +354,8 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
+        
+        print(self.dash_btc)
 
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
@@ -596,6 +591,9 @@ class MainWindow(QMainWindow):
 
 
     def show_terminal(self):
+        # /////// Empty dataframe
+        self.dataset_table_df = pd.DataFrame()
+
         # GET BUTTON CLICKED
         btn = self.sender()
         btnName = btn.objectName()
@@ -604,22 +602,22 @@ class MainWindow(QMainWindow):
             widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
             widgets.btn_startTraining.hide()
 
-            command_line = 'python model/training_model.py'
-            p = os.popen(command_line)
-            if p:
-                widgets.trainTerminal.clear()
-                output = p.read()
-                widgets.trainTerminal.insertPlainText(output)
+            # command_line = 'python model/training_model.py'
+            # p = os.popen(command_line)
+            # if p:
+            #     widgets.trainTerminal.clear()
+            #     output = p.read()
+            #     widgets.trainTerminal.insertPlainText(output)
 
         if btnName == 'btn_startTesting':
             widgets.btn_viewDataAnalysis.show()
 
-            command_line = 'python model/testing_model.py'
-            p = os.popen(command_line)
-            if p:
-                widgets.testTerminal.clear()
-                output = p.read()
-                widgets.testTerminal.insertPlainText(output)
+            # command_line = 'python model/testing_model.py'
+            # p = os.popen(command_line)
+            # if p:
+            #     widgets.testTerminal.clear()
+            #     output = p.read()
+            #     widgets.testTerminal.insertPlainText(output)
 
 
     def deploy_prediction(self):
@@ -630,11 +628,11 @@ class MainWindow(QMainWindow):
         # SET DRAG POS WINDOW
         self.dragPos = event.globalPos()
 
-        # PRINT MOUSE EVENTS
-        if event.buttons() == Qt.LeftButton:
-            print('Mouse click: LEFT CLICK')
-        if event.buttons() == Qt.RightButton:
-            print('Mouse click: RIGHT CLICK')
+        # # PRINT MOUSE EVENTS
+        # if event.buttons() == Qt.LeftButton:
+        #     print('Mouse click: LEFT CLICK')
+        # if event.buttons() == Qt.RightButton:
+        #     print('Mouse click: RIGHT CLICK')
 
 
 if __name__ == "__main__":
