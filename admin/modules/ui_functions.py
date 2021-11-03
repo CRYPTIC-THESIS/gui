@@ -172,7 +172,10 @@ class UIFunctions(MainWindow):
             def moveWindow(event):
                 if event.buttons() == Qt.LeftButton:
                     self.move(self.pos() + event.globalPos() - self.dragPos)
-                    self.dragPos = event.globalPos()
+                    p = event.globalPosition()
+                    globalPos = p.toPoint()
+                    self.dragPos = globalPos
+                    # self.dragPos = event.globalPos()
                     event.accept()
             self.ui.login.mouseMoveEvent = moveWindow
 
