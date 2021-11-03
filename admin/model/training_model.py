@@ -48,13 +48,13 @@ for i in range(1):
     elif(crypto[i]=='ETH'):
         eth_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        eth_loss,eth_trained = eth_model.train(300,data,X)
+        eth_loss,c_param, c2_param, l_param ,eth_trained = eth_model.train(100,data,X)
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!')
     elif(crypto[i]=='DOGE'):
         doge_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        doge_loss,doge_trained = doge_model.train(300,data,X)
+        doge_loss,c_param, c2_param, l_param ,doge_trained = doge_model.train(100,data,X)
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!')
     else:
