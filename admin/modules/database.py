@@ -28,11 +28,8 @@ def import_data(date):
 
 
     df_btc = df_btc.loc[df_btc['Date'] <= date]
-    print(df_btc)
     df_eth = df_eth.loc[df_eth['Date'] <= date]
-    print(df_eth)
     df_doge = df_doge.loc[df_doge['Date'] <= date]
-    print(df_doge)
 
     # print(df_btc, df_eth, df_doge)
     
@@ -44,13 +41,10 @@ def get_dataset_df(from_, until_, dataset_crypto, dataset_source):
     for crypto in dataset_crypto:
         print(crypto)
         my_df = pd.concat([my_df, select_data(from_, until_, crypto, dataset_source)], ignore_index=True)
-    print(my_df.head())
-    print(my_df.tail())
 
     return my_df
 
 def select_data(from_, until_, dataset_crypto, dataset_source):
-    print('Hello Select Data')
 
     df = pd.DataFrame(columns=['Date'])
 
