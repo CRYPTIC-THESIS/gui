@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="images">
+    <file>images/corr.png</file>
     <file>images/images/app-logo.png</file>
     <file>images/images/doge-logo.png</file>
     <file>images/images/eth-logo.png</file>

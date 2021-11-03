@@ -12,7 +12,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from pyqtgraph import PlotWidget, mkPen, DateAxisItem
+from pyqtgraph import PlotWidget, DateAxisItem, ImageItem, ColorBarItem, PlotItem, ViewBox, mkPen, colormap
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
@@ -1953,23 +1953,32 @@ class Ui_MainWindow(object):
         self.verticalLayout_34.setSpacing(8)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_34.setContentsMargins(0, 0, 0, 0)
+        
         self.checkBox_histo = QCheckBox(self.sourceCheckBox)
         self.checkBox_histo.setObjectName(u"checkBox_histo")
+        self.checkBox_histo.setCheckState(Qt.Checked)
+        self.checkBox_histo.setEnabled(False)
 
         self.verticalLayout_34.addWidget(self.checkBox_histo)
 
         self.checkBox_twitter = QCheckBox(self.sourceCheckBox)
         self.checkBox_twitter.setObjectName(u"checkBox_twitter")
+        self.checkBox_twitter.setCheckState(Qt.Checked)
+        self.checkBox_twitter.setEnabled(False)
 
         self.verticalLayout_34.addWidget(self.checkBox_twitter)
 
         self.checkBox_reddit = QCheckBox(self.sourceCheckBox)
         self.checkBox_reddit.setObjectName(u"checkBox_reddit")
+        self.checkBox_reddit.setCheckState(Qt.Checked)
+        self.checkBox_reddit.setEnabled(False)
 
         self.verticalLayout_34.addWidget(self.checkBox_reddit)
 
         self.checkBox_gtrends = QCheckBox(self.sourceCheckBox)
         self.checkBox_gtrends.setObjectName(u"checkBox_gtrends")
+        self.checkBox_gtrends.setCheckState(Qt.Checked)
+        self.checkBox_gtrends.setEnabled(False)
 
         self.verticalLayout_34.addWidget(self.checkBox_gtrends)
 
@@ -2660,6 +2669,19 @@ class Ui_MainWindow(object):
         self.corrAnalysisGraphFrame.setFrameShape(QFrame.NoFrame)
         self.corrAnalysisGraphFrame.setFrameShadow(QFrame.Raised)
 
+        # self.corrAnalysisGraph = PlotWidget(self.corrAnalysisGraphFrame)
+        # brush = QBrush(QColor(44, 49, 58, 1))
+        # brush.setStyle(Qt.NoBrush)
+        # self.corrAnalysisGraph.setBackgroundBrush(brush)
+        # # self.predGraph = MatplotlibWidget(width=3, height=3)
+
+        # self.verticalLayout_corr = QVBoxLayout(self.corrAnalysisGraphFrame)
+        # self.verticalLayout_corr.setSpacing(0)
+        # self.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
+        # self.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
+
+        # self.verticalLayout_corr.addWidget(self.corrAnalysisGraph)
+
         self.verticalLayout_91.addWidget(self.corrAnalysisGraphFrame)
 
 
@@ -2698,6 +2720,19 @@ class Ui_MainWindow(object):
         self.conMatrixGraphFrame.setObjectName(u"conMatrixGraphFrame")
         self.conMatrixGraphFrame.setFrameShape(QFrame.NoFrame)
         self.conMatrixGraphFrame.setFrameShadow(QFrame.Raised)
+
+        # self.conMatrixGraph = PlotWidget(self.conMatrixGraphFrame)
+        # brush = QBrush(QColor(44, 49, 58, 1))
+        # brush.setStyle(Qt.NoBrush)
+        # self.conMatrixGraph.setBackgroundBrush(brush)
+        # # self.predGraph = MatplotlibWidget(width=3, height=3)
+
+        # self.verticalLayout_conf = QVBoxLayout(self.conMatrixGraphFrame)
+        # self.verticalLayout_conf.setSpacing(0)
+        # self.verticalLayout_conf.setObjectName(u"verticalLayout_conf")
+        # self.verticalLayout_conf.setContentsMargins(0, 0, 0, 0)
+
+        # self.verticalLayout_conf.addWidget(self.conMatrixGraph)
 
         self.verticalLayout_92.addWidget(self.conMatrixGraphFrame)
 

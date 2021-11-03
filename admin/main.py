@@ -4,6 +4,7 @@ import os
 import numpy as np
 
 from modules import *
+from model import *
 os.environ["QT_FONT_DPI"] = "96"
 
 
@@ -51,13 +52,10 @@ class Login(QMainWindow):
     
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPos()
-
-        # PRINT MOUSE EVENTS
-        if event.buttons() == Qt.LeftButton:
-            print('Mouse click: LEFT CLICK')
-        if event.buttons() == Qt.RightButton:
-            print('Mouse click: RIGHT CLICK')
+        p = event.globalPosition()
+        globalPos = p.toPoint()
+        self.dragPos = globalPos
+        # self.dragPos = event.globalPos()
 
 
 # Main Window Dashboard
@@ -198,7 +196,8 @@ class MainWindow(QMainWindow):
                 df_date = df_['Date']
                 df_price = df_[str(self.selected_histo_price)]
 
-            
+            del df_
+
             x = []
             y = []
             for item in df_date:
@@ -297,7 +296,7 @@ class MainWindow(QMainWindow):
         widgets.btn_getData.clicked.connect(self.buttonClick)
 
         # DATA ANALYSIS
-        widgets.btn_viewDataAnalysis.clicked.connect(self.next_page)
+        widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
 
 
     def deploySignals(self):
@@ -449,9 +448,6 @@ class MainWindow(QMainWindow):
 
         self.dash_histo_graph()
 
-        print(self.selected_histo_price)
-        print(self.selected_predicted_price)
-
 
     def get_histo_day(self):
         # GET BUTTON CLICKED
@@ -483,7 +479,6 @@ class MainWindow(QMainWindow):
         btn.setStyleSheet(UIFunctions.selectHistoDay(btn.styleSheet()))
 
         self.dash_histo_graph()
-        print(self.selected_histo_day)
 
 
     def get_pred_day(self):
@@ -559,17 +554,17 @@ class MainWindow(QMainWindow):
             checkBox.setChecked(False)
         self.dataset_crypto = list()
         
-        # SOURCE
-        for checkBox in widgets.sourceCheckBox.findChildren(QCheckBox):
-            checkBox.setChecked(False)
-        self.dataset_source = list()
+        # # SOURCE
+        # for checkBox in widgets.sourceCheckBox.findChildren(QCheckBox):
+        #     checkBox.setChecked(False)
+        # self.dataset_source = list()
 
         widgets.btn_startTraining.hide()
 
-        print(self.dataset_date_from)
-        print(self.dataset_date_until)
-        print(self.dataset_crypto)
-        print(self.dataset_source)
+        # print(self.dataset_date_from)
+        # print(self.dataset_date_until)
+        # print(self.dataset_crypto)
+        # print(self.dataset_source)
 
         widgets.testTimeFrameList.clear()
         widgets.testCryptoList.clear()
@@ -585,9 +580,83 @@ class MainWindow(QMainWindow):
         widgets.btn_proceed.setEnabled(True)
 
 
-    def next_page(self):
+    def show_data_analysis(self):
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
         widgets.btn_viewDataAnalysis.hide()
+
+        # CORRELATION
+        BTC_data = pd.read_csv("csv/BTC_Sample.csv")
+        corr_analysis(BTC_data)
+        del BTC_data
+        # print(corrMatrix)
+
+
+        # Create Graph
+        widgets.corrAnalysisGraph = QLabel(widgets.corrAnalysisGraphFrame)
+        pixmap = QPixmap('images/corr.png')
+        pixmap = pixmap.scaled(471, 324, Qt.IgnoreAspectRatio, Qt.FastTransformation)
+        widgets.corrAnalysisGraph.setPixmap(pixmap)
+        # self.resize(pixmap.width(),pixmap.height())Qt.IgnoreAspectRatio,
+
+        widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
+        widgets.verticalLayout_corr.setSpacing(0)
+        widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
+        widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
+
+        widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
+
+
+        # grph = sn.heatmap(corrMatrix, annot=True)
+        # fig = grph.get_figure()
+        # fig.savefig('images/corr.png', dpi=96)
+
+        # widgets.corrAnalysisGraphFrame.setStyleSheet(u"background-image: url(:/images/images/corr.png); background-repeat: no-repeat; background-position: center;")
+        # correlogram = ViewBox()
+        # correlogram.invertY(True)
+        # imageItem = ImageItem(image=corrMatrix)
+        # correlogram.addItem(imageItem)
+        # plotItem = PlotItem(viewbox=correlogram)
+
+        # ticks = [ (idx+0.5, label) for idx, label in enumerate( corrColumns ) ]
+        # for side in ['left', 'top']:
+        #     ax = plotItem.getAxis(side)
+        #     ax.show()
+        #     ax.setZValue(0.1)
+        #     ax.setTicks( (ticks, []) )
+        #     if side == 'left': ax.setWidth(50)
+        #     if side == 'top' : ax.setHeight(20)
+        # for side in ['right', 'bottom']:
+        #     ax = plotItem.getAxis(side)
+        #     ax.show()
+        #     ax.setZValue(0.1)
+        #     ax.setTicks( (ticks, []) )
+        #     ax.setStyle(showValues=False)
+        #     if side == 'bottom': ax.setHeight(10)
+
+        # plotItem.setXRange(0, corrMatrix.shape[0], padding=0 )
+        # plotItem.setYRange(0, corrMatrix.shape[1], padding=0 )
+
+        # colorMap = colormap.get("cet-d1")
+        # bar = ColorBarItem( values=(-1,1), colorMap=colorMap)
+        # bar.setImageItem(imageItem, insert_in=plotItem)
+        
+        # # widgets.corrAnalysisGraph.plotItem(plotItem)
+
+        # widgets.corrAnalysisGraph = PlotWidget(widgets.corrAnalysisGraphFrame, plotItem=plotItem)
+        # brush = QBrush(QColor(44, 49, 58, 1))
+        # brush.setStyle(Qt.NoBrush)
+        # widgets.corrAnalysisGraph.setBackgroundBrush(brush)
+
+        # widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
+        # widgets.verticalLayout_corr.setSpacing(0)
+        # widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
+        # widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
+
+        # widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
+        # widgets.corrAnalysisGraph.show()
+
+
+        # CONFUSION MATRIX
 
 
     def show_terminal(self):
@@ -602,12 +671,19 @@ class MainWindow(QMainWindow):
             widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
             widgets.btn_startTraining.hide()
 
-            # command_line = 'python model/training_model.py'
-            # p = os.popen(command_line)
-            # if p:
-            #     widgets.trainTerminal.clear()
-            #     output = p.read()
-            #     widgets.trainTerminal.insertPlainText(output)
+            # self.showMinimized()
+            self.hide()
+            print("LOADING DATA...")  # working on loading screen
+
+            command_line = 'python model/training_model.py'
+            p = os.popen(command_line)
+            if p:
+                widgets.trainTerminal.clear()
+                output = p.read()
+                widgets.trainTerminal.insertPlainText(output)
+
+            # self.setWindowState(Qt.WindowNoState)
+            self.show()
 
         if btnName == 'btn_startTesting':
             widgets.btn_viewDataAnalysis.show()
@@ -626,13 +702,10 @@ class MainWindow(QMainWindow):
 
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPos()
-
-        # # PRINT MOUSE EVENTS
-        # if event.buttons() == Qt.LeftButton:
-        #     print('Mouse click: LEFT CLICK')
-        # if event.buttons() == Qt.RightButton:
-        #     print('Mouse click: RIGHT CLICK')
+        p = event.globalPosition()
+        globalPos = p.toPoint()
+        self.dragPos = globalPos
+        # self.dragPos = event.globalPos()
 
 
 if __name__ == "__main__":

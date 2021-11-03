@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import CRYPTIC_module as nn
 
+import sys 
+sys.path.append('..')
+
 from sklearn.model_selection import train_test_split
 
 def split_data(x,crypto):
@@ -10,7 +13,7 @@ def split_data(x,crypto):
     #np.savetxt(str(crypto)+"_test_set.csv", x_test, delimiter=",")
     return x_train,x_test 
 
-dataset_all = pd.read_csv('./dataset.csv')
+dataset_all = pd.read_csv('csv/dataset.csv')
 
 crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
