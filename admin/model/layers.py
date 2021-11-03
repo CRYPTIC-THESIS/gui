@@ -427,4 +427,4 @@ class LSTM:
                     assert (test)
 
             print('Approximate: \t%e, Exact: \t%e =>  Error: \t%e' % (grad_numerical, grad_analytical, rel_error))
-        print("\nTest successful!")
+        print("\nGradient Test successful!")
