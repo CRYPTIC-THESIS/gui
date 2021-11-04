@@ -191,7 +191,6 @@ class MainWindow(QMainWindow):
         # TEST PAGE
         widgets.testContent.setCurrentWidget(widgets.testingPage)
         widgets.btn_viewDataAnalysis.hide()
-        self.analyze_crypto = str(widgets.testCryptoCombo.currentText())
 
         # DEPLOY PAGE
         widgets.deployPriceCombo.addItems(['Closing', 'High', 'Low'])
@@ -401,7 +400,7 @@ class MainWindow(QMainWindow):
 
         # DATA ANALYSIS
         widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
-        widgets.testCryptoCombo.currentTextChanged.connect(self.get_crypto_analyze)
+        # widgets.testCryptoCombo.activated.connect(self.get_crypto_analyze)
 
 
     def deploySignals(self):
@@ -717,6 +716,9 @@ class MainWindow(QMainWindow):
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
         widgets.btn_viewDataAnalysis.hide()
 
+        # self.get_crypto_analyze()
+        self.analyze_crypto = str(widgets.testCryptoCombo.currentText())
+        widgets.testCryptoCombo.currentTextChanged.connect(self.get_crypto_analyze)
         crypto_df = pd.DataFrame()
 
         if self.analyze_crypto.startswith('Bitcoin') == True:
@@ -766,12 +768,12 @@ class MainWindow(QMainWindow):
             self.hide()
             print("LOADING DATA...")  # working on loading screen
 
-            command_line = 'python model/training_model.py'
-            p = os.popen(command_line)
-            if p:
-                widgets.trainTerminal.clear()
-                output = p.read()
-                widgets.trainTerminal.insertPlainText(output)
+            # command_line = 'python model/training_model.py'
+            # p = os.popen(command_line)
+            # if p:
+            #     widgets.trainTerminal.clear()
+            #     output = p.read()
+            #     widgets.trainTerminal.insertPlainText(output)
 
             # self.setWindowState(Qt.WindowNoState)
             self.show()
