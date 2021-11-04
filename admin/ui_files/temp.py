@@ -1,17 +1,35 @@
 import pandas as pd
-import seaborn as sn
-import matplotlib.pyplot as plt
+import sys 
+sys.path.append('..')
+# import seaborn as sn
+# import matplotlib.pyplot as plt
 
-data = {'A': [45,37,42,35,39],
-        'B': [38,31,26,28,33],
-        'C': [10,15,17,21,12]
-        }
+# data = {'A': [45,37,42,35,39],
+#         'B': [38,31,26,28,33],
+#         'C': [10,15,17,21,12]
+#         }
 
-df = pd.DataFrame(data,columns=['A','B','C'])
+# df = pd.DataFrame(data,columns=['A','B','C'])
 
-corrMatrix = df.corr()
-svm = sn.heatmap(corrMatrix, annot=True)
-# plt.show()
+# corrMatrix = df.corr()
+# svm = sn.heatmap(corrMatrix, annot=True)
+# # plt.show()
 
-figure = svm.get_figure()    
-figure.savefig('svm_conf.png', dpi=96)
+# figure = svm.get_figure()    
+# figure.savefig('svm_conf.png', dpi=96)
+
+pred_data = {
+        'Date': ['2021-11-05', '2021-11-06', '2021-11-07', '2021-11-08', '2021-11-09', '2021-11-10', '2021-11-11',
+                 '2021-11-12', '2021-11-13', '2021-11-14', '2021-11-15', '2021-11-16', '2021-11-17', '2021-11-18'], 
+        'Closing': ['61496.22583', '62000.22583', '60096.22583', '62496.55583', '61896.22583', '62400.78965', '60490.22583',
+                    '60490.22583', '61496.22583', '60490.22583', '60096.22583', '60490.22583', '61896.22583', '60011.22311'],
+        'High': ['61496.22583', '62000.22583', '60096.22583', '62496.55583', '61896.22583', '62400.78965', '60490.22583',
+                    '60490.22583', '61496.22583', '60490.22583', '60096.22583', '60490.22583', '61896.22583', '60011.22311'],
+        'Low': ['61496.22583', '62000.22583', '60096.22583', '62496.55583', '61896.22583', '62400.78965', '60490.22583',
+                    '60490.22583', '61496.22583', '60490.22583', '60096.22583', '60490.22583', '61896.22583', '60011.22311']
+}
+
+columns = ['Date', 'Closing', 'High', 'Low']
+pred_df = pd.DataFrame(pred_data, columns=columns)
+
+pred_df.to_csv('csv/Pred_Sample.csv')

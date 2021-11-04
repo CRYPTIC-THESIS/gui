@@ -1,4 +1,6 @@
-import sys 
+import sys
+
+from matplotlib.pyplot import axis 
 sys.path.append('..')
 
 import dbconnect as db
@@ -34,6 +36,23 @@ def import_data(date):
     # print(df_btc, df_eth, df_doge)
     
     return df_btc, df_eth, df_doge
+
+def get_prediction_df(temp, date_):
+    df_ = pd.read_csv('csv/Pred_Sample.csv', index_col=0)
+    df_['Date'] = pd.to_datetime(df_['Date'])
+    
+    numeric = ['High', 'Low', 'Closing']
+    df_[numeric] = df_[numeric].apply(pd.to_numeric, errors='coerce', axis=1)
+
+    temp = temp.loc[temp['Date'] == date_]
+    new_temp = temp.drop('Open', axis=1)
+    
+
+    df_ = pd.concat([new_temp, df_])
+    df_.reset_index(inplace=True, drop=True)
+    # print(df_)
+
+    return df_
 
 def get_dataset_df(from_, until_, dataset_crypto, dataset_source):
     
@@ -110,5 +129,6 @@ def select_data(from_, until_, dataset_crypto, dataset_source):
 
     # print('dataframe', df)
     return df
+
 
 

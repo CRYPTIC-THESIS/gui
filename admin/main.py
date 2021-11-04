@@ -60,7 +60,7 @@ class Login(QMainWindow):
             window = MainWindow()
             self.windows.append(window)
             window.show()
-        except:
+        except Exception:
             print('INVALID ACCOUNT.')
             self.ui.username_login.clear()
             self.ui.pass_login.clear()
@@ -77,7 +77,7 @@ class Login(QMainWindow):
             try:
                 auth.create_user_with_email_and_password(email, password)
                 self.ui.content.setCurrentWidget(self.ui.loginPage)
-            except:
+            except Exception:
                 print('INVALID ACCOUNT.')
                 self.ui.username_signup.clear()
                 self.ui.pass_signup.clear()
@@ -160,13 +160,13 @@ class MainWindow(QMainWindow):
         widgets.btc_card.setStyleSheet(UIFunctions.selectCard(widgets.btc_card.styleSheet()))
         self.selected_crypto = 'Bitcoin_Data'
 
-
         # PREDICTED PRICE
         widgets.btn_pred_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_pred_closing.styleSheet()))
         self.selected_predicted_price = 'Closing'
 
         # PREDICTED DAYS
-        self.selected_predicted_day = int(widgets.daysValue.text())
+        # self.selected_predicted_day = int(widgets.daysValue.text())
+        self.get_pred_day()
 
         # HISTORY PRICE
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
@@ -181,6 +181,7 @@ class MainWindow(QMainWindow):
         widgets.ethCurrPriceLabel.setText('$'+str(self.dash_eth['Closing'].iat[-1]))
         widgets.dogeCurrPriceLabel.setText('$'+str(self.dash_doge['Closing'].iat[-1]))
         
+        # self.dash_pred_graph()
         self.dash_histo_graph()
 
         # TRAIN PAGE
@@ -253,9 +254,9 @@ class MainWindow(QMainWindow):
             # labels = [ (date, datetime.fromtimestamp(date).strftime('%Y %b/%d')) for date in x ]
 
             if self.selected_histo_day >= 30:
-                widgets.histoGraph.plot(x, y, pen=mkPen('#4ad29f', width=2.5))  # , labels=labels
+                widgets.histoGraph.plot(x, y, pen=mkPen('#8C88BF', width=2.5))  # , labels=labels
             else: 
-                widgets.histoGraph.plot(x, y, pen=mkPen('#4ad29f', width=2.5), symbol='o', symbolBrush = 0.2)
+                widgets.histoGraph.plot(x, y, pen=mkPen('#8C88BF', width=2.5), symbol='o', symbolBrush = 0.2)
             
             # ax = widgets.histoGraph.getAxis('bottom')
             # ax.setTicks([labels])
@@ -263,7 +264,50 @@ class MainWindow(QMainWindow):
             widgets.histoGraph.show()
 
     def dash_pred_graph(self):
-        print('hello dash pred graph')
+        self.df_ = get_prediction_df(self.dash_btc, self.selected_date)
+
+        widgets.predGraph.clear()
+        widgets.predGraph.hide()
+        
+        df_date = []
+        df_price = []
+
+        if self.selected_crypto == 'all':
+            widgets.predGraph.clear()
+            print('all')
+        
+        else:
+            if self.selected_crypto == 'Bitcoin_Data':
+                widgets.predGraph.clear()
+                df_ = self.df_.loc[(self.df_['Date'] >= self.selected_date) & (self.df_['Date'] <= pd.to_datetime(self.pred_day_date))]
+                df_date = df_['Date']
+                df_price = df_[str(self.selected_predicted_price)]
+
+            if self.selected_crypto == 'Ethereum_Data':
+                widgets.predGraph.clear()
+                df_ = self.df_.loc[(self.df_['Date'] >= self.selected_date) & (self.df_['Date'] <= pd.to_datetime(self.pred_day_date))]
+                df_date = df_['Date']
+                df_price = df_[str(self.selected_predicted_price)]
+
+            if self.selected_crypto == 'Dogecoin_Data':
+                widgets.predGraph.clear()
+                df_ = self.df_.loc[(self.df_['Date'] >= self.selected_date) & (self.df_['Date'] <= pd.to_datetime(self.pred_day_date))]
+                df_date = df_['Date']
+                df_price = df_[str(self.selected_predicted_price)]
+
+            del df_
+
+            x = []
+            y = []
+            for item in df_date:
+                item = datetime.timestamp(item)
+                x.append(item)
+            for item in df_price:
+                y.append(item)
+
+            widgets.predGraph.plot(x, y, pen=mkPen('#259CA5', width=2.5), symbol='o', symbolBrush = 0.2)
+
+            widgets.predGraph.show()
 
     def dash_pred_table(self):
         widgets.predictedTable.setHorizontalHeaderLabels()
@@ -461,6 +505,7 @@ class MainWindow(QMainWindow):
         UIFunctions.resetCryptoStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectCrypto(btn.styleSheet()))
         
+        self.dash_pred_graph()
         self.dash_histo_graph()
 
 
@@ -483,17 +528,18 @@ class MainWindow(QMainWindow):
 
         if btnName == 'btn_pred_closing':
             self.selected_predicted_price = 'Closing'
+            self.dash_pred_graph()
         
         if btnName == 'btn_pred_high':
             self.selected_predicted_price = 'High'
+            self.dash_pred_graph()
         
         if btnName == 'btn_pred_low':
             self.selected_predicted_price = 'Low'
+            self.dash_pred_graph()
 
         UIFunctions.resetPriceStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectPrice(btn.styleSheet()))
-
-        self.dash_histo_graph()
 
 
     def get_histo_day(self):
@@ -530,8 +576,18 @@ class MainWindow(QMainWindow):
 
     def get_pred_day(self):
         widgets.daysValue.setNum
-        self.selected_predicted_day = widgets.daysValue.text()
-        print(self.selected_predicted_day)
+        self.selected_predicted_day = int(widgets.daysValue.text())
+        # print(self.selected_predicted_day)
+
+        self.pred_day_date = self.selected_date + timedelta(days=self.selected_predicted_day)
+        # print(self.pred_day_date)
+        str_sel_date = self.selected_date.strftime('%b. %d, %Y')
+        str_pred_date = self.pred_day_date.strftime('%b. %d, %Y')
+
+        # print(str_sel_date+' - '+str_pred_date)
+        widgets.predictedRangeLabel.setText(str_sel_date+' - '+str_pred_date)
+
+        self.dash_pred_graph()
 
 
     def get_dataset_selection(self):
