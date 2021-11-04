@@ -48,7 +48,8 @@ class Login_MainWindow(object):
         self.contentTopBg.setStyleSheet(u"/* Buttons */\n"
 "QPushButton { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
 "QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; border-radius: 4px; }\n"
-"QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }")
+"QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }\n"
+"QPushButton:focus { border: none; outline: none; }")
         self.contentTopBg.setFrameShape(QFrame.NoFrame)
         self.contentTopBg.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_2 = QHBoxLayout(self.contentTopBg)
@@ -367,13 +368,13 @@ class Login_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.btn_close.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Login to CRYPTIC", None))
-        self.username_login.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Username", None))
+        self.username_login.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Email", None))
         self.pass_login.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Password", None))
         self.btn_login.setText(QCoreApplication.translate("MainWindow", u"LOGIN", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"No account yet?", None))
         self.btn_toSignup.setText(QCoreApplication.translate("MainWindow", u"Signup", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Signup to CRYPTIC", None))
-        self.username_signup.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Username", None))
+        self.username_signup.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Email", None))
         self.pass_signup.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Password", None))
         self.confirmPass.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Confirm Password", None))
         self.btn_signup.setText(QCoreApplication.translate("MainWindow", u"SIGNUP", None))
