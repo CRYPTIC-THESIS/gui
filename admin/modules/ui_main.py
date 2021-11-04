@@ -1077,7 +1077,7 @@ class Ui_MainWindow(object):
 
         self.predGraphFrame = QFrame(self.predPriceFrame)
         self.predGraphFrame.setObjectName(u"predGraphFrame")
-        self.predGraphFrame.setMinimumSize(QSize(528, 229))
+        self.predGraphFrame.setMinimumSize(QSize(528, 240))
         self.predGraphFrame.setStyleSheet(u"border-radius: 0; background: transparent;")
         self.predGraphFrame.setFrameShape(QFrame.NoFrame)
         self.predGraphFrame.setFrameShadow(QFrame.Raised)
@@ -1099,7 +1099,7 @@ class Ui_MainWindow(object):
 
         self.frame_15 = QFrame(self.predPriceFrame)
         self.frame_15.setObjectName(u"frame_15")
-        self.frame_15.setMinimumSize(QSize(0, 10))
+        self.frame_15.setMinimumSize(QSize(0, 15))
         self.frame_15.setFrameShape(QFrame.NoFrame)
         self.frame_15.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_20 = QHBoxLayout(self.frame_15)
@@ -1124,6 +1124,7 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setMinimumSize(QSize(170, 0))
         self.horizontalSlider.setMinimum(1)
         self.horizontalSlider.setMaximum(14)
+        self.horizontalSlider.setSliderPosition(7)
         self.horizontalSlider.setOrientation(Qt.Horizontal)
         self.horizontalSlider.setTickPosition(QSlider.NoTicks)
         self.horizontalSlider.setTickInterval(0)
@@ -1148,7 +1149,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.setContentsMargins(0, 0, 0, 0)
         self.predictedRangeLabel = QLabel(self.predictedRangeLabelFrame)
         self.predictedRangeLabel.setObjectName(u"predictedRangeLabel")
-        self.predictedRangeLabel.setMinimumSize(QSize(236, 22))
+        self.predictedRangeLabel.setMinimumSize(QSize(236, 12))
         self.predictedRangeLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_24.addWidget(self.predictedRangeLabel, 0, Qt.AlignRight)
@@ -3416,7 +3417,7 @@ class Ui_MainWindow(object):
         self.btn_pred_high.setText(QCoreApplication.translate("MainWindow", u"HIGH", None))
         self.btn_pred_low.setText(QCoreApplication.translate("MainWindow", u"LOW", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"DAYS:", None))
-        self.daysValue.setText(QCoreApplication.translate("MainWindow", u"1", None))
+        self.daysValue.setText(QCoreApplication.translate("MainWindow", u"7", None))
         self.predictedRangeLabel.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"CURRENT PRICE", None))
         self.label_33.setText(QCoreApplication.translate("MainWindow", u"BTC", None))
