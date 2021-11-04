@@ -1,6 +1,6 @@
 import numpy as np
 import layers as layer
-import pandas as pd
+import pickle as pl
 
 def progress(count, total, status=''):
         bar_len = 60
@@ -58,7 +58,7 @@ class cryptic():
 
         return J,h_prev, c_prev  #,s
 
-    def train(self,epochs,data,X):
+    def train(self,epochs,data,X,crypto):
         print('CRYPTIC NETWORK TRAINING\n\n')
         
         x = -2.1
@@ -89,7 +89,15 @@ class cryptic():
         net = [con,con1,lstm,h,c]
         progress(epochs, epochs, status='Kapagod mag-aral beh')
 
-        return J,net
+        
+        filehandler = open(crypto+'_con.class', 'w') 
+        pl.dump(con, filehandler)
+        filehandler = open(crypto+'_con1.class', 'w') 
+        pl.dump(con1, filehandler)
+        filehandler = open(crypto+'_lstm.class', 'w') 
+        pl.dump(lstm, filehandler)
+
+        return J
 
     def init_trained(self,l_param,vals_to_idx,idx_to_vals,vals_size):
 
@@ -110,29 +118,35 @@ class cryptic():
         return lstm
 
 
-    def test(self,data,network):
+    def test(self,data,crypto):
+        file = open(crypto+'_con.class', 'r') 
+        con = pl.load(file)
+        file = open(crypto+'_con1.class', 'r') 
+        con1 = pl.load(file)
+        file = open(crypto+'_lstm.class', 'r') 
+        p_lstm = pl.load(file)
 
-        out = network[0].forward(data)
+        out = con.forward(data)
         out = layer.maxpool(out)
-        out = network[1].forward(out)
+        out = con1.forward(out)
         out = layer.maxpool(out)
         out = out.flatten()
         out = out.astype(int)
 
-        vi = len(network[2].vals_to_idx)
-        iv = len(network[2].idx_to_vals)
+        vi = len(p_lstm.vals_to_idx)
+        iv = len(p_lstm.idx_to_vals)
         for i in range(len(out)):
-            if(out[i] in network[2].vals_to_idx):
+            if(out[i] in p_lstm.vals_to_idx):
                 i -= 1
-                #print('existing:',network[2].vals_to_idx[out[i-1]])
+                #print('existing:',p_lstm.vals_to_idx[out[i-1]])
             else:
-                network[2].vals_to_idx[out[i]] = vi+i
-                network[2].idx_to_vals[iv+i] = out[i]
+                p_lstm.vals_to_idx[out[i]] = vi+i
+                p_lstm.idx_to_vals[iv+i] = out[i]
                 #print('added')
         
-        vals_size = len(network[2].vals_to_idx)
+        vals_size = len(p_lstm.vals_to_idx)
 
-        lstm = self.init_trained(network[2].params,network[2].vals_to_idx,network[2].idx_to_vals,vals_size)
+        lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size)
         print(lstm.idx_to_vals)
         verbose = False
     
