@@ -59,7 +59,7 @@ class cryptic():
         return J,h_prev, c_prev  #,s
 
     def train(self,epochs,data,X,crypto):
-        print('CRYPTIC NETWORK TRAINING\n\n')
+        print('\n\nCRYPTIC NETWORK TRAINING\n')
         
         x = -2.1
         progress(0, epochs, status='Aral tayo')
