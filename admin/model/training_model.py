@@ -43,18 +43,21 @@ for i in range(1):
         btc_loss= btc_model.train(100,data,X,crypto[i])
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
+
     elif(crypto[i]=='ETH'):
         eth_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        eth_loss = eth_model.train(100,data,X)
+        eth_loss = eth_model.train(100,data,X,crypto[i])
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!')
+
     elif(crypto[i]=='DOGE'):
         doge_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        doge_loss = doge_model.train(100,data,X)
+        doge_loss = doge_model.train(100,data,X,crypto[i])
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!')
+        
     else:
         print('Invalid Crypto')
 

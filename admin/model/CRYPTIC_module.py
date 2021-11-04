@@ -54,7 +54,7 @@ class cryptic():
                 if j % 400000 == 0:
                     print('Epoch:', epoch, '\tBatch:', j, "-", j + lstm.seq_len,'\tLoss:', round(lstm.smooth_loss, 2))
                     #s = lstm.sample(h_prev, c_prev, lstm.seq_size+1)
-                    print(s, "\n")
+                    #print(s, "\n")
 
         return J,h_prev, c_prev  #,s
 
