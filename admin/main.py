@@ -1,14 +1,26 @@
 import sys
 import os
-
-import numpy as np
+import pyrebase
 
 from modules import *
-from model import *
 os.environ["QT_FONT_DPI"] = "96"
 
 
 # Login Window
+firebaseConfig = {
+    "apiKey": "AIzaSyC0k1EEv-FNciFulCDa5C5hsOhX7nsfXQc",
+    "authDomain": "cryptic-database.firebaseapp.com",
+    "databaseURL": "https://cryptic-database-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "projectId": "cryptic-database",
+    "storageBucket": "cryptic-database.appspot.com",
+    "messagingSenderId": "975253440847",
+    "appId": "1:975253440847:web:58ec1b6fe880fea93e5d3a",
+    "measurementId": "G-H0JJDEYFW9"
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+
 class Login(QMainWindow):
     def __init__(self):
         super(Login, self).__init__()
@@ -22,6 +34,9 @@ class Login(QMainWindow):
         UIFunctions.ui_logindefinitions(self)
         
         self.ui.content.setCurrentWidget(self.ui.loginPage)
+        self.ui.pass_login.setEchoMode(QLineEdit.Password)
+        self.ui.pass_signup.setEchoMode(QLineEdit.Password)
+        self.ui.confirmPass.setEchoMode(QLineEdit.Password)
         
         self.ui.btn_login.clicked.connect(self.loginfunction)
         self.ui.btn_toSignup.clicked.connect(lambda : self.ui.content.setCurrentWidget(self.ui.signupPage))
@@ -32,22 +47,41 @@ class Login(QMainWindow):
         self.windows = list()
 
     def loginfunction(self):
-        username = self.ui.username_login.text()
+        self.ui.username_signup.clear()
+        self.ui.pass_signup.clear()
+        self.ui.confirmPass.clear()
+
+        email = self.ui.username_login.text()
         password = self.ui.pass_login.text()
-        print("username: ", username, "password: ", password)
-        
-        self.close()
-        window = MainWindow()
-        self.windows.append(window)
-        window.show()
+
+        try:
+            auth.sign_in_with_email_and_password(email, password)
+            self.close()
+            window = MainWindow()
+            self.windows.append(window)
+            window.show()
+        except:
+            print('INVALID ACCOUNT.')
+            self.ui.username_login.clear()
+            self.ui.pass_login.clear()
 
     
     def signupfunction(self):
-        username = self.ui.username_signup.text()
+        self.ui.username_login.clear()
+        self.ui.pass_login.clear()
+
+        email = self.ui.username_signup.text()
         if self.ui.pass_signup.text() == self.ui.confirmPass.text():
             password = self.ui.pass_signup.text()
-            print("username: ", username, "password: ", password)
-            self.ui.content.setCurrentWidget(self.ui.loginPage)
+
+            try:
+                auth.create_user_with_email_and_password(email, password)
+                self.ui.content.setCurrentWidget(self.ui.loginPage)
+            except:
+                print('INVALID ACCOUNT.')
+                self.ui.username_signup.clear()
+                self.ui.pass_signup.clear()
+                self.ui.confirmPass.clear()
 
     
     def mousePressEvent(self, event):
@@ -59,6 +93,8 @@ class Login(QMainWindow):
 
 
 # Main Window Dashboard
+from model import *
+
 widgets = None
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -86,6 +122,7 @@ class MainWindow(QMainWindow):
         self.dataset_crypto = list()
         self.dataset_source = list()
 
+        self.windows = list()
 
         # QTableWidget Stretch
         widgets.predictedTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -257,6 +294,7 @@ class MainWindow(QMainWindow):
         widgets.btn_train.clicked.connect(self.buttonClick)
         widgets.btn_test.clicked.connect(self.buttonClick)
         widgets.btn_deploy.clicked.connect(self.buttonClick)
+        widgets.btn_logout.clicked.connect(self.logout)
 
         # DASHBOARD BUTTONS
         widgets.dateEdit.dateTimeChanged.connect(self.get_selected_date)
@@ -360,6 +398,13 @@ class MainWindow(QMainWindow):
 
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
+
+
+    def logout(self):
+        self.close()
+        window = Login()
+        self.windows.append(window)
+        window.show()
 
 
     def get_selected_date(self):
@@ -612,14 +657,6 @@ class MainWindow(QMainWindow):
         pixmap = QPixmap('images/corr.png')
         pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
         widgets.corrAnalysisGraph.setPixmap(pixmap)
-        # self.resize(pixmap.width(),pixmap.height())Qt.IgnoreAspectRatio,
-
-        # widgets.verticalLayout_corr = QVBoxLayout(widgets.corrAnalysisGraphFrame)
-        # widgets.verticalLayout_corr.setSpacing(0)
-        # widgets.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
-        # widgets.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
-
-        # widgets.verticalLayout_corr.addWidget(widgets.corrAnalysisGraph)
         
 
         # CONFUSION MATRIX
@@ -630,14 +667,6 @@ class MainWindow(QMainWindow):
         pixmap = QPixmap('images/conf.png')
         pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
         widgets.conMatrixGraph.setPixmap(pixmap)
-        # self.resize(pixmap.width(),pixmap.height())Qt.IgnoreAspectRatio,
-
-        # widgets.verticalLayout_conf = QVBoxLayout(widgets.conMatrixGraphFrame)
-        # widgets.verticalLayout_conf.setSpacing(0)
-        # widgets.verticalLayout_conf.setObjectName(u"verticalLayout_corr")
-        # widgets.verticalLayout_conf.setContentsMargins(0, 0, 0, 0)
-
-        # widgets.verticalLayout_conf.addWidget(widgets.conMatrixGraph, alignment=Qt.AlignCenter)
         
         del crypto_df
 
