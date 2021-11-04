@@ -277,8 +277,8 @@ class LSTM:
             y_hat, _, h, _, c, _, _, _, _ = self.forward_step(x, h, c)
 
             # get a random index within the probability distribution of y_hat(ravel())
-            #idx = np.random.choice(range(self.seq_size), p=y_hat.ravel())
-            idx = argmax(y_hat)
+            idx = np.random.choice(range(self.seq_size), p=y_hat.ravel())
+            #idx = np.argmax(y_hat)
             x = np.zeros((self.seq_size, 1))
             x[idx] = 1
 

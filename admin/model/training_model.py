@@ -9,9 +9,9 @@ from sklearn.model_selection import train_test_split
 
 def split_data(x,crypto):
     x_train, x_test = train_test_split(x, test_size=0.30)
-    #np.savetxt(str(crypto)+"_train_set.csv", x_train, delimiter=",")
-    #np.savetxt(str(crypto)+"_test_set.csv", x_test, delimiter=",")
-    return x_train,x_test 
+    np.savetxt(str(crypto)+"_train_set.csv", x_train, delimiter=",")
+    np.savetxt(str(crypto)+"_test_set.csv", x_test, delimiter=",")
+    return x_train
 
 dataset_all = pd.read_csv('csv/dataset.csv')
 
@@ -41,28 +41,23 @@ for i in range(1):
     if(crypto[i]=='BTC'):
         btc_model = nn.cryptic(crypto[i])
         data,bt_test = split_data(dataset,crypto[i])
-        btc_loss,c_param, c2_param, l_param ,bt_net= btc_model.train(100,data,X)
-        
+        btc_loss,bt_net= btc_model.train(100,data,X)
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
-        
     elif(crypto[i]=='ETH'):
         eth_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        eth_loss,c_param, c2_param, l_param ,eth_trained = eth_model.train(100,data,X)
+        eth_loss,eth_trained = eth_model.train(100,data,X)
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!')
     elif(crypto[i]=='DOGE'):
         doge_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        doge_loss,c_param, c2_param, l_param ,doge_trained = doge_model.train(100,data,X)
+        doge_loss,doge_trained = doge_model.train(100,data,X)
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!')
     else:
         print('Invalid Crypto')
 
-
-
-#btc_model.test(bt_test,bt_net)
 
     
