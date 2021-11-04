@@ -235,8 +235,6 @@ class MainWindow(QMainWindow):
                 df_date = df_['Date']
                 df_price = df_[str(self.selected_histo_price)]
 
-            del df_
-
             x = []
             y = []
             for item in df_date:
@@ -263,10 +261,13 @@ class MainWindow(QMainWindow):
 
             widgets.histoGraph.show()
 
+            del df_, df_date, df_price
+
     def dash_pred_graph(self):
         self.df_ = get_prediction_df(self.dash_btc, self.selected_date)
 
         widgets.predGraph.clear()
+        widgets.predictedTable.clear()
         widgets.predGraph.hide()
         
         df_date = []
@@ -275,6 +276,8 @@ class MainWindow(QMainWindow):
         if self.selected_crypto == 'all':
             widgets.predGraph.clear()
             print('all')
+
+            del self.df_
         
         else:
             if self.selected_crypto == 'Bitcoin_Data':
@@ -295,7 +298,7 @@ class MainWindow(QMainWindow):
                 df_date = df_['Date']
                 df_price = df_[str(self.selected_predicted_price)]
 
-            del df_
+            # del df_
 
             x = []
             y = []
@@ -309,8 +312,26 @@ class MainWindow(QMainWindow):
 
             widgets.predGraph.show()
 
-    def dash_pred_table(self):
-        widgets.predictedTable.setHorizontalHeaderLabels()
+            df_ = df_[['Date', str(self.selected_predicted_price)]]
+            df_['Date'] = df_['Date'].dt.date
+
+            widgets.predictedTable.setColumnCount(len(df_.columns))
+            widgets.predictedTable.setRowCount(len(df_.index))
+
+            for i in range(len(df_.index)):
+                for j in range(len(df_.columns)):
+                    item = QTableWidgetItem(str(df_.iat[i, j]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    widgets.predictedTable.setItem(i, j, item)
+
+            widgets.predictedTable.setHorizontalHeaderLabels(df_.columns)
+            widgets.predictedTable.resizeColumnsToContents()
+            widgets.predictedTable.resizeRowsToContents()
+
+            del df_, self.df_, df_date, df_price
+
+    # def dash_pred_table(self):
+    #     widgets.predictedTable.setHorizontalHeaderLabels()
 
     def train_dataset_table(self):
         self.dataset_table_df = get_dataset_df(self.dataset_date_from, self.dataset_date_until,
@@ -403,6 +424,7 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget.setCurrentWidget(widgets.dash)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+            self.dash_data()
 
         # SHOW TRAIN PAGE
         if btnName == "btn_train":
@@ -438,10 +460,10 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         
-        print(self.dash_btc)
+        # print(self.dash_btc)
 
-        # PRINT BTN NAME
-        print(f'Button "{btnName}" pressed!')
+        # # PRINT BTN NAME
+        # print(f'Button "{btnName}" pressed!')
 
 
     def logout(self):
@@ -466,6 +488,7 @@ class MainWindow(QMainWindow):
         widgets.ethCurrPriceLabel.setText('$'+str(self.dash_eth['Closing'].iat[-1]))
         widgets.dogeCurrPriceLabel.setText('$'+str(self.dash_doge['Closing'].iat[-1]))
 
+        self.dash_pred_graph()
         self.dash_histo_graph()
 
 
@@ -628,10 +651,10 @@ class MainWindow(QMainWindow):
         widgets.trainTable.show()
         widgets.btn_startTraining.show()
 
-        print(self.dataset_date_from)
-        print(self.dataset_date_until)
-        print(self.dataset_crypto)
-        print(self.dataset_source)
+        # print(self.dataset_date_from)
+        # print(self.dataset_date_until)
+        # print(self.dataset_crypto)
+        # print(self.dataset_source)
 
         widgets.testTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
         widgets.testCryptoList.addItems(self.dataset_crypto)
@@ -685,7 +708,7 @@ class MainWindow(QMainWindow):
 
     def get_crypto_analyze(self, value):
         self.analyze_crypto = str(value)
-        print(self.analyze_crypto)
+        # print(self.analyze_crypto)
 
         self.show_data_analysis()
 

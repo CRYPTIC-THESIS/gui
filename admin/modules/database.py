@@ -44,6 +44,7 @@ def get_prediction_df(temp, date_):
     numeric = ['High', 'Low', 'Closing']
     df_[numeric] = df_[numeric].apply(pd.to_numeric, errors='coerce', axis=1)
 
+    # print(temp)
     temp = temp.loc[temp['Date'] == date_]
     new_temp = temp.drop('Open', axis=1)
     

@@ -33,9 +33,9 @@ class MainSettings():
     """
 
     CURRPRICE_SELECTED_STYLESHEET = """
-    background: #2AB7CA;
+    background: #21252B;
     border-radius: 10px;
-    color: #21252B;
+    color: #2AB7CA;
     """
 
     HISTODAY_SELECTED_STYLESHEET = """
