@@ -966,8 +966,8 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(10, 10, 10, 10)
         self.predictedTableFrame = QFrame(self.dashContent)
-        self.predictedTableFrame.setObjectName(u"predictedTableFrame")
-        self.predictedTableFrame.setStyleSheet(u"background: #2C313A;\n"
+        self.predictedTableFrame.setObjectName(u"predictedTableFrame")#2C313A
+        self.predictedTableFrame.setStyleSheet(u"background: #21252B;\n"
 "border-radius: 10px;\n"
 "border: 2px solid #21252B;")
         self.predictedTableFrame.setFrameShape(QFrame.NoFrame)
