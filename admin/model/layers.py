@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.core.fromnumeric import argmax
 import pandas as pd
 from random import uniform
 
@@ -166,7 +167,7 @@ def maxpool(data, f=3, s=1):
     return downsampled
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=3, seq_len=30,
+    def __init__(self, value_to_idx, idx_to_value, seq_size, n_h=100, seq_len=1,
                  epochs=100, lr=0.001, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
@@ -276,8 +277,8 @@ class LSTM:
             y_hat, _, h, _, c, _, _, _, _ = self.forward_step(x, h, c)
 
             # get a random index within the probability distribution of y_hat(ravel())
-            idx = np.random.choice(range(self.seq_size), p=y_hat.ravel())
-            
+            #idx = np.random.choice(range(self.seq_size), p=y_hat.ravel())
+            idx = argmax(y_hat)
             x = np.zeros((self.seq_size, 1))
             x[idx] = 1
 
@@ -290,6 +291,7 @@ class LSTM:
         """
         Implements the forward propagation for one time step
         """
+
         z = np.row_stack((h_prev, x))
 
         f = self.sigmoid(np.dot(self.params["Wf"], z) + self.params["bf"])

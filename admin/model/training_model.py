@@ -45,6 +45,7 @@ for i in range(1):
         
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
+        
     elif(crypto[i]=='ETH'):
         eth_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])

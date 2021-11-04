@@ -53,10 +53,10 @@ class cryptic():
             if verbose:
                 if j % 400000 == 0:
                     print('Epoch:', epoch, '\tBatch:', j, "-", j + lstm.seq_len,'\tLoss:', round(lstm.smooth_loss, 2))
-                    s = lstm.sample(h_prev, c_prev, lstm.seq_size+1)
-                    #print(s, "\n")
+                    #s = lstm.sample(h_prev, c_prev, lstm.seq_size+1)
+                    print(s, "\n")
 
-        return J,h_prev, c_prev,s
+        return J,h_prev, c_prev  #,s
 
     def train(self,epochs,data,X):
         print('CRYPTIC NETWORK TRAINING\n\n')
@@ -84,11 +84,11 @@ class cryptic():
         print('X_trimmed:',len(X_trimmed),'\nnum_batches:',num_batches)
         for epoch in range(epochs):
 
-            J,h,c,pred = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
+            J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
             progress(epoch, epochs, status='Nag-aaral pa aku beh')
-            net = [con,con1,lstm,h,c]
+        net = [con,con1,lstm,h,c]
         progress(epochs, epochs, status='Kapagod mag-aral beh')
-        print(pred)
+
         return J,con.filters,con1.filters,lstm.params,net
 
     def test(self,data,network):
