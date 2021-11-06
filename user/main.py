@@ -58,13 +58,57 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
-
         global widgets
         widgets = self.ui
         widgets.setupUi(self)
-        self.setAttribute(Qt.WA_DeleteOnClose)
+
+        # SET UI FUNCTIONS
+        UIFunctions.uiDefinitions(self)
+
+        # SET DATE
+        today = datetime.today().strftime('%B %d, %Y')
+        widgets.dateToday.setText(today)
+        widgets.home_dateToday.setText(today)
+
+        # DISPLAY
+        widgets.stackedWidget.setCurrentWidget(widgets.homePage)
+        widgets.btn_home.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_home.styleSheet()))
+
+        # SIGNALS
+        widgets.btn_home.clicked.connect(self.buttonClick)
+        widgets.btn_btc.clicked.connect(self.buttonClick)
+        widgets.btn_eth.clicked.connect(self.buttonClick)
+        widgets.btn_doge.clicked.connect(self.buttonClick)
 
         # self.show()
+
+    def buttonClick(self):
+        # GET BUTTON CLICKED
+        btn = self.sender()
+        btnName = btn.objectName()
+
+        if btnName == "btn_home":
+            widgets.stackedWidget.setCurrentWidget(widgets.homePage)
+        else:
+            if btnName == "btn_btc":
+                widgets.cryptocurrency.setText("BITCOIN (BTC)")
+
+            if btnName == "btn_eth":
+                widgets.cryptocurrency.setText("ETHEREUM (ETH)")
+
+            if btnName == "btn_doge":
+                widgets.cryptocurrency.setText("DOGECOIN (DOGE)")
+
+            widgets.stackedWidget.setCurrentWidget(widgets.cryptoPage)
+
+        UIFunctions.resetCryptoStyle(self, btnName)
+        btn.setStyleSheet(UIFunctions.selectCrypto(btn.styleSheet()))
+
+    def mousePressEvent(self, event):
+        # SET DRAG POS WINDOW
+        p = event.globalPosition()
+        globalPos = p.toPoint()
+        self.dragPos = globalPos
 
 
 if __name__ == "__main__":

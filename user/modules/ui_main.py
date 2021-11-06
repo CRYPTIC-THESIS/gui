@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainJhwFDD.ui'
+## Form generated from reading UI file 'mainzCpiiG.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.14.1
 ##
@@ -11,10 +11,10 @@
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from pyqtgraph import PlotWidget
+
+from pyqtgraph import PlotWidget, DateAxisItem
 
 from . resources_rc import *
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -39,19 +39,19 @@ class Ui_MainWindow(object):
 "	border-bottom-right-radius: 10px;\n"
 "}\n"
 "\n"
-"#bgApp QPushButton {\n"
+"#content QPushButton {\n"
 "	color: #259CA5;\n"
-"	font: 13px \"Segoe UI BOLD\";\n"
+"	font: 13px \"Segoe UI\"; font-weight: bold;\n"
 "	/* border: 2px solid rgb(52, 59, 72); */\n"
 "	border-radius: 10px;	\n"
 "	background-color: rgb(52, 59, 72);\n"
 "}\n"
-"#bgApp QPushButton:hover {\n"
+"#content QPushButton:hover {\n"
 "	background-color: rgb(57, 65, 80);\n"
 "	border: 2px solid rgb(61, 70, 86);\n"
 "	color: #DDDDDD;\n"
 "}\n"
-"#bgApp QPushButton:pressed {	\n"
+"#content QPushButton:pressed {	\n"
 "	background-color: rgb(35, 40, 49);\n"
 "	border: 2px solid rgb(43, 50, 61);\n"
 "	color: #DDDDDD;\n"
@@ -60,12 +60,13 @@ class Ui_MainWindow(object):
 "/* Top Buttons */\n"
 "#rightButtons .QPushButton { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
 "#rightButtons .QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; border-radius: 4px; }\n"
-"#r"
-                        "ightButtons .QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }\n"
+""
+                        "#rightButtons .QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }\n"
 "\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
 "Tooltip */\n"
 "QToolTip {\n"
+"	background: none;\n"
 "	color: #ffffff;\n"
 "	background-color: rgba(33, 37, 43, 180);\n"
 "	border: 1px solid rgb(44, 49, 58);\n"
@@ -91,8 +92,8 @@ class Ui_MainWindow(object):
 "	background-color: rgb(55, 62, 76);\n"
 "}\n"
 "QSlider::handle:horizontal {\n"
-"    background-color: #259CA5; /*rgb("
-                        "189, 147, 249)*/\n"
+"    backgrou"
+                        "nd-color: #259CA5; /*rgb(189, 147, 249)*/\n"
 "    border: none;\n"
 "    height: 10px;\n"
 "    width: 10px;\n"
@@ -130,9 +131,56 @@ class Ui_MainWindow(object):
 "    background-color: #29B3A7;\n"
 "}\n"
 "\n"
+"/* //////////////////////////////////////////////////////////////////////////"
+                        "///////////////////////\n"
+"QTableWidget */\n"
+"QTableWidget {	\n"
+"	background-color: transparent;\n"
+"	padding: 10px;\n"
+"	border-radius: 5px;\n"
+"	gridline-color: rgb(51, 56, 64);/*rgb(44, 49, 58);*/\n"
+"	border-bottom: 1px solid rgb(44, 49, 60);\n"
+"}\n"
+"\n"
+"QTableWidget QTableCornerButton::section {background-color: transparent; }\n"
+"\n"
+"QTableWidget::item{\n"
+"	border-color: rgb(44, 49, 60);\n"
+"	padding-left: 5px;\n"
+"	padding-right: 5px;\n"
+"	gridline-color: rgb(44, 49, 60);\n"
+"}\n"
+"QTableWidget::item:selected{\n"
+"	background-color: #2AB7CA;\n"
+"}\n"
+"QHeaderView::section{\n"
+"	background-color: transparent;\n"
+"	/* max-width: 30px;\n"
+"	border: 1px solid rgb(44, 49, 58);*/\n"
+"	border-style: none;\n"
+"    border-bottom: 1px solid rgb(44, 49, 60);\n"
+"    border-right: 1px solid rgb(44, 49, 60);\n"
+"}\n"
+"/*QTableWidget::horizontalHeader {	\n"
+"	background-color: rgb(33, 37, 43);\n"
+"}*/\n"
+"QHeaderView::section:horizontal\n"
+"{\n"
+"    /*border: 1px solid rgb(33, 37, 43);*/\n"
+"	background-colo"
+                        "r: transparent;\n"
+"	padding: 3px;\n"
+"	border-top-left-radius: 7px;\n"
+"    border-top-right-radius: 7px;\n"
+"}\n"
+"/* QHeaderView::section:vertical\n"
+"{\n"
+"    border: 1px solid rgb(44, 49, 60);\n"
+"}*/\n"
+"\n"
+"\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-""
-                        "LineEdit */\n"
+"LineEdit */\n"
 "QLineEdit {\n"
 "	background-color: rgb(33, 37, 43);\n"
 "	border-radius: 5px;\n"
@@ -155,7 +203,8 @@ class Ui_MainWindow(object):
 "	border-radius: 5px;\n"
 "	padding: 10px;\n"
 "	selection-color: rgb(255, 255, 255);\n"
-"	selection-background-color: #2AB7CA;\n"
+"	selection-background-color: #"
+                        "2AB7CA;\n"
 "}\n"
 "QPlainTextEdit  QScrollBar:vertical {\n"
 "    width: 8px;\n"
@@ -170,8 +219,7 @@ class Ui_MainWindow(object):
 "	border: 2px solid rgb(91, 101, 124);\n"
 "}\n"
 "\n"
-"/* ///////////"
-                        "//////////////////////////////////////////////////////////////////////////////////////\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
 "ScrollBars */\n"
 "QScrollBar:horizontal {\n"
 "    border: none;\n"
@@ -194,7 +242,8 @@ class Ui_MainWindow(object):
 "    subcontrol-position: right;\n"
 "    subcontrol-origin: margin;\n"
 "}\n"
-"QScrollBar::sub-line:horizontal {\n"
+"QScrollBar::sub-line:horizo"
+                        "ntal {\n"
 "    border: none;\n"
 "    background: rgb(55, 63, 77);\n"
 "    width: 20px;\n"
@@ -205,8 +254,7 @@ class Ui_MainWindow(object):
 "}\n"
 "QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal\n"
 "{\n"
-"     bac"
-                        "kground: none;\n"
+"     background: none;\n"
 "}\n"
 "QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal\n"
 "{\n"
@@ -233,7 +281,8 @@ class Ui_MainWindow(object):
 "     subcontrol-position: bottom;\n"
 "     subcontrol-origin: margin;\n"
 " }\n"
-" QScrollBar::sub-line:vertical {\n"
+" Q"
+                        "ScrollBar::sub-line:vertical {\n"
 "	border: none;\n"
 "    background: rgb(55, 63, 77);\n"
 "     height: 20px;\n"
@@ -242,8 +291,7 @@ class Ui_MainWindow(object):
 "     subcontrol-position: top;\n"
 "     subcontrol-origin: margin;\n"
 " }\n"
-" QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertica"
-                        "l {\n"
+" QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
 "     background: none;\n"
 " }\n"
 "\n"
@@ -264,8 +312,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.sideMenu = QFrame(self.bgApp)
         self.sideMenu.setObjectName(u"sideMenu")
-        self.sideMenu.setMinimumSize(QSize(77, 0))
-        self.sideMenu.setMaximumSize(QSize(77, 16777215))
+        self.sideMenu.setMinimumSize(QSize(90, 0))
+        self.sideMenu.setMaximumSize(QSize(100, 16777215))
+        self.sideMenu.setStyleSheet(u"")
         self.sideMenu.setFrameShape(QFrame.NoFrame)
         self.sideMenu.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.sideMenu)
@@ -277,159 +326,126 @@ class Ui_MainWindow(object):
         self.frame_4.setMaximumSize(QSize(16777215, 25))
         self.frame_4.setFrameShape(QFrame.NoFrame)
         self.frame_4.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_19 = QVBoxLayout(self.frame_4)
-        self.verticalLayout_19.setSpacing(0)
-        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
-        self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_18 = QHBoxLayout(self.frame_4)
+        self.horizontalLayout_18.setSpacing(0)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
         self.label_16 = QLabel(self.frame_4)
         self.label_16.setObjectName(u"label_16")
-        self.label_16.setStyleSheet(u"font: 10pt \"Segoe UI Semibold\";\n"
+        self.label_16.setStyleSheet(u"font: 12pt \"Segoe UI Semibold\";\n"
 "color: rgba(221, 221, 221, 0.35);")
         self.label_16.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_19.addWidget(self.label_16)
+        self.horizontalLayout_18.addWidget(self.label_16, 0, Qt.AlignBottom)
 
 
-        self.verticalLayout_3.addWidget(self.frame_4)
+        self.verticalLayout_3.addWidget(self.frame_4, 0, Qt.AlignHCenter)
 
-        self.menuButtons = QFrame(self.sideMenu)
-        self.menuButtons.setObjectName(u"menuButtons")
-        self.menuButtons.setStyleSheet(u"")
-        self.menuButtons.setFrameShape(QFrame.NoFrame)
-        self.menuButtons.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_4 = QVBoxLayout(self.menuButtons)
-        self.verticalLayout_4.setSpacing(10)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout_4.setContentsMargins(0, 5, 0, 0)
-        self.frame_6 = QFrame(self.menuButtons)
-        self.frame_6.setObjectName(u"frame_6")
-        self.frame_6.setLayoutDirection(Qt.LeftToRight)
-        self.frame_6.setStyleSheet(u"")
-        self.frame_6.setFrameShape(QFrame.NoFrame)
-        self.frame_6.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_5 = QVBoxLayout(self.frame_6)
-        self.verticalLayout_5.setSpacing(0)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.verticalLayout_5.setContentsMargins(14, 0, 0, 0)
-        self.pushButton = QPushButton(self.frame_6)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(49, 49))
-        self.pushButton.setMaximumSize(QSize(49, 49))
-        self.pushButton.setStyleSheet(u"QPushButton {	\n"
-"	background: url(:/images/images/images/btnHome.png);\n"
-"    background-repeat: no-repeat;\n"
-"	background-position: center;\n"
-"	border-radius: 18px;\n"
-"	width: 49px;\n"
-"	height: 49px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"	background-color: transparent;\n"
-"	border-color: #2AB7CA;\n"
-"}\n"
-"")
-
-        self.verticalLayout_5.addWidget(self.pushButton)
-
-
-        self.verticalLayout_4.addWidget(self.frame_6)
-
-        self.frame_7 = QFrame(self.menuButtons)
+        self.frame_7 = QFrame(self.sideMenu)
         self.frame_7.setObjectName(u"frame_7")
         self.frame_7.setFrameShape(QFrame.NoFrame)
         self.frame_7.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_6 = QVBoxLayout(self.frame_7)
-        self.verticalLayout_6.setSpacing(0)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.verticalLayout_6.setContentsMargins(14, 0, 0, 0)
-        self.pushButton_2 = QPushButton(self.frame_7)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setMinimumSize(QSize(49, 49))
-        self.pushButton_2.setMaximumSize(QSize(49, 49))
-        self.pushButton_2.setStyleSheet(u"QPushButton {	\n"
-"	background: url(:/images/images/images/btnBitcoin.png);\n"
-"    background-repeat: no-repeat;\n"
-"	background-position: center;\n"
-"	border-radius: 18px;\n"
-"	width: 49px;\n"
-"	height: 49px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"	background-color: transparent;\n"
-"	border-color: #2AB7CA;\n"
-"}")
-
-        self.verticalLayout_6.addWidget(self.pushButton_2)
-
-
-        self.verticalLayout_4.addWidget(self.frame_7)
-
-        self.frame_8 = QFrame(self.menuButtons)
-        self.frame_8.setObjectName(u"frame_8")
-        self.frame_8.setFrameShape(QFrame.NoFrame)
-        self.frame_8.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_7 = QVBoxLayout(self.frame_8)
+        self.verticalLayout_7 = QVBoxLayout(self.frame_7)
         self.verticalLayout_7.setSpacing(0)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_7.setContentsMargins(14, 0, 0, 0)
-        self.pushButton_3 = QPushButton(self.frame_8)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setMinimumSize(QSize(49, 49))
-        self.pushButton_3.setMaximumSize(QSize(49, 49))
-        self.pushButton_3.setStyleSheet(u"QPushButton {	\n"
-"	background: url(:/images/images/images/btnEthereum.png);\n"
+        self.verticalLayout_7.setContentsMargins(0, 10, 0, 10)
+        self.cryptoButtons = QFrame(self.frame_7)
+        self.cryptoButtons.setObjectName(u"cryptoButtons")
+        self.cryptoButtons.setMaximumSize(QSize(16777215, 16777215))
+        self.cryptoButtons.setStyleSheet(u"QPushButton {	\n"
 "    background-repeat: no-repeat;\n"
-"	background-position: center;\n"
-"	border-radius: 18px;\n"
+"	background-position: left center;\n"
+"	border-radius: 0px;\n"
 "	width: 49px;\n"
 "	height: 49px;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"	background-color: transparent;\n"
-"	border-color: #2AB7CA;\n"
-"}")
-
-        self.verticalLayout_7.addWidget(self.pushButton_3)
-
-
-        self.verticalLayout_4.addWidget(self.frame_8)
-
-        self.frame_9 = QFrame(self.menuButtons)
-        self.frame_9.setObjectName(u"frame_9")
-        self.frame_9.setFrameShape(QFrame.NoFrame)
-        self.frame_9.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_8 = QVBoxLayout(self.frame_9)
-        self.verticalLayout_8.setSpacing(0)
+"	/*border-left: 25px solid qlineargradient(spread:pad, x1:0.034, y1:1, x2:0.216, y2:1, stop:0.399 #2AB7CA, stop:0.4 rgba(85, 170, 255, 0));*/\n"
+"	border-left: 4px solid rgba(42, 183, 202, 0.4);\n"
+"}\n")
+        self.cryptoButtons.setFrameShape(QFrame.NoFrame)
+        self.cryptoButtons.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_8 = QVBoxLayout(self.cryptoButtons)
+        self.verticalLayout_8.setSpacing(17)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.verticalLayout_8.setContentsMargins(14, 0, 0, 0)
-        self.pushButton_4 = QPushButton(self.frame_9)
-        self.pushButton_4.setObjectName(u"pushButton_4")
-        self.pushButton_4.setMinimumSize(QSize(49, 49))
-        self.pushButton_4.setMaximumSize(QSize(49, 49))
-        self.pushButton_4.setStyleSheet(u"QPushButton {	\n"
-"	background: url(:/images/images/images/btnDogecoin.png);\n"
-"    background-repeat: no-repeat;\n"
-"	background-position: center;\n"
-"	border-radius: 18px;\n"
-"	width: 49px;\n"
-"	height: 49px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"	background-color: transparent;\n"
-"	border-color: #2AB7CA;\n"
-"}")
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.btn_home = QPushButton(self.cryptoButtons)
+        self.btn_home.setObjectName(u"btn_home")
+        self.btn_home.setMinimumSize(QSize(0, 0))
+        self.btn_home.setStyleSheet(u"")
+        icon = QIcon()
+        icon.addFile(u":/images/images/images/btnHome.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_home.setIcon(icon)
+        self.btn_home.setIconSize(QSize(45, 45))
 
-        self.verticalLayout_8.addWidget(self.pushButton_4)
+        self.verticalLayout_8.addWidget(self.btn_home)
+
+        self.btn_btc = QPushButton(self.cryptoButtons)
+        self.btn_btc.setObjectName(u"btn_btc")
+        self.btn_btc.setMinimumSize(QSize(0, 0))
+        self.btn_btc.setStyleSheet(u"")
+        icon1 = QIcon()
+        icon1.addFile(u":/images/images/images/btnBitcoin.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_btc.setIcon(icon1)
+        self.btn_btc.setIconSize(QSize(45, 45))
+
+        self.verticalLayout_8.addWidget(self.btn_btc)
+
+        self.btn_eth = QPushButton(self.cryptoButtons)
+        self.btn_eth.setObjectName(u"btn_eth")
+        self.btn_eth.setMinimumSize(QSize(0, 0))
+        self.btn_eth.setStyleSheet(u"")
+        icon2 = QIcon()
+        icon2.addFile(u":/images/images/images/btnEthereum.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_eth.setIcon(icon2)
+        self.btn_eth.setIconSize(QSize(45, 45))
+
+        self.verticalLayout_8.addWidget(self.btn_eth)
+
+        self.btn_doge = QPushButton(self.cryptoButtons)
+        self.btn_doge.setObjectName(u"btn_doge")
+        self.btn_doge.setMinimumSize(QSize(0, 0))
+        self.btn_doge.setStyleSheet(u"")
+        icon3 = QIcon()
+        icon3.addFile(u":/images/images/images/btnDogecoin.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_doge.setIcon(icon3)
+        self.btn_doge.setIconSize(QSize(45, 45))
+
+        self.verticalLayout_8.addWidget(self.btn_doge)
 
 
-        self.verticalLayout_4.addWidget(self.frame_9)
+        self.verticalLayout_7.addWidget(self.cryptoButtons)
 
 
-        self.verticalLayout_3.addWidget(self.menuButtons, 0, Qt.AlignTop)
+        self.verticalLayout_3.addWidget(self.frame_7, 0, Qt.AlignTop)
+
+        self.frame_6 = QFrame(self.sideMenu)
+        self.frame_6.setObjectName(u"frame_6")
+        self.frame_6.setFrameShape(QFrame.NoFrame)
+        self.frame_6.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_6 = QVBoxLayout(self.frame_6)
+        self.verticalLayout_6.setSpacing(0)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 20)
+        self.help = QPushButton(self.frame_6)
+        self.help.setObjectName(u"help")
+        self.help.setMinimumSize(QSize(35, 35))
+        self.help.setMaximumSize(QSize(35, 35))
+        self.help.setToolTipDuration(-1)
+        self.help.setStyleSheet(u"/* Top Buttons */\n"
+"QPushButton { background-color: rgb(52, 59, 72); border: none;  border-radius: 5px; }\n"
+"QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; border-radius: 4px; }\n"
+"QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }")
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/images/icons/cil-help.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.help.setIcon(icon4)
+        self.help.setIconSize(QSize(20, 20))
+
+        self.verticalLayout_6.addWidget(self.help)
+
+
+        self.verticalLayout_3.addWidget(self.frame_6, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
 
         self.horizontalLayout.addWidget(self.sideMenu)
@@ -481,14 +497,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13 = QHBoxLayout(self.frame_31)
         self.horizontalLayout_13.setSpacing(20)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.horizontalLayout_13.setContentsMargins(0, 0, 10, 0)
-        self.label_17 = QLabel(self.frame_31)
-        self.label_17.setObjectName(u"label_17")
-        self.label_17.setMinimumSize(QSize(238, 0))
-        self.label_17.setStyleSheet(u"font: 10pt \"Segoe UI Semibold\";")
-        self.label_17.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.dateToday = QLabel(self.frame_31)
+        self.dateToday.setObjectName(u"dateToday")
+        self.dateToday.setMinimumSize(QSize(238, 0))
+        self.dateToday.setStyleSheet(u"font: 10pt \"Segoe UI Semibold\";")
+        self.dateToday.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.horizontalLayout_13.addWidget(self.label_17, 0, Qt.AlignRight|Qt.AlignVCenter)
+        self.horizontalLayout_13.addWidget(self.dateToday)
 
         self.rightButtons = QFrame(self.frame_31)
         self.rightButtons.setObjectName(u"rightButtons")
@@ -502,9 +518,9 @@ class Ui_MainWindow(object):
         self.minimizeAppBtn = QPushButton(self.rightButtons)
         self.minimizeAppBtn.setObjectName(u"minimizeAppBtn")
         self.minimizeAppBtn.setMinimumSize(QSize(28, 28))
-        icon = QIcon()
-        icon.addFile(u":/icons/images/icons/icon_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.minimizeAppBtn.setIcon(icon)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/images/icons/icon_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.minimizeAppBtn.setIcon(icon5)
         self.minimizeAppBtn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_15.addWidget(self.minimizeAppBtn)
@@ -512,9 +528,10 @@ class Ui_MainWindow(object):
         self.closeAppBtn = QPushButton(self.rightButtons)
         self.closeAppBtn.setObjectName(u"closeAppBtn")
         self.closeAppBtn.setMinimumSize(QSize(28, 28))
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/images/icons/icon_close.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.closeAppBtn.setIcon(icon1)
+        self.closeAppBtn.setStyleSheet(u"border-top-right-radius: 10px;")
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/images/icons/icon_close.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.closeAppBtn.setIcon(icon6)
         self.closeAppBtn.setIconSize(QSize(16, 16))
 
         self.horizontalLayout_15.addWidget(self.closeAppBtn)
@@ -548,8 +565,8 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(20, 20, 20, 20)
         self.home_predictionFrame = QFrame(self.homePage)
         self.home_predictionFrame.setObjectName(u"home_predictionFrame")
-        self.home_predictionFrame.setMinimumSize(QSize(0, 370))
-        self.home_predictionFrame.setMaximumSize(QSize(16777215, 370))
+        self.home_predictionFrame.setMinimumSize(QSize(0, 0))
+        self.home_predictionFrame.setMaximumSize(QSize(16777215, 16777215))
         self.home_predictionFrame.setStyleSheet(u"background: #2C313A;\n"
 "border-radius: 10px;")
         self.home_predictionFrame.setFrameShape(QFrame.NoFrame)
@@ -576,7 +593,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_35.setContentsMargins(0, 0, 0, 0)
         self.label_23 = QLabel(self.frame_52)
         self.label_23.setObjectName(u"label_23")
-        self.label_23.setStyleSheet(u"font: 15px \"Segoe UI BOLD\";")
+        self.label_23.setStyleSheet(u"font: 15px \"Segoe UI\"; font-weight: bold;")
 
         self.verticalLayout_35.addWidget(self.label_23, 0, Qt.AlignLeft|Qt.AlignVCenter)
 
@@ -588,7 +605,7 @@ class Ui_MainWindow(object):
         self.home_predPriceButtons.setStyleSheet(u"* {\n"
 "	border-radius: 12px; \n"
 "	border-color: #2C313A;\n"
-"	font: 13px \"Segoe UI BOLD\";\n"
+"	font: 13px \"Segoe UI\"; font-weight: bold;\n"
 "}\n"
 "\n"
 "*:hover {\n"
@@ -633,7 +650,7 @@ class Ui_MainWindow(object):
 
         self.home_predGraphFrame = QFrame(self.home_predictionFrame)
         self.home_predGraphFrame.setObjectName(u"home_predGraphFrame")
-        self.home_predGraphFrame.setMinimumSize(QSize(573, 290))
+        self.home_predGraphFrame.setMinimumSize(QSize(0, 0))
         self.home_predGraphFrame.setMaximumSize(QSize(573, 290))
         self.home_predGraphFrame.setStyleSheet(u"border-radius: 0; background: transparent;")
         self.home_predGraphFrame.setFrameShape(QFrame.NoFrame)
@@ -644,6 +661,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_36.setContentsMargins(0, 0, 0, 0)
         self.home_predGraph = PlotWidget(self.home_predGraphFrame)
         self.home_predGraph.setObjectName(u"home_predGraph")
+        self.home_predGraph.setFrameShape(QFrame.NoFrame)
+        brush = QBrush(QColor(44, 49, 58, 1))
+        brush.setStyle(Qt.NoBrush)
+        self.home_predGraph.setBackgroundBrush(brush)
 
         self.verticalLayout_36.addWidget(self.home_predGraph)
 
@@ -652,7 +673,7 @@ class Ui_MainWindow(object):
 
         self.frame_53 = QFrame(self.home_predictionFrame)
         self.frame_53.setObjectName(u"frame_53")
-        self.frame_53.setMinimumSize(QSize(0, 10))
+        self.frame_53.setMinimumSize(QSize(0, 22))
         self.frame_53.setFrameShape(QFrame.NoFrame)
         self.frame_53.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_33 = QHBoxLayout(self.frame_53)
@@ -717,7 +738,7 @@ class Ui_MainWindow(object):
 
         self.home_predTableFrame = QFrame(self.homePage)
         self.home_predTableFrame.setObjectName(u"home_predTableFrame")
-        self.home_predTableFrame.setMaximumSize(QSize(603, 16777215))
+        self.home_predTableFrame.setMaximumSize(QSize(603, 270))
         self.home_predTableFrame.setStyleSheet(u"background: #21252B;\n"
 "border-radius: 10px;")
         self.home_predTableFrame.setFrameShape(QFrame.NoFrame)
@@ -726,11 +747,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_20.setSpacing(0)
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
         self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
-        self.tableWidget = QTableWidget(self.home_predTableFrame)
-        self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setFrameShape(QFrame.NoFrame)
+        self.home_tableWidget = QTableWidget(self.home_predTableFrame)
+        self.home_tableWidget.setObjectName(u"home_tableWidget")
+        self.home_tableWidget.setFrameShape(QFrame.NoFrame)
+        self.home_tableWidget.verticalHeader().setHighlightSections(False)
 
-        self.verticalLayout_20.addWidget(self.tableWidget)
+        self.verticalLayout_20.addWidget(self.home_tableWidget)
 
 
         self.gridLayout.addWidget(self.home_predTableFrame, 1, 0, 1, 1)
@@ -747,17 +769,48 @@ class Ui_MainWindow(object):
         self.verticalLayout_39.setContentsMargins(0, 0, 0, 0)
         self.frame = QFrame(self.home_histoFrame)
         self.frame.setObjectName(u"frame")
-        self.frame.setMaximumSize(QSize(16777215, 250))
-        self.frame.setStyleSheet(u"background: #21252B;\n"
+        self.frame.setMaximumSize(QSize(16777215, 300))
+        self.frame.setStyleSheet(u"background: transparent;\n"
 "border-radius: 10px;\n"
-"font: 15px \"Segoe UI BOLD\";")
+"font: 15px \"Segoe UI\"; font-weight: bold;")
         self.frame.setFrameShape(QFrame.NoFrame)
         self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_18 = QHBoxLayout(self.frame)
-        self.horizontalLayout_18.setSpacing(15)
-        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
-        self.horizontalLayout_18.setContentsMargins(0, 10, 10, 10)
-        self.frame_56 = QFrame(self.frame)
+        self.verticalLayout_5 = QVBoxLayout(self.frame)
+        self.verticalLayout_5.setSpacing(10)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.frame_2 = QFrame(self.frame)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.NoFrame)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_17 = QHBoxLayout(self.frame_2)
+        self.horizontalLayout_17.setSpacing(0)
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
+        self.home_dateToday = QLabel(self.frame_2)
+        self.home_dateToday.setObjectName(u"home_dateToday")
+        self.home_dateToday.setMinimumSize(QSize(275, 41))
+        self.home_dateToday.setStyleSheet(u"font: 30px \"Segoe UI\"; font-weight: bold;\n"
+"color: white;\n"
+"background: #21252B;\n"
+"color: #2AB7CA;")
+        self.home_dateToday.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_17.addWidget(self.home_dateToday)
+
+
+        self.verticalLayout_5.addWidget(self.frame_2)
+
+        self.frame_3 = QFrame(self.frame)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setStyleSheet(u"background: #21252B;")
+        self.frame_3.setFrameShape(QFrame.NoFrame)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_16 = QHBoxLayout(self.frame_3)
+        self.horizontalLayout_16.setSpacing(15)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.horizontalLayout_16.setContentsMargins(0, 10, 10, 10)
+        self.frame_56 = QFrame(self.frame_3)
         self.frame_56.setObjectName(u"frame_56")
         self.frame_56.setMaximumSize(QSize(85, 16777215))
         self.frame_56.setStyleSheet(u"font: 10pt \"Segoe UI\";")
@@ -802,9 +855,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_40.addWidget(self.label_29)
 
 
-        self.horizontalLayout_18.addWidget(self.frame_56)
+        self.horizontalLayout_16.addWidget(self.frame_56)
 
-        self.home_btcCard = QFrame(self.frame)
+        self.home_btcCard = QFrame(self.frame_3)
         self.home_btcCard.setObjectName(u"home_btcCard")
         self.home_btcCard.setStyleSheet(u"background: #41464E;")
         self.home_btcCard.setFrameShape(QFrame.NoFrame)
@@ -831,7 +884,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_116.setContentsMargins(0, 0, 0, 0)
         self.label_35 = QLabel(self.frame_65)
         self.label_35.setObjectName(u"label_35")
-        self.label_35.setStyleSheet(u"font: 15px \"Segoe UI BOLD\";")
+        self.label_35.setStyleSheet(u"font: 15px \"Segoe UI\"; font-weight: bold;")
 
         self.verticalLayout_116.addWidget(self.label_35)
 
@@ -891,22 +944,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_41.addWidget(self.frame_64)
 
-        self.frame_2 = QFrame(self.home_btcCard)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setFrameShape(QFrame.NoFrame)
-        self.frame_2.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_44 = QVBoxLayout(self.frame_2)
+        self.frame_5 = QFrame(self.home_btcCard)
+        self.frame_5.setObjectName(u"frame_5")
+        self.frame_5.setFrameShape(QFrame.NoFrame)
+        self.frame_5.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_44 = QVBoxLayout(self.frame_5)
         self.verticalLayout_44.setSpacing(0)
         self.verticalLayout_44.setObjectName(u"verticalLayout_44")
         self.verticalLayout_44.setContentsMargins(0, 0, 0, 0)
-        self.home_btc_highPriceLabel = QLabel(self.frame_2)
+        self.home_btc_highPriceLabel = QLabel(self.frame_5)
         self.home_btc_highPriceLabel.setObjectName(u"home_btc_highPriceLabel")
         self.home_btc_highPriceLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_44.addWidget(self.home_btc_highPriceLabel)
 
 
-        self.verticalLayout_41.addWidget(self.frame_2)
+        self.verticalLayout_41.addWidget(self.frame_5)
 
         self.frame_62 = QFrame(self.home_btcCard)
         self.frame_62.setObjectName(u"frame_62")
@@ -926,9 +979,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_41.addWidget(self.frame_62)
 
 
-        self.horizontalLayout_18.addWidget(self.home_btcCard)
+        self.horizontalLayout_16.addWidget(self.home_btcCard)
 
-        self.home_ethCard = QFrame(self.frame)
+        self.home_ethCard = QFrame(self.frame_3)
         self.home_ethCard.setObjectName(u"home_ethCard")
         self.home_ethCard.setStyleSheet(u"background: #41464E;")
         self.home_ethCard.setFrameShape(QFrame.NoFrame)
@@ -955,7 +1008,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_117.setContentsMargins(0, 0, 0, 0)
         self.label_43 = QLabel(self.frame_70)
         self.label_43.setObjectName(u"label_43")
-        self.label_43.setStyleSheet(u"font: 15px \"Segoe UI BOLD\";")
+        self.label_43.setStyleSheet(u"font: 15px \"Segoe UI\"; font-weight: bold;")
 
         self.verticalLayout_117.addWidget(self.label_43)
 
@@ -1050,9 +1103,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_50.addWidget(self.frame_67)
 
 
-        self.horizontalLayout_18.addWidget(self.home_ethCard)
+        self.horizontalLayout_16.addWidget(self.home_ethCard)
 
-        self.home_dogeCard = QFrame(self.frame)
+        self.home_dogeCard = QFrame(self.frame_3)
         self.home_dogeCard.setObjectName(u"home_dogeCard")
         self.home_dogeCard.setStyleSheet(u"background: #41464E;")
         self.home_dogeCard.setFrameShape(QFrame.NoFrame)
@@ -1079,7 +1132,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_118.setContentsMargins(0, 0, 0, 0)
         self.label_51 = QLabel(self.frame_79)
         self.label_51.setObjectName(u"label_51")
-        self.label_51.setStyleSheet(u"font: 15px \"Segoe UI BOLD\";")
+        self.label_51.setStyleSheet(u"font: 15px \"Segoe UI\"; font-weight: bold;")
 
         self.verticalLayout_118.addWidget(self.label_51)
 
@@ -1174,7 +1227,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_55.addWidget(self.frame_74)
 
 
-        self.horizontalLayout_18.addWidget(self.home_dogeCard)
+        self.horizontalLayout_16.addWidget(self.home_dogeCard)
+
+
+        self.verticalLayout_5.addWidget(self.frame_3)
 
 
         self.verticalLayout_39.addWidget(self.frame)
@@ -1205,7 +1261,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_56.setContentsMargins(0, 0, 0, 0)
         self.label_53 = QLabel(self.frame_82)
         self.label_53.setObjectName(u"label_53")
-        self.label_53.setStyleSheet(u"font: 15px \"Segoe UI BOLD\";")
+        self.label_53.setStyleSheet(u"font: 15px \"Segoe UI\"; font-weight: bold;")
 
         self.verticalLayout_56.addWidget(self.label_53)
 
@@ -1218,7 +1274,7 @@ class Ui_MainWindow(object):
 "	border-radius: 12px; \n"
 "	border-color: #2C313A;\n"
 "	color: #8C88BF;\n"
-"	font: 13px \"Segoe UI BOLD\";\n"
+"	font: 13px \"Segoe UI\"; font-weight: bold;\n"
 "}\n"
 "\n"
 "*:hover {\n"
@@ -1270,8 +1326,8 @@ class Ui_MainWindow(object):
 
         self.home_histoGraphFrame = QFrame(self.homeHistoFrame)
         self.home_histoGraphFrame.setObjectName(u"home_histoGraphFrame")
-        self.home_histoGraphFrame.setMinimumSize(QSize(510, 290))
-        self.home_histoGraphFrame.setMaximumSize(QSize(510, 290))
+        self.home_histoGraphFrame.setMinimumSize(QSize(510, 200))
+        self.home_histoGraphFrame.setMaximumSize(QSize(16777215, 16777215))
         self.home_histoGraphFrame.setFrameShape(QFrame.NoFrame)
         self.home_histoGraphFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_57 = QVBoxLayout(self.home_histoGraphFrame)
@@ -1280,6 +1336,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_57.setContentsMargins(0, 0, 0, 0)
         self.home_histoGraph = PlotWidget(self.home_histoGraphFrame)
         self.home_histoGraph.setObjectName(u"home_histoGraph")
+        self.home_histoGraph.setFrameShape(QFrame.NoFrame)
+        self.home_histoGraph.setBackgroundBrush(brush)
 
         self.verticalLayout_57.addWidget(self.home_histoGraph)
 
@@ -1292,7 +1350,7 @@ class Ui_MainWindow(object):
 "	border-radius: 0;\n"
 "	border: 0;\n"
 "	color: 'white';\n"
-"	font: 13px \"Segoe UI BOLD\";\n"
+"	font: 13px \"Segoe UI\"; font-weight: bold;\n"
 "	width: 32px;\n"
 "	height: 25px;\n"
 "}\n"
@@ -1379,6 +1437,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.cryptoHistoDiv = QFrame(self.cryptoPage)
         self.cryptoHistoDiv.setObjectName(u"cryptoHistoDiv")
+        self.cryptoHistoDiv.setMaximumSize(QSize(450, 16777215))
         self.cryptoHistoDiv.setStyleSheet(u"background: #252930;\n"
 "border-top-left-radius: 10px;")
         self.cryptoHistoDiv.setFrameShape(QFrame.NoFrame)
@@ -1386,7 +1445,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_10 = QVBoxLayout(self.cryptoHistoDiv)
         self.verticalLayout_10.setSpacing(25)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.verticalLayout_10.setContentsMargins(20, 8, 20, 8)
+        self.verticalLayout_10.setContentsMargins(20, 15, 20, 8)
         self.frame_11 = QFrame(self.cryptoHistoDiv)
         self.frame_11.setObjectName(u"frame_11")
         self.frame_11.setMaximumSize(QSize(16777215, 33))
@@ -1407,7 +1466,7 @@ class Ui_MainWindow(object):
         self.cryptocurrency = QLabel(self.frame_29)
         self.cryptocurrency.setObjectName(u"cryptocurrency")
         self.cryptocurrency.setMinimumSize(QSize(368, 33))
-        self.cryptocurrency.setStyleSheet(u"font: 30px \"Segoe UI BOLD\";\n"
+        self.cryptocurrency.setStyleSheet(u"font: 30px \"Segoe UI\"; font-weight: bold;\n"
 "color: white;")
         self.cryptocurrency.setFrameShadow(QFrame.Plain)
         self.cryptocurrency.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
@@ -1448,7 +1507,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_18.setContentsMargins(0, 0, 0, 0)
         self.label_15 = QLabel(self.frame_30)
         self.label_15.setObjectName(u"label_15")
-        self.label_15.setStyleSheet(u"font: 15px \"Segoe UI BOLD\";")
+        self.label_15.setStyleSheet(u"font: 15px \"Segoe UI\"; font-weight: bold;")
 
         self.verticalLayout_18.addWidget(self.label_15)
 
@@ -1473,7 +1532,7 @@ class Ui_MainWindow(object):
 "	border-radius: 12px; \n"
 "	border-color: #2C313A;\n"
 "	color: #8C88BF;\n"
-"	font: 13px \"Segoe UI BOLD\";\n"
+"	font: 13px \"Segoe UI\"; font-weight: bold;\n"
 "}\n"
 "\n"
 "*:hover {\n"
@@ -1530,6 +1589,7 @@ class Ui_MainWindow(object):
         self.crypto_histoGraph.setObjectName(u"crypto_histoGraph")
         self.crypto_histoGraph.setStyleSheet(u"border: 0px;")
         self.crypto_histoGraph.setFrameShape(QFrame.NoFrame)
+        self.crypto_histoGraph.setBackgroundBrush(brush)
 
         self.verticalLayout_17.addWidget(self.crypto_histoGraph)
 
@@ -1542,7 +1602,7 @@ class Ui_MainWindow(object):
 "	border-radius: 0;\n"
 "	border: 0;\n"
 "	color: 'white';\n"
-"	font: 13px \"Segoe UI BOLD\";\n"
+"	font: 13px \"Segoe UI\"; font-weight: bold;\n"
 "	width: 32px;\n"
 "	height: 25px;\n"
 "}\n"
@@ -1645,7 +1705,7 @@ class Ui_MainWindow(object):
         self.histoCurrPriceLabel = QLabel(self.histoCurrPriceFrame)
         self.histoCurrPriceLabel.setObjectName(u"histoCurrPriceLabel")
         self.histoCurrPriceLabel.setStyleSheet(u"color: #B3AFEB;\n"
-"font: 15px \"Segoe UI BOLD\";")
+"font: 15px \"Segoe UI\"; font-weight: bold;")
         self.histoCurrPriceLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_3.addWidget(self.histoCurrPriceLabel)
@@ -1669,7 +1729,7 @@ class Ui_MainWindow(object):
         self.histoOpenPriceLabel = QLabel(self.histoOpenPriceFrame)
         self.histoOpenPriceLabel.setObjectName(u"histoOpenPriceLabel")
         self.histoOpenPriceLabel.setStyleSheet(u"color: #B3AFEB;\n"
-"font: 15px \"Segoe UI BOLD\";")
+"font: 15px \"Segoe UI\"; font-weight: bold;")
         self.histoOpenPriceLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_4.addWidget(self.histoOpenPriceLabel)
@@ -1693,7 +1753,7 @@ class Ui_MainWindow(object):
         self.histoHighPriceLabel = QLabel(self.histoHighPriceFrame)
         self.histoHighPriceLabel.setObjectName(u"histoHighPriceLabel")
         self.histoHighPriceLabel.setStyleSheet(u"color: #B3AFEB;\n"
-"font: 15px \"Segoe UI BOLD\";")
+"font: 15px \"Segoe UI\"; font-weight: bold;")
         self.histoHighPriceLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_5.addWidget(self.histoHighPriceLabel)
@@ -1717,7 +1777,7 @@ class Ui_MainWindow(object):
         self.histoLowPriceLabel = QLabel(self.histoLowPriceFrame)
         self.histoLowPriceLabel.setObjectName(u"histoLowPriceLabel")
         self.histoLowPriceLabel.setStyleSheet(u"color: #B3AFEB;\n"
-"font: 15px \"Segoe UI BOLD\";")
+"font: 15px \"Segoe UI\"; font-weight: bold;")
         self.histoLowPriceLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_6.addWidget(self.histoLowPriceLabel)
@@ -1742,7 +1802,7 @@ class Ui_MainWindow(object):
         self.histoMarketLabel = QLabel(self.histoMarketFrame)
         self.histoMarketLabel.setObjectName(u"histoMarketLabel")
         self.histoMarketLabel.setStyleSheet(u"color: #B3AFEB;\n"
-"font: 15px \"Segoe UI BOLD\";")
+"font: 15px \"Segoe UI\"; font-weight: bold;")
         self.histoMarketLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_7.addWidget(self.histoMarketLabel)
@@ -1767,7 +1827,7 @@ class Ui_MainWindow(object):
         self.histoVolumeLabel = QLabel(self.histoVolumeFrame)
         self.histoVolumeLabel.setObjectName(u"histoVolumeLabel")
         self.histoVolumeLabel.setStyleSheet(u"color: #B3AFEB;\n"
-"font: 15px \"Segoe UI BOLD\";")
+"font: 15px \"Segoe UI\"; font-weight: bold;")
         self.histoVolumeLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_8.addWidget(self.histoVolumeLabel)
@@ -1783,7 +1843,7 @@ class Ui_MainWindow(object):
 
         self.cryptoPredDiv = QFrame(self.cryptoPage)
         self.cryptoPredDiv.setObjectName(u"cryptoPredDiv")
-        self.cryptoPredDiv.setMinimumSize(QSize(765, 0))
+        self.cryptoPredDiv.setMinimumSize(QSize(0, 0))
         self.cryptoPredDiv.setFrameShape(QFrame.NoFrame)
         self.cryptoPredDiv.setFrameShadow(QFrame.Raised)
         self.verticalLayout_13 = QVBoxLayout(self.cryptoPredDiv)
@@ -1792,7 +1852,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_13.setContentsMargins(20, 20, 20, 20)
         self.cryptoPredFrame = QFrame(self.cryptoPredDiv)
         self.cryptoPredFrame.setObjectName(u"cryptoPredFrame")
-        self.cryptoPredFrame.setMaximumSize(QSize(16777215, 432))
+        self.cryptoPredFrame.setMaximumSize(QSize(16777215, 16777215))
         self.cryptoPredFrame.setFrameShape(QFrame.NoFrame)
         self.cryptoPredFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_14 = QVBoxLayout(self.cryptoPredFrame)
@@ -1817,7 +1877,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.setContentsMargins(0, 0, 0, 0)
         self.label_13 = QLabel(self.frame_27)
         self.label_13.setObjectName(u"label_13")
-        self.label_13.setStyleSheet(u"font: 15px \"Segoe UI BOLD\";")
+        self.label_13.setStyleSheet(u"font: 15px \"Segoe UI\"; font-weight: bold;")
 
         self.verticalLayout_23.addWidget(self.label_13, 0, Qt.AlignLeft|Qt.AlignVCenter)
 
@@ -1829,7 +1889,7 @@ class Ui_MainWindow(object):
         self.crypto_predPriceButtons.setStyleSheet(u"* {\n"
 "	border-radius: 12px; \n"
 "	border-color: #2C313A;\n"
-"	font: 13px \"Segoe UI BOLD\";\n"
+"	font: 13px \"Segoe UI\"; font-weight: bold;\n"
 "}\n"
 "\n"
 "*:hover {\n"
@@ -1874,7 +1934,7 @@ class Ui_MainWindow(object):
 
         self.crypto_predGraphFrame = QFrame(self.cryptoPredFrame)
         self.crypto_predGraphFrame.setObjectName(u"crypto_predGraphFrame")
-        self.crypto_predGraphFrame.setMinimumSize(QSize(528, 365))
+        self.crypto_predGraphFrame.setMinimumSize(QSize(0, 0))
         self.crypto_predGraphFrame.setStyleSheet(u"border-radius: 0; background: transparent;")
         self.crypto_predGraphFrame.setFrameShape(QFrame.NoFrame)
         self.crypto_predGraphFrame.setFrameShadow(QFrame.Raised)
@@ -1885,6 +1945,7 @@ class Ui_MainWindow(object):
         self.crypto_predGraph = PlotWidget(self.crypto_predGraphFrame)
         self.crypto_predGraph.setObjectName(u"crypto_predGraph")
         self.crypto_predGraph.setFrameShape(QFrame.NoFrame)
+        self.crypto_predGraph.setBackgroundBrush(brush)
 
         self.verticalLayout_22.addWidget(self.crypto_predGraph)
 
@@ -1958,7 +2019,7 @@ class Ui_MainWindow(object):
 
         self.cryptoPredTableFrame = QFrame(self.cryptoPredDiv)
         self.cryptoPredTableFrame.setObjectName(u"cryptoPredTableFrame")
-        self.cryptoPredTableFrame.setMaximumSize(QSize(725, 215))
+        self.cryptoPredTableFrame.setMaximumSize(QSize(16777215, 225))
         self.cryptoPredTableFrame.setStyleSheet(u"background: #21252B;\n"
 "border-radius: 10px;")
         self.cryptoPredTableFrame.setFrameShape(QFrame.NoFrame)
@@ -1970,7 +2031,8 @@ class Ui_MainWindow(object):
         self.cryptoPredTable = QTableWidget(self.cryptoPredTableFrame)
         self.cryptoPredTable.setObjectName(u"cryptoPredTable")
         self.cryptoPredTable.setFrameShape(QFrame.NoFrame)
-        self.cryptoPredTable.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.cryptoPredTable.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.cryptoPredTable.verticalHeader().setHighlightSections(False)
 
         self.verticalLayout_21.addWidget(self.cryptoPredTable)
 
@@ -1999,7 +2061,7 @@ class Ui_MainWindow(object):
         self.crypto_predSlider.valueChanged.connect(self.crypto_daysValue.setNum)
         self.home_predSlider.valueChanged.connect(self.home_daysValue.setNum)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2012,25 +2074,29 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"CRYPTIC", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton.setToolTip(QCoreApplication.translate("MainWindow", u"Home", None))
+        self.btn_home.setToolTip(QCoreApplication.translate("MainWindow", u"Home", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton.setText("")
+        self.btn_home.setText("")
 #if QT_CONFIG(tooltip)
-        self.pushButton_2.setToolTip(QCoreApplication.translate("MainWindow", u"Bitcoin", None))
+        self.btn_btc.setToolTip(QCoreApplication.translate("MainWindow", u"Bitcoin", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_2.setText("")
+        self.btn_btc.setText("")
 #if QT_CONFIG(tooltip)
-        self.pushButton_3.setToolTip(QCoreApplication.translate("MainWindow", u"Ethereum", None))
+        self.btn_eth.setToolTip(QCoreApplication.translate("MainWindow", u"Ethereum", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_3.setText("")
+        self.btn_eth.setText("")
 #if QT_CONFIG(tooltip)
-        self.pushButton_4.setToolTip(QCoreApplication.translate("MainWindow", u"Dogecoin", None))
+        self.btn_doge.setToolTip(QCoreApplication.translate("MainWindow", u"Dogecoin", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_4.setText("")
+        self.btn_doge.setText("")
 #if QT_CONFIG(tooltip)
-        self.label_17.setToolTip(QCoreApplication.translate("MainWindow", u"Today", None))
+        self.help.setToolTip(QCoreApplication.translate("MainWindow", u"Help", None))
 #endif // QT_CONFIG(tooltip)
-        self.label_17.setText("")
+        self.help.setText("")
+#if QT_CONFIG(tooltip)
+        self.dateToday.setToolTip(QCoreApplication.translate("MainWindow", u"Today", None))
+#endif // QT_CONFIG(tooltip)
+        self.dateToday.setText("")
 #if QT_CONFIG(tooltip)
         self.minimizeAppBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Minimize", None))
 #endif // QT_CONFIG(tooltip)
@@ -2049,6 +2115,7 @@ class Ui_MainWindow(object):
         self.home_predRangeLabel.setToolTip(QCoreApplication.translate("MainWindow", u"Prediction Range", None))
 #endif // QT_CONFIG(tooltip)
         self.home_predRangeLabel.setText("")
+        self.home_dateToday.setText("")
         self.label_25.setText("")
         self.label_26.setText(QCoreApplication.translate("MainWindow", u"<strong>CURRENT</strong><br>Price", None))
         self.label_27.setText(QCoreApplication.translate("MainWindow", u"<strong>OPEN</strong><br>Price", None))

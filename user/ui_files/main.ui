@@ -31,19 +31,19 @@
 	border-bottom-right-radius: 10px;
 }
 
-#bgApp QPushButton {
+#content QPushButton {
 	color: #259CA5;
 	font: 13px &quot;Segoe UI BOLD&quot;;
 	/* border: 2px solid rgb(52, 59, 72); */
 	border-radius: 10px;	
 	background-color: rgb(52, 59, 72);
 }
-#bgApp QPushButton:hover {
+#content QPushButton:hover {
 	background-color: rgb(57, 65, 80);
 	border: 2px solid rgb(61, 70, 86);
 	color: #DDDDDD;
 }
-#bgApp QPushButton:pressed {	
+#content QPushButton:pressed {	
 	background-color: rgb(35, 40, 49);
 	border: 2px solid rgb(43, 50, 61);
 	color: #DDDDDD;
@@ -57,6 +57,7 @@
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 Tooltip */
 QToolTip {
+	background: none;
 	color: #ffffff;
 	background-color: rgba(33, 37, 43, 180);
 	border: 1px solid rgb(44, 49, 58);
@@ -119,6 +120,52 @@ QSlider::handle:vertical:hover {
 QSlider::handle:vertical:pressed {
     background-color: #29B3A7;
 }
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////
+QTableWidget */
+QTableWidget {	
+	background-color: transparent;
+	padding: 10px;
+	border-radius: 5px;
+	gridline-color: rgb(51, 56, 64);/*rgb(44, 49, 58);*/
+	border-bottom: 1px solid rgb(44, 49, 60);
+}
+
+QTableWidget QTableCornerButton::section {background-color: transparent; }
+
+QTableWidget::item{
+	border-color: rgb(44, 49, 60);
+	padding-left: 5px;
+	padding-right: 5px;
+	gridline-color: rgb(44, 49, 60);
+}
+QTableWidget::item:selected{
+	background-color: #2AB7CA;
+}
+QHeaderView::section{
+	background-color: transparent;
+	/* max-width: 30px;
+	border: 1px solid rgb(44, 49, 58);*/
+	border-style: none;
+    border-bottom: 1px solid rgb(44, 49, 60);
+    border-right: 1px solid rgb(44, 49, 60);
+}
+/*QTableWidget::horizontalHeader {	
+	background-color: rgb(33, 37, 43);
+}*/
+QHeaderView::section:horizontal
+{
+    /*border: 1px solid rgb(33, 37, 43);*/
+	background-color: transparent;
+	padding: 3px;
+	border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+/* QHeaderView::section:vertical
+{
+    border: 1px solid rgb(44, 49, 60);
+}*/
+
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 LineEdit */
@@ -281,15 +328,18 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
         <widget class="QFrame" name="sideMenu">
          <property name="minimumSize">
           <size>
-           <width>77</width>
+           <width>90</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>77</width>
+           <width>100</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -313,7 +363,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QFrame" name="frame_4">
             <property name="maximumSize">
              <size>
@@ -327,7 +377,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_19">
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
              <property name="spacing">
               <number>0</number>
              </property>
@@ -343,13 +393,13 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item>
+             <item alignment="Qt::AlignBottom">
               <widget class="QLabel" name="label_16">
                <property name="toolTip">
                 <string>Welcome to CRYPTIC!</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">font: 10pt &quot;Segoe UI Semibold&quot;;
+                <string notr="true">font: 12pt &quot;Segoe UI Semibold&quot;;
 color: rgba(221, 221, 221, 0.35);</string>
                </property>
                <property name="text">
@@ -364,233 +414,56 @@ color: rgba(221, 221, 221, 0.35);</string>
            </widget>
           </item>
           <item alignment="Qt::AlignTop">
-           <widget class="QFrame" name="menuButtons">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
+           <widget class="QFrame" name="frame_7">
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
+            <layout class="QVBoxLayout" name="verticalLayout_7">
              <property name="spacing">
-              <number>10</number>
+              <number>0</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>5</number>
+              <number>10</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>10</number>
              </property>
              <item>
-              <widget class="QFrame" name="frame_6">
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
+              <widget class="QFrame" name="cryptoButtons">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::NoFrame</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_5">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>14</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="pushButton">
-                  <property name="minimumSize">
-                   <size>
-                    <width>49</width>
-                    <height>49</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>49</width>
-                    <height>49</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Home</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {	
-	background: url(:/images/images/images/btnHome.png);
+                <string notr="true">QPushButton {	
     background-repeat: no-repeat;
-	background-position: center;
-	border-radius: 18px;
+	background-position: left center;
+	border-radius: 0px;
 	width: 49px;
 	height: 49px;
 }
 
 QPushButton:hover {
-	background-color: transparent;
-	border-color: #2AB7CA;
-}
-</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="frame_7">
-               <property name="frameShape">
-                <enum>QFrame::NoFrame</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_6">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>14</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="pushButton_2">
-                  <property name="minimumSize">
-                   <size>
-                    <width>49</width>
-                    <height>49</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>49</width>
-                    <height>49</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Bitcoin</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {	
-	background: url(:/images/images/images/btnBitcoin.png);
-    background-repeat: no-repeat;
-	background-position: center;
-	border-radius: 18px;
-	width: 49px;
-	height: 49px;
+	/*border-left: 25px solid qlineargradient(spread:pad, x1:0.034, y1:1, x2:0.216, y2:1, stop:0.399 #2AB7CA, stop:0.4 rgba(85, 170, 255, 0));*/
+	border-left: 4px solid rgba(42, 183, 202, 0.4);
 }
 
-QPushButton:hover {
-	background-color: transparent;
-	border-color: #2AB7CA;
+QPushButton:focus {
+	/*border-left: 25px solid qlineargradient(spread:pad, x1:0.034, y1:1, x2:0.216, y2:1, stop:0.399 #2AB7CA, stop:0.4 rgba(85, 170, 255, 0));*/
+	border-left: 5px solid #2AB7CA;
 }</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="frame_8">
-               <property name="frameShape">
-                <enum>QFrame::NoFrame</enum>
                </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_7">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>14</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="pushButton_3">
-                  <property name="minimumSize">
-                   <size>
-                    <width>49</width>
-                    <height>49</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>49</width>
-                    <height>49</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Ethereum</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {	
-	background: url(:/images/images/images/btnEthereum.png);
-    background-repeat: no-repeat;
-	background-position: center;
-	border-radius: 18px;
-	width: 49px;
-	height: 49px;
-}
-
-QPushButton:hover {
-	background-color: transparent;
-	border-color: #2AB7CA;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="frame_9">
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
@@ -599,10 +472,10 @@ QPushButton:hover {
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_8">
                 <property name="spacing">
-                 <number>0</number>
+                 <number>17</number>
                 </property>
                 <property name="leftMargin">
-                 <number>14</number>
+                 <number>0</number>
                 </property>
                 <property name="topMargin">
                  <number>0</number>
@@ -614,43 +487,190 @@ QPushButton:hover {
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="pushButton_4">
+                 <widget class="QPushButton" name="btn_all">
                   <property name="minimumSize">
                    <size>
-                    <width>49</width>
-                    <height>49</height>
+                    <width>0</width>
+                    <height>0</height>
                    </size>
                   </property>
-                  <property name="maximumSize">
+                  <property name="toolTip">
+                   <string>Home</string>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/images/images/btnHome.png</normaloff>:/images/images/images/btnHome.png</iconset>
+                  </property>
+                  <property name="iconSize">
                    <size>
-                    <width>49</width>
-                    <height>49</height>
+                    <width>45</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_btc_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Bitcoin</string>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/images/images/btnBitcoin.png</normaloff>:/images/images/images/btnBitcoin.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>45</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_eth_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Ethereum</string>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/images/images/btnEthereum.png</normaloff>:/images/images/images/btnEthereum.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>45</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_doge_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="toolTip">
                    <string>Dogecoin</string>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">QPushButton {	
-	background: url(:/images/images/images/btnDogecoin.png);
-    background-repeat: no-repeat;
-	background-position: center;
-	border-radius: 18px;
-	width: 49px;
-	height: 49px;
-}
-
-QPushButton:hover {
-	background-color: transparent;
-	border-color: #2AB7CA;
-}</string>
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
                   </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/images/images/btnDogecoin.png</normaloff>:/images/images/images/btnDogecoin.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>45</width>
+                    <height>45</height>
+                   </size>
+                  </property>
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
+           <widget class="QFrame" name="frame_6">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>20</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="help">
+               <property name="minimumSize">
+                <size>
+                 <width>35</width>
+                 <height>35</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>35</width>
+                 <height>35</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Help</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>-1</number>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">/* Top Buttons */
+QPushButton { background-color: rgb(52, 59, 72); border: none;  border-radius: 5px; }
+QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; border-radius: 4px; }
+QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icons/images/icons/cil-help.png</normaloff>:/icons/images/icons/cil-help.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
               </widget>
              </item>
             </layout>
@@ -765,13 +785,13 @@ QToolTip {
                  <number>0</number>
                 </property>
                 <property name="rightMargin">
-                 <number>10</number>
+                 <number>0</number>
                 </property>
                 <property name="bottomMargin">
                  <number>0</number>
                 </property>
-                <item alignment="Qt::AlignRight|Qt::AlignVCenter">
-                 <widget class="QLabel" name="label_17">
+                <item>
+                 <widget class="QLabel" name="dateToday">
                   <property name="minimumSize">
                    <size>
                     <width>238</width>
@@ -856,6 +876,9 @@ QToolTip {
                      <property name="toolTip">
                       <string>Close</string>
                      </property>
+                     <property name="styleSheet">
+                      <string notr="true">border-top-right-radius: 10px;</string>
+                     </property>
                      <property name="text">
                       <string/>
                      </property>
@@ -913,7 +936,7 @@ QToolTip {
                 <string notr="true">background: transparent; </string>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="homePage">
                 <layout class="QGridLayout" name="gridLayout">
@@ -937,13 +960,13 @@ QToolTip {
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>370</height>
+                     <height>0</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
                      <width>16777215</width>
-                     <height>370</height>
+                     <height>16777215</height>
                     </size>
                    </property>
                    <property name="styleSheet">
@@ -1124,8 +1147,8 @@ border-radius: 10px;</string>
                      <widget class="QFrame" name="home_predGraphFrame">
                       <property name="minimumSize">
                        <size>
-                        <width>573</width>
-                        <height>290</height>
+                        <width>0</width>
+                        <height>0</height>
                        </size>
                       </property>
                       <property name="maximumSize">
@@ -1160,7 +1183,11 @@ border-radius: 10px;</string>
                         <number>0</number>
                        </property>
                        <item>
-                        <widget class="PlotWidget" name="home_predGraph"/>
+                        <widget class="PlotWidget" name="home_predGraph">
+                         <property name="frameShape">
+                          <enum>QFrame::NoFrame</enum>
+                         </property>
+                        </widget>
                        </item>
                       </layout>
                      </widget>
@@ -1170,7 +1197,7 @@ border-radius: 10px;</string>
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
-                        <height>10</height>
+                        <height>22</height>
                        </size>
                       </property>
                       <property name="frameShape">
@@ -1318,7 +1345,7 @@ border-radius: 10px;</string>
                    <property name="maximumSize">
                     <size>
                      <width>603</width>
-                     <height>16777215</height>
+                     <height>270</height>
                     </size>
                    </property>
                    <property name="styleSheet">
@@ -1348,10 +1375,13 @@ border-radius: 10px;</string>
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QTableWidget" name="tableWidget">
+                     <widget class="QTableWidget" name="home_tableWidget">
                       <property name="frameShape">
                        <enum>QFrame::NoFrame</enum>
                       </property>
+                      <attribute name="verticalHeaderHighlightSections">
+                       <bool>false</bool>
+                      </attribute>
                      </widget>
                     </item>
                    </layout>
@@ -1395,11 +1425,11 @@ border-radius: 10px;</string>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>250</height>
+                        <height>300</height>
                        </size>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">background: #21252B;
+                       <string notr="true">background: transparent;
 border-radius: 10px;
 font: 15px &quot;Segoe UI BOLD&quot;;</string>
                       </property>
@@ -1409,117 +1439,65 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                       <property name="frameShadow">
                        <enum>QFrame::Raised</enum>
                       </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_18">
+                      <layout class="QVBoxLayout" name="verticalLayout_5">
                        <property name="spacing">
-                        <number>15</number>
+                        <number>10</number>
                        </property>
                        <property name="leftMargin">
                         <number>0</number>
                        </property>
                        <property name="topMargin">
-                        <number>10</number>
+                        <number>0</number>
                        </property>
                        <property name="rightMargin">
-                        <number>10</number>
+                        <number>0</number>
                        </property>
                        <property name="bottomMargin">
-                        <number>10</number>
+                        <number>0</number>
                        </property>
                        <item>
-                        <widget class="QFrame" name="frame_56">
-                         <property name="maximumSize">
-                          <size>
-                           <width>85</width>
-                           <height>16777215</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
-                         </property>
+                        <widget class="QFrame" name="frame_2">
                          <property name="frameShape">
                           <enum>QFrame::NoFrame</enum>
                          </property>
                          <property name="frameShadow">
                           <enum>QFrame::Raised</enum>
                          </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_40">
+                         <layout class="QHBoxLayout" name="horizontalLayout_17">
                           <property name="spacing">
-                           <number>8</number>
+                           <number>0</number>
                           </property>
                           <property name="leftMargin">
-                           <number>15</number>
+                           <number>0</number>
                           </property>
                           <property name="topMargin">
-                           <number>10</number>
+                           <number>0</number>
                           </property>
                           <property name="rightMargin">
                            <number>0</number>
                           </property>
                           <property name="bottomMargin">
-                           <number>10</number>
+                           <number>0</number>
                           </property>
                           <item>
-                           <widget class="QLabel" name="label_25">
+                           <widget class="QLabel" name="home_dateToday">
                             <property name="minimumSize">
                              <size>
-                              <width>0</width>
-                              <height>37</height>
+                              <width>275</width>
+                              <height>41</height>
                              </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">font: 30px &quot;Segoe UI BOLD&quot;;
+color: white;
+background: #2AB7CA;
+color: #21252B;</string>
                             </property>
                             <property name="text">
                              <string/>
                             </property>
                             <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="label_26">
-                            <property name="text">
-                             <string>&lt;strong&gt;CURRENT&lt;/strong&gt;&lt;br&gt;Price</string>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="label_27">
-                            <property name="styleSheet">
-                             <string notr="true">border-top: 2px solid #41464E; border-radius: 0px;</string>
-                            </property>
-                            <property name="text">
-                             <string>&lt;strong&gt;OPEN&lt;/strong&gt;&lt;br&gt;Price</string>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="label_28">
-                            <property name="styleSheet">
-                             <string notr="true">border-top: 2px solid #41464E; border-radius: 0px;</string>
-                            </property>
-                            <property name="text">
-                             <string>24h&lt;br&gt;&lt;strong&gt;HIGH&lt;/strong&gt;</string>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="label_29">
-                            <property name="styleSheet">
-                             <string notr="true">border-top: 2px solid #41464E; border-radius: 0px;</string>
-                            </property>
-                            <property name="text">
-                             <string>24h&lt;br&gt;&lt;strong&gt;LOW&lt;/strong&gt;</string>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             <set>Qt::AlignCenter</set>
                             </property>
                            </widget>
                           </item>
@@ -1527,9 +1505,9 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QFrame" name="home_btcCard">
+                        <widget class="QFrame" name="frame_3">
                          <property name="styleSheet">
-                          <string notr="true">background: #41464E;</string>
+                          <string notr="true">background: #21252B;</string>
                          </property>
                          <property name="frameShape">
                           <enum>QFrame::NoFrame</enum>
@@ -1537,12 +1515,12 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                          <property name="frameShadow">
                           <enum>QFrame::Raised</enum>
                          </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_41">
+                         <layout class="QHBoxLayout" name="horizontalLayout_16">
                           <property name="spacing">
-                           <number>10</number>
+                           <number>15</number>
                           </property>
                           <property name="leftMargin">
-                           <number>10</number>
+                           <number>0</number>
                           </property>
                           <property name="topMargin">
                            <number>10</number>
@@ -1554,38 +1532,231 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                            <number>10</number>
                           </property>
                           <item>
-                           <widget class="QFrame" name="btcLogoTitle">
+                           <widget class="QFrame" name="frame_56">
+                            <property name="maximumSize">
+                             <size>
+                              <width>85</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
+                            </property>
                             <property name="frameShape">
                              <enum>QFrame::NoFrame</enum>
                             </property>
                             <property name="frameShadow">
                              <enum>QFrame::Raised</enum>
                             </property>
-                            <layout class="QHBoxLayout" name="horizontalLayout_36">
+                            <layout class="QVBoxLayout" name="verticalLayout_40">
                              <property name="spacing">
-                              <number>0</number>
+                              <number>8</number>
                              </property>
                              <property name="leftMargin">
-                              <number>0</number>
+                              <number>15</number>
                              </property>
                              <property name="topMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="rightMargin">
                               <number>0</number>
                              </property>
                              <property name="bottomMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
-                             <item alignment="Qt::AlignVCenter">
-                              <widget class="QFrame" name="frame_65">
+                             <item>
+                              <widget class="QLabel" name="label_25">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLabel" name="label_26">
+                               <property name="text">
+                                <string>&lt;strong&gt;CURRENT&lt;/strong&gt;&lt;br&gt;Price</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLabel" name="label_27">
+                               <property name="styleSheet">
+                                <string notr="true">border-top: 2px solid #41464E; border-radius: 0px;</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;strong&gt;OPEN&lt;/strong&gt;&lt;br&gt;Price</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLabel" name="label_28">
+                               <property name="styleSheet">
+                                <string notr="true">border-top: 2px solid #41464E; border-radius: 0px;</string>
+                               </property>
+                               <property name="text">
+                                <string>24h&lt;br&gt;&lt;strong&gt;HIGH&lt;/strong&gt;</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLabel" name="label_29">
+                               <property name="styleSheet">
+                                <string notr="true">border-top: 2px solid #41464E; border-radius: 0px;</string>
+                               </property>
+                               <property name="text">
+                                <string>24h&lt;br&gt;&lt;strong&gt;LOW&lt;/strong&gt;</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QFrame" name="home_btcCard">
+                            <property name="styleSheet">
+                             <string notr="true">background: #41464E;</string>
+                            </property>
+                            <property name="frameShape">
+                             <enum>QFrame::NoFrame</enum>
+                            </property>
+                            <property name="frameShadow">
+                             <enum>QFrame::Raised</enum>
+                            </property>
+                            <layout class="QVBoxLayout" name="verticalLayout_41">
+                             <property name="spacing">
+                              <number>10</number>
+                             </property>
+                             <property name="leftMargin">
+                              <number>10</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>10</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>10</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>10</number>
+                             </property>
+                             <item>
+                              <widget class="QFrame" name="btcLogoTitle">
                                <property name="frameShape">
                                 <enum>QFrame::NoFrame</enum>
                                </property>
                                <property name="frameShadow">
                                 <enum>QFrame::Raised</enum>
                                </property>
-                               <layout class="QVBoxLayout" name="verticalLayout_116">
+                               <layout class="QHBoxLayout" name="horizontalLayout_36">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item alignment="Qt::AlignVCenter">
+                                 <widget class="QFrame" name="frame_65">
+                                  <property name="frameShape">
+                                   <enum>QFrame::NoFrame</enum>
+                                  </property>
+                                  <property name="frameShadow">
+                                   <enum>QFrame::Raised</enum>
+                                  </property>
+                                  <layout class="QVBoxLayout" name="verticalLayout_116">
+                                   <property name="spacing">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="leftMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="topMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="rightMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="bottomMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <item>
+                                    <widget class="QLabel" name="label_35">
+                                     <property name="styleSheet">
+                                      <string notr="true">font: 15px &quot;Segoe UI BOLD&quot;;</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>BTC</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <widget class="QLabel" name="label_30">
+                                     <property name="styleSheet">
+                                      <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>Bitcoin</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </widget>
+                                </item>
+                                <item>
+                                 <widget class="QFrame" name="frame_66">
+                                  <property name="styleSheet">
+                                   <string notr="true">background-image: url(:/images/images/images/btc-logo.png);
+background-repeat: no-repeat;
+background-position: right top;</string>
+                                  </property>
+                                  <property name="frameShape">
+                                   <enum>QFrame::NoFrame</enum>
+                                  </property>
+                                  <property name="frameShadow">
+                                   <enum>QFrame::Raised</enum>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QFrame" name="frame_63">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
+                               </property>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_42">
                                 <property name="spacing">
                                  <number>0</number>
                                 </property>
@@ -1602,22 +1773,12 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                                  <number>0</number>
                                 </property>
                                 <item>
-                                 <widget class="QLabel" name="label_35">
-                                  <property name="styleSheet">
-                                   <string notr="true">font: 15px &quot;Segoe UI BOLD&quot;;</string>
-                                  </property>
+                                 <widget class="QLabel" name="home_btc_currPriceLabel">
                                   <property name="text">
-                                   <string>BTC</string>
+                                   <string/>
                                   </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QLabel" name="label_30">
-                                  <property name="styleSheet">
-                                   <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
-                                  </property>
-                                  <property name="text">
-                                   <string>Bitcoin</string>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                                   </property>
                                  </widget>
                                 </item>
@@ -1625,234 +1786,14 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QFrame" name="frame_66">
-                               <property name="styleSheet">
-                                <string notr="true">background-image: url(:/images/images/images/btc-logo.png);
-background-repeat: no-repeat;
-background-position: right top;</string>
-                               </property>
+                              <widget class="QFrame" name="frame_64">
                                <property name="frameShape">
                                 <enum>QFrame::NoFrame</enum>
                                </property>
                                <property name="frameShadow">
                                 <enum>QFrame::Raised</enum>
                                </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_63">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_42">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_btc_currPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_64">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_43">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_btc_openPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_2">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_44">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_btc_highPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_62">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_45">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_btc_lowPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QFrame" name="home_ethCard">
-                         <property name="styleSheet">
-                          <string notr="true">background: #41464E;</string>
-                         </property>
-                         <property name="frameShape">
-                          <enum>QFrame::NoFrame</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Raised</enum>
-                         </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_50">
-                          <property name="spacing">
-                           <number>10</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>10</number>
-                          </property>
-                          <item>
-                           <widget class="QFrame" name="ethLogoTitle">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QHBoxLayout" name="horizontalLayout_37">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item alignment="Qt::AlignVCenter">
-                              <widget class="QFrame" name="frame_70">
-                               <property name="frameShape">
-                                <enum>QFrame::NoFrame</enum>
-                               </property>
-                               <property name="frameShadow">
-                                <enum>QFrame::Raised</enum>
-                               </property>
-                               <layout class="QVBoxLayout" name="verticalLayout_117">
+                               <layout class="QVBoxLayout" name="verticalLayout_43">
                                 <property name="spacing">
                                  <number>0</number>
                                 </property>
@@ -1869,22 +1810,12 @@ background-position: right top;</string>
                                  <number>0</number>
                                 </property>
                                 <item>
-                                 <widget class="QLabel" name="label_43">
-                                  <property name="styleSheet">
-                                   <string notr="true">font: 15px &quot;Segoe UI BOLD&quot;;</string>
-                                  </property>
+                                 <widget class="QLabel" name="home_btc_openPriceLabel">
                                   <property name="text">
-                                   <string>ETH</string>
+                                   <string/>
                                   </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QLabel" name="label_44">
-                                  <property name="styleSheet">
-                                   <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
-                                  </property>
-                                  <property name="text">
-                                   <string>Ethereum</string>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                                   </property>
                                  </widget>
                                 </item>
@@ -1892,234 +1823,14 @@ background-position: right top;</string>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QFrame" name="frame_71">
-                               <property name="styleSheet">
-                                <string notr="true">background-image: url(:/images/images/images/eth-logo.png);
-background-repeat: no-repeat;
-background-position: right top;</string>
-                               </property>
+                              <widget class="QFrame" name="frame_5">
                                <property name="frameShape">
                                 <enum>QFrame::NoFrame</enum>
                                </property>
                                <property name="frameShadow">
                                 <enum>QFrame::Raised</enum>
                                </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_68">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_47">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_eth_currPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_72">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_48">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_eth_openPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_73">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_49">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_eth_highPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_67">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_46">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="home_eth_lowPriceLabel">
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QFrame" name="home_dogeCard">
-                         <property name="styleSheet">
-                          <string notr="true">background: #41464E;</string>
-                         </property>
-                         <property name="frameShape">
-                          <enum>QFrame::NoFrame</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Raised</enum>
-                         </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_55">
-                          <property name="spacing">
-                           <number>10</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>10</number>
-                          </property>
-                          <item>
-                           <widget class="QFrame" name="dogeLogoTitle">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QHBoxLayout" name="horizontalLayout_38">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
-                             <item alignment="Qt::AlignVCenter">
-                              <widget class="QFrame" name="frame_79">
-                               <property name="frameShape">
-                                <enum>QFrame::NoFrame</enum>
-                               </property>
-                               <property name="frameShadow">
-                                <enum>QFrame::Raised</enum>
-                               </property>
-                               <layout class="QVBoxLayout" name="verticalLayout_118">
+                               <layout class="QVBoxLayout" name="verticalLayout_44">
                                 <property name="spacing">
                                  <number>0</number>
                                 </property>
@@ -2136,22 +1847,12 @@ background-position: right top;</string>
                                  <number>0</number>
                                 </property>
                                 <item>
-                                 <widget class="QLabel" name="label_51">
-                                  <property name="styleSheet">
-                                   <string notr="true">font: 15px &quot;Segoe UI BOLD&quot;;</string>
-                                  </property>
+                                 <widget class="QLabel" name="home_btc_highPriceLabel">
                                   <property name="text">
-                                   <string>DOGE</string>
+                                   <string/>
                                   </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QLabel" name="label_52">
-                                  <property name="styleSheet">
-                                   <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
-                                  </property>
-                                  <property name="text">
-                                   <string>Dogecoin</string>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                                   </property>
                                  </widget>
                                 </item>
@@ -2159,166 +1860,574 @@ background-position: right top;</string>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QFrame" name="frame_80">
-                               <property name="styleSheet">
-                                <string notr="true">background-image: url(:/images/images/images/doge-logo.png);
-background-repeat: no-repeat;
-background-position: right top;</string>
-                               </property>
+                              <widget class="QFrame" name="frame_62">
                                <property name="frameShape">
                                 <enum>QFrame::NoFrame</enum>
                                </property>
                                <property name="frameShadow">
                                 <enum>QFrame::Raised</enum>
                                </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_45">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_btc_lowPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
                               </widget>
                              </item>
                             </layout>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QFrame" name="frame_76">
+                           <widget class="QFrame" name="home_ethCard">
+                            <property name="styleSheet">
+                             <string notr="true">background: #41464E;</string>
+                            </property>
                             <property name="frameShape">
                              <enum>QFrame::NoFrame</enum>
                             </property>
                             <property name="frameShadow">
                              <enum>QFrame::Raised</enum>
                             </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_53">
+                            <layout class="QVBoxLayout" name="verticalLayout_50">
                              <property name="spacing">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="leftMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="topMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="rightMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="bottomMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <item>
-                              <widget class="QLabel" name="home_doge_currPriceLabel">
-                               <property name="text">
-                                <string/>
+                              <widget class="QFrame" name="ethLogoTitle">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
                                </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
                                </property>
+                               <layout class="QHBoxLayout" name="horizontalLayout_37">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item alignment="Qt::AlignVCenter">
+                                 <widget class="QFrame" name="frame_70">
+                                  <property name="frameShape">
+                                   <enum>QFrame::NoFrame</enum>
+                                  </property>
+                                  <property name="frameShadow">
+                                   <enum>QFrame::Raised</enum>
+                                  </property>
+                                  <layout class="QVBoxLayout" name="verticalLayout_117">
+                                   <property name="spacing">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="leftMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="topMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="rightMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="bottomMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <item>
+                                    <widget class="QLabel" name="label_43">
+                                     <property name="styleSheet">
+                                      <string notr="true">font: 15px &quot;Segoe UI BOLD&quot;;</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>ETH</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <widget class="QLabel" name="label_44">
+                                     <property name="styleSheet">
+                                      <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>Ethereum</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </widget>
+                                </item>
+                                <item>
+                                 <widget class="QFrame" name="frame_71">
+                                  <property name="styleSheet">
+                                   <string notr="true">background-image: url(:/images/images/images/eth-logo.png);
+background-repeat: no-repeat;
+background-position: right top;</string>
+                                  </property>
+                                  <property name="frameShape">
+                                   <enum>QFrame::NoFrame</enum>
+                                  </property>
+                                  <property name="frameShadow">
+                                   <enum>QFrame::Raised</enum>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QFrame" name="frame_68">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
+                               </property>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_47">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_eth_currPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QFrame" name="frame_72">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
+                               </property>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_48">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_eth_openPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QFrame" name="frame_73">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
+                               </property>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_49">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_eth_highPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QFrame" name="frame_67">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
+                               </property>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_46">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_eth_lowPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
                               </widget>
                              </item>
                             </layout>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QFrame" name="frame_77">
+                           <widget class="QFrame" name="home_dogeCard">
+                            <property name="styleSheet">
+                             <string notr="true">background: #41464E;</string>
+                            </property>
                             <property name="frameShape">
                              <enum>QFrame::NoFrame</enum>
                             </property>
                             <property name="frameShadow">
                              <enum>QFrame::Raised</enum>
                             </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_54">
+                            <layout class="QVBoxLayout" name="verticalLayout_55">
                              <property name="spacing">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="leftMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="topMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="rightMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <property name="bottomMargin">
-                              <number>0</number>
+                              <number>10</number>
                              </property>
                              <item>
-                              <widget class="QLabel" name="home_doge_openPriceLabel">
-                               <property name="text">
-                                <string/>
+                              <widget class="QFrame" name="dogeLogoTitle">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
                                </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
                                </property>
+                               <layout class="QHBoxLayout" name="horizontalLayout_38">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item alignment="Qt::AlignVCenter">
+                                 <widget class="QFrame" name="frame_79">
+                                  <property name="frameShape">
+                                   <enum>QFrame::NoFrame</enum>
+                                  </property>
+                                  <property name="frameShadow">
+                                   <enum>QFrame::Raised</enum>
+                                  </property>
+                                  <layout class="QVBoxLayout" name="verticalLayout_118">
+                                   <property name="spacing">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="leftMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="topMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="rightMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <property name="bottomMargin">
+                                    <number>0</number>
+                                   </property>
+                                   <item>
+                                    <widget class="QLabel" name="label_51">
+                                     <property name="styleSheet">
+                                      <string notr="true">font: 15px &quot;Segoe UI BOLD&quot;;</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>DOGE</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <widget class="QLabel" name="label_52">
+                                     <property name="styleSheet">
+                                      <string notr="true">font: 10pt &quot;Segoe UI&quot;;</string>
+                                     </property>
+                                     <property name="text">
+                                      <string>Dogecoin</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </widget>
+                                </item>
+                                <item>
+                                 <widget class="QFrame" name="frame_80">
+                                  <property name="styleSheet">
+                                   <string notr="true">background-image: url(:/images/images/images/doge-logo.png);
+background-repeat: no-repeat;
+background-position: right top;</string>
+                                  </property>
+                                  <property name="frameShape">
+                                   <enum>QFrame::NoFrame</enum>
+                                  </property>
+                                  <property name="frameShadow">
+                                   <enum>QFrame::Raised</enum>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
                               </widget>
                              </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_75">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_52">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
                              <item>
-                              <widget class="QLabel" name="home_doge_highPriceLabel">
-                               <property name="text">
-                                <string/>
+                              <widget class="QFrame" name="frame_76">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
                                </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
                                </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_53">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_doge_currPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
                               </widget>
                              </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QFrame" name="frame_74">
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_51">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>0</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>0</number>
-                             </property>
                              <item>
-                              <widget class="QLabel" name="home_doge_lowPriceLabel">
-                               <property name="text">
-                                <string/>
+                              <widget class="QFrame" name="frame_77">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
                                </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
                                </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_54">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_doge_openPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QFrame" name="frame_75">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
+                               </property>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_52">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_doge_highPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QFrame" name="frame_74">
+                               <property name="frameShape">
+                                <enum>QFrame::NoFrame</enum>
+                               </property>
+                               <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_51">
+                                <property name="spacing">
+                                 <number>0</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <widget class="QLabel" name="home_doge_lowPriceLabel">
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
                               </widget>
                              </item>
                             </layout>
@@ -2522,13 +2631,13 @@ border-radius: 10px;</string>
                          <property name="minimumSize">
                           <size>
                            <width>510</width>
-                           <height>290</height>
+                           <height>200</height>
                           </size>
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>510</width>
-                           <height>290</height>
+                           <width>16777215</width>
+                           <height>16777215</height>
                           </size>
                          </property>
                          <property name="frameShape">
@@ -2554,7 +2663,11 @@ border-radius: 10px;</string>
                            <number>0</number>
                           </property>
                           <item>
-                           <widget class="PlotWidget" name="home_histoGraph"/>
+                           <widget class="PlotWidget" name="home_histoGraph">
+                            <property name="frameShape">
+                             <enum>QFrame::NoFrame</enum>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </widget>
@@ -2717,6 +2830,12 @@ QToolTip {
                  </property>
                  <item>
                   <widget class="QFrame" name="cryptoHistoDiv">
+                   <property name="maximumSize">
+                    <size>
+                     <width>450</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">background: #252930;
 border-top-left-radius: 10px;</string>
@@ -2735,7 +2854,7 @@ border-top-left-radius: 10px;</string>
                      <number>20</number>
                     </property>
                     <property name="topMargin">
-                     <number>8</number>
+                     <number>15</number>
                     </property>
                     <property name="rightMargin">
                      <number>20</number>
@@ -3578,7 +3697,7 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                   <widget class="QFrame" name="cryptoPredDiv">
                    <property name="minimumSize">
                     <size>
-                     <width>765</width>
+                     <width>0</width>
                      <height>0</height>
                     </size>
                    </property>
@@ -3609,7 +3728,7 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
-                        <height>432</height>
+                        <height>16777215</height>
                        </size>
                       </property>
                       <property name="frameShape">
@@ -3786,8 +3905,8 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                         <widget class="QFrame" name="crypto_predGraphFrame">
                          <property name="minimumSize">
                           <size>
-                           <width>528</width>
-                           <height>365</height>
+                           <width>0</width>
+                           <height>0</height>
                           </size>
                          </property>
                          <property name="styleSheet">
@@ -3977,8 +4096,8 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                      <widget class="QFrame" name="cryptoPredTableFrame">
                       <property name="maximumSize">
                        <size>
-                        <width>725</width>
-                        <height>215</height>
+                        <width>16777215</width>
+                        <height>225</height>
                        </size>
                       </property>
                       <property name="styleSheet">
@@ -4013,8 +4132,11 @@ border-radius: 10px;</string>
                           <enum>QFrame::NoFrame</enum>
                          </property>
                          <property name="verticalScrollBarPolicy">
-                          <enum>Qt::ScrollBarAlwaysOn</enum>
+                          <enum>Qt::ScrollBarAsNeeded</enum>
                          </property>
+                         <attribute name="verticalHeaderHighlightSections">
+                          <bool>false</bool>
+                         </attribute>
                         </widget>
                        </item>
                       </layout>
