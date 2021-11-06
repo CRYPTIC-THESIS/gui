@@ -26,6 +26,7 @@ class Login(QMainWindow):
         super(Login, self).__init__()
         self.ui = Login_MainWindow()
         self.ui.setupUi(self)
+        self.setAttribute(Qt.WA_DeleteOnClose)
 
         # CUSTOM TITLE BAR
         LoginSettings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -44,7 +45,7 @@ class Login(QMainWindow):
         self.ui.btn_signup.clicked.connect(self.signupfunction)
         self.ui.btn_toLogin.clicked.connect(lambda : self.ui.content.setCurrentWidget(self.ui.loginPage))
 
-        self.windows = list()
+        # self.windows = list()
 
     def loginfunction(self):
         self.ui.username_signup.clear()
@@ -56,10 +57,10 @@ class Login(QMainWindow):
 
         try:
             auth.sign_in_with_email_and_password(email, password)
+            self.window = MainWindow()
+            # self.windows.append(window)
+            self.window.show()
             self.close()
-            window = MainWindow()
-            self.windows.append(window)
-            window.show()
         except Exception:
             print('INVALID ACCOUNT.')
             self.ui.username_login.clear()
@@ -103,6 +104,7 @@ class MainWindow(QMainWindow):
         global widgets
         widgets = self.ui
         widgets.setupUi(self)
+        self.setAttribute(Qt.WA_DeleteOnClose)
 
         # CUSTOM TITLE BAR
         MainSettings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -122,7 +124,7 @@ class MainWindow(QMainWindow):
         self.dataset_crypto = list()
         self.dataset_source = list()
 
-        self.windows = list()
+        # self.windows = list()
 
         # QTableWidget Stretch
         widgets.predictedTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -468,10 +470,10 @@ class MainWindow(QMainWindow):
 
 
     def logout(self):
+        self.window = Login()
+        # self.windows.append(window)
+        self.window.show()
         self.close()
-        window = Login()
-        self.windows.append(window)
-        window.show()
 
 
     def get_selected_date(self):

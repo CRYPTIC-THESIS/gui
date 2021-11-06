@@ -12,7 +12,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-import resources_rc
+from . resources_rc import *
 
 class Ui_SplashScreen(object):
     def setupUi(self, SplashScreen):
@@ -29,13 +29,13 @@ class Ui_SplashScreen(object):
         self.frame.setObjectName(u"frame")
         self.frame.setStyleSheet(u"background: #21252B;\n"
 "border-radius: 10px;")
-        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShape(QFrame.NoFrame)
         self.frame.setFrameShadow(QFrame.Raised)
         self.frame_2 = QFrame(self.frame)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setGeometry(QRect(90, 60, 458, 94))
         self.frame_2.setStyleSheet(u"background: url(:/images/images/images/splash-logo.png);")
-        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShape(QFrame.NoFrame)
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.label = QLabel(self.frame)
         self.label.setObjectName(u"label")
@@ -44,7 +44,7 @@ class Ui_SplashScreen(object):
         font.setFamily(u"Segoe UI")
         font.setPointSize(16)
         font.setBold(False)
-        font.setWeight(50)
+        # font.setWeight(50)
         self.label.setFont(font)
         self.label.setStyleSheet(u"color: #FFFFFF;")
         self.label.setAlignment(Qt.AlignCenter)
@@ -54,7 +54,7 @@ class Ui_SplashScreen(object):
         self.progressBar.setStyleSheet(u"QProgressBar {\n"
 "	\n"
 "	background-color: #2C313A;\n"
-"	color: #9B9D9F;\n"
+"	color: #DDDDDD;\n"
 "	border-style: none;\n"
 "	border-radius: 18px;\n"
 "	text-align: center;\n"
@@ -63,7 +63,7 @@ class Ui_SplashScreen(object):
 "	border-radius: 18px;\n"
 "	background-color: qlineargradient(spread:pad, x1:0, y1:0.511364, x2:1, y2:0.523, stop:0 #2AB7CA, stop:1 #8C88BF);\n"
 "}")
-        self.progressBar.setValue(24)
+        self.progressBar.setValue(13)
         self.label_2 = QLabel(self.frame)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(303, 320, 55, 20))
@@ -71,7 +71,7 @@ class Ui_SplashScreen(object):
         font1.setFamily(u"Segoe UI Semibold")
         font1.setPointSize(10)
         font1.setBold(True)
-        font1.setWeight(75)
+        # font1.setWeight(75)
         self.label_2.setFont(font1)
         self.label_2.setStyleSheet(u"color: #9B9D9F;")
         self.label_2.setAlignment(Qt.AlignCenter)
