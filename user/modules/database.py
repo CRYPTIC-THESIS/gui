@@ -3,6 +3,7 @@ from main import *
 class AccessDatabase(QThread):
     update_progress = Signal(int)
     import_data_complete = Signal()
+    
     def run(self):
         
         db_btc = get_data_table('Bitcoin_Data')
