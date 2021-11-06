@@ -440,6 +440,8 @@ class MainWindow(QMainWindow):
             widgets.deployCryptoList.clear()
             widgets.deploySourceList.clear()
 
+            self.cancel_selection()
+
             widgets.stackedWidget.setCurrentWidget(widgets.train)
             widgets.trainContent.setCurrentWidget(widgets.getDataPage)
             UIFunctions.resetStyle(self, "btn_train")
