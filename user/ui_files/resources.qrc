@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="images">
+    <file>../images/images/btnHome.png</file>
     <file>../images/images/splash-logo.png</file>
     <file>../images/images/app-logo.png</file>
     <file>../images/images/btc-logo.png</file>
