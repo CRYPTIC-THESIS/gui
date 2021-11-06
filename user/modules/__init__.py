@@ -8,3 +8,6 @@ from datetime import datetime, timedelta
 # GUI FILE
 from . ui_splashscreen import *
 from . ui_main import *
+
+# DATABASE
+from . database import *

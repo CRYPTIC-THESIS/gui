@@ -2,8 +2,6 @@ import sys
 import os
 import time
 
-# import pyrebase
-# from modules import *
 from modules import *
 from dbconnect import *
 os.environ["QT_FONT_DPI"] = "96"
@@ -43,6 +41,9 @@ class SplashScreen(QMainWindow):
         if ctr == 75:
             self.ui.label.setText("<strong>LOADING</strong> USER INTERFACE")
         if ctr == 100:
+            self.worker.terminate()
+            self.window = MainWindow()
+            self.window.show()
             self.close()
 
     def catch_db_data(self):
@@ -51,35 +52,19 @@ class SplashScreen(QMainWindow):
         # print(db_data)
         # self.close()
 
-class AccessDatabase(QThread):
-    update_progress = Signal(int)
-    import_data_complete = Signal()
-    def run(self):
-        
-        db_btc = get_data_table('Bitcoin_Data')
-        db_eth = get_data_table('Ethereum_Data')
-        db_doge = get_data_table('Dogecoin_Data')
 
-        lst = [db_btc, db_eth, db_doge]
-        fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv']
+widgets = None
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.ui = Ui_MainWindow()
 
-        today = datetime.today().strftime('%Y-%m-%d')
-        today = pd.to_datetime(today)
-        past = today - timedelta(days=365)
+        global widgets
+        widgets = self.ui
+        widgets.setupUi(self)
+        self.setAttribute(Qt.WA_DeleteOnClose)
 
-        for i, df in enumerate(lst):
-            df['date'] = pd.to_datetime(df['date'])
-            df = df.loc[(df['date'] >= past) & (df['date'] <= today)]
-            df.to_csv(fn[i])
-
-        print(today)
-        print(past)
-
-        self.import_data_complete.emit()
-
-        for x in range(13, 101):
-            time.sleep(0.07)
-            self.update_progress.emit(x)
+        # self.show()
 
 
 if __name__ == "__main__":

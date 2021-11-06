@@ -1242,7 +1242,7 @@ class Ui_MainWindow(object):
         font.setFamily(u"Segoe UI BOLD")
         font.setBold(False)
         font.setItalic(False)
-        font.setWeight(50)
+        # font.setWeight(50)
         self.btn_homeHistoClosing.setFont(font)
         self.btn_homeHistoClosing.setStyleSheet(u"")
 
