@@ -106,7 +106,7 @@ class cryptic():
         #print(len(lstm.params['Wv'][0]),len(l_param['Wv'][0]))
         
         for key in lstm.params:
-            #print('Key:',key)
+            print('Key:',key)
             if (key == 'Wv') or (key == 'bv'):
                 for i in range (len(l_param[key])):
                     lstm.params[key][i] = l_param[key][i]
@@ -119,11 +119,11 @@ class cryptic():
 
 
     def test(self,data,crypto):
-        file = open(crypto+'_con.obj', 'r') 
+        file = open(crypto+'_con.obj', 'rb') 
         con = pl.load(file)
-        file = open(crypto+'_con1.obj', 'r') 
+        file = open(crypto+'_con1.obj', 'rb') 
         con1 = pl.load(file)
-        file = open(crypto+'_lstm.obj', 'r') 
+        file = open(crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
 
         out = con.forward(data)
