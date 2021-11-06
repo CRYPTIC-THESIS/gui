@@ -90,11 +90,11 @@ class cryptic():
         progress(epochs, epochs, status='Kapagod mag-aral beh')
 
         
-        filehandler = open(str(crypto)+'_con.obj', 'w') 
+        filehandler = open(str(crypto)+'_con.obj', 'wb') 
         pl.dump(con, filehandler)
-        filehandler = open(str(crypto)+'_con1.obj', 'w') 
+        filehandler = open(str(crypto)+'_con1.obj', 'wb') 
         pl.dump(con1, filehandler)
-        filehandler = open(str(crypto)+'_lstm.obj', 'w') 
+        filehandler = open(str(crypto)+'_lstm.obj', 'wb') 
         pl.dump(lstm, filehandler)
 
         return J

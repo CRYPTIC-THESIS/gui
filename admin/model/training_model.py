@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import CRYPTIC_module as nn
 import sys 
+import pickle
 sys.path.append('..')
 
 from sklearn.model_selection import train_test_split
@@ -17,6 +18,7 @@ dataset_all = pd.read_csv('csv/dataset.csv')
 crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
 losses = pd.DataFrame()
+trained = []
 for i in range(1):
     data = dataset_all.loc[dataset_all['Cryptocurrency'] == crypto[i]]
     dataset = pd.DataFrame()
@@ -43,13 +45,14 @@ for i in range(1):
         btc_loss= btc_model.train(100,data,X,crypto[i])
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
-
+        trained.append('BTC')
     elif(crypto[i]=='ETH'):
         eth_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
         eth_loss = eth_model.train(100,data,X,crypto[i])
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!')
+        trained.append('ETH')
 
     elif(crypto[i]=='DOGE'):
         doge_model = nn.cryptic(crypto[i])
@@ -57,12 +60,14 @@ for i in range(1):
         doge_loss = doge_model.train(100,data,X,crypto[i])
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!')
-        
+        trained.append('DOGE')
+
     else:
         print('Invalid Crypto')
 
+file_name = "trained.pkl"
 
-
-np.savetxt("trained_list.csv", crypto, delimiter=",")
-
+open_file = open(file_name, "wb")
+pickle.dump(trained, open_file)
+open_file.close()
     
