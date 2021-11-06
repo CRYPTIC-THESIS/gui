@@ -990,7 +990,7 @@ Button */
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../resources.qrc">
+                   <iconset resource="../../user/ui_files/resources.qrc">
                     <normaloff>:/icons/images/icons/icon_minimize.png</normaloff>:/icons/images/icons/icon_minimize.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -1013,7 +1013,7 @@ Button */
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../resources.qrc">
+                   <iconset resource="../../user/ui_files/resources.qrc">
                     <normaloff>:/icons/images/icons/icon_close.png</normaloff>:/icons/images/icons/icon_close.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -1111,7 +1111,7 @@ Button */
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>2</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="dash">
                       <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -6931,12 +6931,12 @@ border: 2px solid #21252B;</string>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>818</x>
-     <y>458</y>
+     <x>465</x>
+     <y>485</y>
     </hint>
     <hint type="destinationlabel">
-     <x>968</x>
-     <y>468</y>
+     <x>482</x>
+     <y>482</y>
     </hint>
    </hints>
   </connection>
@@ -6947,12 +6947,12 @@ border: 2px solid #21252B;</string>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1078</x>
-     <y>198</y>
+     <x>1197</x>
+     <y>224</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1207</x>
-     <y>201</y>
+     <x>1219</x>
+     <y>221</y>
     </hint>
    </hints>
   </connection>
