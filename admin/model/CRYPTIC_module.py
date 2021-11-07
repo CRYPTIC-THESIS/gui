@@ -183,20 +183,66 @@ class cryptic():
         pred = s[-(len(out)-1):]
         predx = [i for i in range(len(pred))]
         outx = [i for i in range(len(out))]
-        plt.plot(outx, out, 'c')
-        plt.plot(predx,pred, 'y')
-        plt.show()
 
-        
-    
-    def predict_crypto(self,network,input):
+    def predict_crypto(self,input,crypto):
         #predict cryptocurrency up to 14 days
 
         #Initialize Model
-        for i  in range(14):
-            out = network[0].forward(input)
-            out = layer.maxpool(out)
-            out = network[1].forward(out)
-            out = layer.maxpool(out)
-            
-            out = network[2].forward_step(out,network[3],network[4])
+        file = open(crypto+'_con.obj', 'rb') 
+        con = pl.load(file)
+        file = open(crypto+'_con1.obj', 'rb') 
+        con1 = pl.load(file)
+        file = open(crypto+'_lstm.obj', 'rb') 
+        p_lstm = pl.load(file)
+
+        out = con.forward(input)
+        out = layer.maxpool(out)
+        out = con1.forward(out)
+        out = layer.maxpool(out)
+        out = out.flatten()
+        out = out.astype(int)
+
+
+        if(out in p_lstm.vals_to_idx):
+            pass
+        else:
+            p_lstm.vals_to_idx[out] = len(p_lstm.vals_to_idx) +1
+            p_lstm.idx_to_vals[len(p_lstm.vals_to_idx)+1] = out
+
+        vals_size = len(p_lstm.vals_to_idx)
+
+        lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
+
+        verbose = False
+    
+        num_batches = len(out) // lstm.seq_len
+        X_trimmed = out[: num_batches * lstm.seq_len]
+
+        s = []         
+        h_prev = np.zeros((lstm.n_h, 1))
+        c_prev = np.zeros((lstm.n_h, 1))
+
+        for j in range(0, len(X_trimmed) - lstm.seq_len, lstm.seq_len):
+            # prepare batches
+            x_batch = [lstm.vals_to_idx[ch] for ch in X_trimmed[j: j + lstm.seq_len]]
+
+            x, z = {}, {}
+            f, i, c_bar, c, o = {}, {}, {}, {}, {}
+            y_hat, v, h = {}, {}, {}
+
+            # Values at t= - 1
+            h[-1] = h_prev
+            c[-1] = c_prev
+
+            for t in range(lstm.seq_len):
+                x[t] = np.zeros((lstm.seq_size, 1))
+                x[t][x_batch[t]] = 1
+
+                y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
+                    lstm.forward_step(x[t], h[t - 1], c[t - 1])
+            s = lstm.sample(h_prev, c_prev, lstm.seq_size)
+        pred = s[-(len(out)-1):]
+        predx = [i for i in range(len(pred))]
+        outx = [i for i in range(len(out))]
+
+        return pred
