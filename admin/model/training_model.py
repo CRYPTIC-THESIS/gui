@@ -19,7 +19,7 @@ crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
 losses = pd.DataFrame()
 trained = []
-for i in range(1):
+for i in range(len(crypto)):
     data = dataset_all.loc[dataset_all['Cryptocurrency'] == crypto[i]]
     dataset = pd.DataFrame()
     dataset['Close'] = data['Closing']
@@ -42,7 +42,7 @@ for i in range(1):
     if(crypto[i]=='BTC'):
         btc_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        btc_loss= btc_model.train(10,data,X,crypto[i])
+        btc_loss= btc_model.train(100,data,X,crypto[i])
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
         trained.append('BTC')
