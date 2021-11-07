@@ -1,6 +1,7 @@
 import numpy as np
 import layers as layer
 import pickle as pl
+import matplotlib.pyplot as plt
 
 def progress(count, total, status=''):
         bar_len = 60
@@ -138,7 +139,6 @@ class cryptic():
         i=0
         x=0
         for i in range(len(out)):
-            print(i,len(out))
             if(out[i] in p_lstm.vals_to_idx):
                 x+=1
                 #print('existing:',p_lstm.vals_to_idx[out[i-1]])
@@ -180,8 +180,13 @@ class cryptic():
                 y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
                     lstm.forward_step(x[t], h[t - 1], c[t - 1])
             s = lstm.sample(h_prev, c_prev, lstm.seq_size)
-        print(out)
-        print(s[-len(out):])
+        pred = s[-(len(out)-1):]
+        predx = [i for i in range(len(pred))]
+        outx = [i for i in range(len(out))]
+        plt.plot(outx, out, 'c')
+        plt.plot(predx,pred, 'y')
+        plt.show()
+
         
     
     def predict_crypto(self,network,input):
