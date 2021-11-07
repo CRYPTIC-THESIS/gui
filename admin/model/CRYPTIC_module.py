@@ -99,14 +99,13 @@ class cryptic():
 
         return J
 
-    def init_trained(self,l_param,vals_to_idx,idx_to_vals,vals_size):
-
-        lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size,epochs=1, lr = 0.01)
+    def init_trained(self,l_param,vals_to_idx,idx_to_vals,vals_size,epochs):
+        lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size,epochs, lr = 0.01)
 
         #print(len(lstm.params['Wv'][0]),len(l_param['Wv'][0]))
         
         for key in lstm.params:
-            print('Key:',key)
+            
             if (key == 'Wv') or (key == 'bv'):
                 for i in range (len(l_param[key])):
                     lstm.params[key][i] = l_param[key][i]
@@ -138,16 +137,17 @@ class cryptic():
         for i in range(len(out)):
             if(out[i] in p_lstm.vals_to_idx):
                 i -= 1
-                #print('existing:',p_lstm.vals_to_idx[out[i-1]])
+                print('existing:',p_lstm.vals_to_idx[out[i-1]])
             else:
+                print(vi+i)
                 p_lstm.vals_to_idx[out[i]] = vi+i
                 p_lstm.idx_to_vals[iv+i] = out[i]
-                #print('added')
+                print('added')
         
         vals_size = len(p_lstm.vals_to_idx)
 
-        lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size)
-        print(lstm.idx_to_vals)
+        lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
+
         verbose = False
     
         num_batches = len(out) // lstm.seq_len
@@ -176,7 +176,7 @@ class cryptic():
 
                 y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
                     lstm.forward_step(x[t], h[t - 1], c[t - 1])
-            s = lstm.sample(h_prev, c_prev, lstm.seq_size+1)
+            s = lstm.sample(h_prev, c_prev, lstm.seq_size)
         print(out)
         print(s[-len(out):])
         

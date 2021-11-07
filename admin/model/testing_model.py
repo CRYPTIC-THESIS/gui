@@ -8,7 +8,7 @@ open_file.close()
 
 
 for crypto in trained_list:
-    print("\n\nTesting "+str(crypto)+"model...")
+    print("\n\nTesting "+str(crypto)+" model...")
     data  = np.genfromtxt(str(crypto)+"_test_set.csv", delimiter=',')
     model = nn.cryptic(crypto)
     model.test(data,crypto)
