@@ -134,15 +134,18 @@ class cryptic():
 
         vi = len(p_lstm.vals_to_idx)
         iv = len(p_lstm.idx_to_vals)
+
+        i=0
+        x=0
         for i in range(len(out)):
+            print(i,len(out))
             if(out[i] in p_lstm.vals_to_idx):
-                i -= 1
-                print('existing:',p_lstm.vals_to_idx[out[i-1]])
+                x+=1
+                #print('existing:',p_lstm.vals_to_idx[out[i-1]])
             else:
-                print(vi+i)
-                p_lstm.vals_to_idx[out[i]] = vi+i
-                p_lstm.idx_to_vals[iv+i] = out[i]
-                print('added')
+                p_lstm.vals_to_idx[out[i]] = vi+i-x
+                p_lstm.idx_to_vals[iv+i-x] = out[i]
+                i+=1
         
         vals_size = len(p_lstm.vals_to_idx)
 
