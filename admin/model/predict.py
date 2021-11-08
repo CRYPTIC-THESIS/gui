@@ -1,6 +1,10 @@
 import CRYPTIC_module as nn
 import numpy as np
-cryptos = np.zeros(3)
+import pickle as pl
+open_file = open('trained.pkl', "rb")
+cryptos = pl.load(open_file)
+open_file.close()
+
 pred = np.zeros(14)
 pred_list = np.zeros((len(cryptos),14))
 data = np.zeros(3)
