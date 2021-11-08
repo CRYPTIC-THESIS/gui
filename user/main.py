@@ -2,6 +2,8 @@ import sys
 import os
 import time
 
+from functools import partial
+
 from modules import *
 from dbconnect import *
 os.environ["QT_FONT_DPI"] = "96"
@@ -64,15 +66,18 @@ class MainWindow(QMainWindow):
 
         # SET UI FUNCTIONS
         UIFunctions.uiDefinitions(self)
+        # AppFunctions.appDefinitions(self)
+        # print(self.selected_crypto)
 
         # SET DATE
-        today = datetime.today().strftime('%B %d, %Y')
-        widgets.dateToday.setText(today)
-        widgets.home_dateToday.setText(today)
+        self.today = datetime.today().strftime('%B %d, %Y')
+        widgets.dateToday.setText(self.today)
+        widgets.home_dateToday.setText(self.today)
 
         # DISPLAY
         widgets.stackedWidget.setCurrentWidget(widgets.homePage)
-        widgets.btn_home.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_home.styleSheet()))
+        self.default_values()
+        print(self.selected_crypto)
 
         # SIGNALS
         widgets.btn_home.clicked.connect(self.buttonClick)
@@ -80,7 +85,13 @@ class MainWindow(QMainWindow):
         widgets.btn_eth.clicked.connect(self.buttonClick)
         widgets.btn_doge.clicked.connect(self.buttonClick)
 
+        # AppFunctions.df(self)
+
         # self.show()
+
+    def testing(self):
+        btnName = self.sender().objectName()
+        print('hello ', btnName)
 
     def buttonClick(self):
         # GET BUTTON CLICKED
@@ -103,6 +114,68 @@ class MainWindow(QMainWindow):
 
         UIFunctions.resetCryptoStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectCrypto(btn.styleSheet()))
+        self.selected_crypto = btnName
+
+        # self.default_values()
+        AppFunctions.get_df(self)
+
+    def default_values(self):
+        # HOME
+        widgets.btn_home.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_home.styleSheet()))
+        widgets.btn_homePredClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homePredClosing.styleSheet()))
+        widgets.btn_homeHistoClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homeHistoClosing.styleSheet()))
+        widgets.btn_home1w.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_home1w.styleSheet()))
+
+        # BTC, ETH, DOGE
+        widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
+        widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
+        widgets.btn_predPriceClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_predPriceClosing.styleSheet()))
+
+
+        # VALUES
+        self.selected_crypto = 'btn_home'
+        self.home_pred_price = 'Closing'
+        self.home_histo_price = 'Closing'
+        self.home_pred_days = int(widgets.home_daysValue.text())
+        self.home_histo_days = 7
+        
+        AppFunctions.get_df(self)
+        # AppFunctions.pred_graph(self)
+    
+    # def default_crypto_vals(self):
+
+    def catch_histo_data(self, histo_data):
+        widgets.home_histoGraph.clear()
+        btc = list()
+        eth = list()
+        doge = list()
+
+        if self.selected_crypto == 'btn_home':
+            for i, data in enumerate(histo_data):
+                print(i)
+                if i == 0:
+                    btc = data
+                    xy = btc[1]
+                    x = xy[0]
+                    y = xy[1]
+                if i == 1:
+                    eth = data
+                    xy = eth[1]
+                    y2 = xy[1]
+                if i == 2:
+                    doge = data
+                    xy = doge[1]
+                    y3 = xy[1]
+            
+            self.plot(x, y, 'BITCOIN', pen=mkPen('#F9AA4B', width=2.5))
+            self.plot(x, y2, 'ETHEREUM', pen=mkPen('#2082FA', width=2.5))
+            self.plot(x, y3, 'DOGECOIN', pen=mkPen('#6374C3', width=2.5))
+
+        self.worker.terminate()
+
+    def plot(self, x, y, plot, pen):
+        widgets.home_histoGraph.plot(x, y, name=plot, pen=pen)
+
 
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW

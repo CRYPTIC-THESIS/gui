@@ -22,8 +22,8 @@ class AccessDatabase(QThread):
             df = df.loc[(df['date'] >= past) & (df['date'] <= today)]
             df.to_csv(fn[i])
 
-        # print(today)
-        # print(past)
+        print(today)
+        print(past)
 
         self.import_data_complete.emit()
 
