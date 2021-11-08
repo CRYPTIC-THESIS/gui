@@ -7,15 +7,15 @@ open_file.close()
 
 pred = np.zeros(14)
 pred_list = np.zeros((len(cryptos),14))
-data = np.zeros(3)
+data = 0
 crypto = cryptos
-net = nn.cryptic()
+
 x = 0
 for crypto in cryptos:
+    net = nn.cryptic(crypto)
     for i in range(14):
         last =  net.predict_crypto(data,crypto)
-        data = data[:2]
-        data[3] = last
+        data = last
         pred[i] = last
     pred_list[x] = pred
     x+=1
