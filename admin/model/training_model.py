@@ -32,24 +32,25 @@ for i in range(len(crypto)):
 
     dataset = dataset.fillna(0)
     Y = np.array(data['Date'])
-    X = np.array(dataset['Close'])
-    X = X.astype(int)
+    a = dataset.loc[0,'High']
+    b = dataset.loc[0,'Low']
 
     dataset = np.array(dataset)
     dataset = dataset.astype(int)
+
     #print(dataset)
 
     if(crypto[i]=='BTC'):
         btc_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        btc_loss= btc_model.train(100,data,X,crypto[i])
+        btc_loss= btc_model.train(100,data,a,b,crypto[i])
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
         trained.append('BTC')
     elif(crypto[i]=='ETH'):
         eth_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        eth_loss = eth_model.train(100,data,X,crypto[i])
+        eth_loss = eth_model.train(100,data,a,b,crypto[i])
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!')
         trained.append('ETH')
@@ -57,7 +58,7 @@ for i in range(len(crypto)):
     elif(crypto[i]=='DOGE'):
         doge_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        doge_loss = doge_model.train(100,data,X,crypto[i])
+        doge_loss = doge_model.train(100,data,a,b,crypto[i])
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!')
         trained.append('DOGE')

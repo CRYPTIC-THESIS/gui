@@ -59,12 +59,13 @@ class cryptic():
 
         return J,h_prev, c_prev  #,s
 
-    def train(self,epochs,data,X,crypto):
+    def train(self,epochs,data,a,b,crypto):
         print('\n\nCRYPTIC NETWORK TRAINING\n')
-        
-        x = -2.1
+        x = 0
+        a = float(a)
+        b = float(b)
         progress(0, epochs, status='Aral tayo')
-        while(x>=X[0]+100)or(x<=X[0]-100):
+        while np.logical_or(x>=a,x<=b):
             con = layer.Conv(5)
             con1 = layer.Conv(3)
             out = con.forward(data)

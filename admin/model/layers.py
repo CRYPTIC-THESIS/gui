@@ -118,24 +118,6 @@ class Conv:
         #print('Conv Layer:',output.shape)
         return output
     
-    def backward(self, d_l_d_out, learn_rate):
-        '''
-        Performs a backward pass of the conv layer.
-        - d_L_d_out is the loss gradient for this layer's outputs.
-        - learn_rate is a float.
-        '''
-        d_l_d_filters = np.zeros(self.filters.shape)
-
-        for im_region, i, j in self.iterate_regions(self.last_input):
-            for f in range(self.num_filters):
-                d_l_d_filters[f] += d_l_d_out[i,j,f] * im_region
-
-        #update filters
-        self.filters -= learn_rate * d_l_d_filters
-
-        return None
-
-
 
 def maxpool(data, f=3, s=1):
     #Downsample data `data` using a kernel size of `f` and a stride of `s`
