@@ -101,8 +101,8 @@ class Conv:
         
         h,w = image.shape
         
-        for i in range(h-1):
-            for j in range(w-3):
+        for i in range(h):
+            for j in range(w-2):
                 im_region = image[i:(i+1), j:(j+3)]
                 yield im_region, i, j
                 
@@ -111,7 +111,7 @@ class Conv:
         
         h,w = input.shape
         
-        output = np.zeros((h-1, w-3, self.num_filters))
+        output = np.zeros((h, w-2, self.num_filters))
         
         for im_regions, i, j in self.iterate_regions(input):
             output[i, j] = np.sum(im_regions * self.filters, axis=(1,2))
