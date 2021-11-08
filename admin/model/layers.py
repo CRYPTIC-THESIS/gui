@@ -88,16 +88,14 @@ class Batch_norm:
                         dx_norm.sum(axis=0) - 
                         x_norm * (dx_norm * x_norm).sum(axis=0))
         return dx, dgamma, dbeta
-
 class Conv:
     
     def __init__(self, num_filters):
-        self.layer_name = 'Convolution 2D Layer'
         self.num_filters = num_filters
         self.filters = np.random.randn(num_filters, 1, 3)/3
             
     def iterate_regions(self, image):
-        #generates all possible 1*3 image regions using valid padding
+        #generates all possible 3*3 image regions using valid padding
         
         h,w = image.shape
         
@@ -115,38 +113,68 @@ class Conv:
         
         for im_regions, i, j in self.iterate_regions(input):
             output[i, j] = np.sum(im_regions * self.filters, axis=(1,2))
-        #print('Conv Layer:',output.shape)
         return output
     
+    def backprop(self, d_l_d_out, learn_rate):
+        '''
+        Performs a backward pass of the conv layer.
+        - d_L_d_out is the loss gradient for this layer's outputs.
+        - learn_rate is a float.
+        '''
+        d_l_d_filters = np.zeros(self.filters.shape)
 
-def maxpool(data, f=3, s=1):
-    #Downsample data `data` using a kernel size of `f` and a stride of `s`
-    n_c, h_prev, w_prev = data.shape
+        for im_region, i, j in self.iterate_regions(self.last_input):
+            for f in range(self.num_filters):
+                d_l_d_filters[f] += d_l_d_out[i,j,f] * im_region
+
+        #update filters
+        self.filters -= learn_rate * d_l_d_filters
+
+        return None
+class MaxPool:
+    def iterate_regions(self, image):
+        h, w, _ = image.shape
         
-    # calculate output dimensions after the maxpooling operation.
-    h = int((h_prev - f)/s)+1 
-    w = int((w_prev - f)/s)+1
+        new_h = h // 1
+        new_w = w // 2
         
-    # create a matrix to hold the values of the maxpooling operation.
-    downsampled = np.zeros((n_c, h, w)) 
+        for i in range(new_h):
+            for j in range(new_w):
+                im_region = image[(i):(i+1), (j):(j+2)]
+                yield im_region, i, j
+                
+    def forward(self, input):
         
-    # slide the window over every part of the data using stride s. Take the maximum value at each step.
-    for i in range(n_c):
-        curr_y = out_y = 0
-        # slide the max pooling window vertically across the data
-        while curr_y + f <= h_prev:
-            curr_x = out_x = 0
-            # slide the max pooling window horizontally across the data
-            while curr_x + f <= w_prev:
-                # choose the maximum value within  the window at each step and store it to the output matrix
-                downsampled[i, out_y, out_x] = np.max(data[i, curr_y:curr_y+f, curr_x:curr_x+f])
-                curr_x += s
-                out_x += 1
-            curr_y += s
-            out_y += 1
-    downsampled = downsampled.reshape(downsampled.shape[0], (downsampled.shape[1]*downsampled.shape[2]))
-    #print('Maxpool Layer:',downsampled.shape)
-    return downsampled
+        self.last_input = input
+        
+        h, w, num_filters = input.shape
+        output = np.zeros((h//1, w//2, num_filters))
+        
+        for im_region, i, j in self.iterate_regions(input):
+            output[i,j] = np.amax(im_region,axis=(0,1))
+        output = output.reshape(output.shape[0], (output.shape[1]*output.shape[2]))
+        return output
+    
+    def backprop(self, d_l_d_out):
+        '''
+        Performs a backward pass of the maxpool layer.
+        Returns the loss gradient for this layer's inputs.
+        - d_L_d_out is the loss gradient for this layer's outputs.
+        '''
+        d_l_d_input = np.zeros(self.last_input.shape)
+
+        for im_region, i, j in self.iterate_regions(self.last_input):
+            h, w, f = im_region.shape
+            amax = np.amax(im_region, axis=(0,1))
+
+            for i2 in range(h):
+                for j2 in range(w):
+                    for f2 in range(f):
+                        #if the pixel was the max value, copy the gradient to it
+                        if(im_region[i2,j2,f2] == amax[f2]):
+                            d_l_d_input[i*2+i2, j*2+j2 ,f2] = d_l_d_out[i, j, f2]
+                            break;
+        return d_l_d_input
 
 class LSTM:
     def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=100, seq_len=1, lr=0.001, beta1=0.9, beta2=0.999):

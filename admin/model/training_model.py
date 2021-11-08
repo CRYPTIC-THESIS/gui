@@ -11,6 +11,7 @@ def split_data(x,crypto):
     x_train, x_test = train_test_split(x, test_size=0.30)
     np.savetxt(str(crypto)+"_train_set.csv", x_train, delimiter=",")
     np.savetxt(str(crypto)+"_test_set.csv", x_test, delimiter=",")
+    print(len(x_train),len(x_test))
     return x_train
 
 dataset_all = pd.read_csv('csv/dataset.csv')
@@ -22,22 +23,21 @@ trained = []
 for i in range(len(crypto)):
     data = dataset_all.loc[dataset_all['Cryptocurrency'] == crypto[i]]
     dataset = pd.DataFrame()
-    dataset['Close'] = data['Closing']
+    
     dataset['Open'] = data['Open']
     dataset['High'] = data['High']
     dataset['Low'] = data['Low']
+    dataset['Close'] = data['Closing']
     dataset['Twitter'] = data['Twitter Volume']
     dataset['Reddit'] = data['Reddit Volume']
     dataset['Google'] = data['GoogleTrends']
-
-    dataset = dataset.fillna(0)
+    
     Y = np.array(data['Date'])
     a = dataset.loc[0,'High']
     b = dataset.loc[0,'Low']
 
     dataset = np.array(dataset)
-    dataset = dataset.astype(int)
-
+    
     #print(dataset)
 
     if(crypto[i]=='BTC'):

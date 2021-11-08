@@ -62,16 +62,17 @@ class cryptic():
     def train(self,epochs,data,a,b,crypto):
         print('\n\nCRYPTIC NETWORK TRAINING\n')
         x = 0
-        a = float(a)
-        b = float(b)
+        
         progress(0, epochs, status='Aral tayo')
-        while np.logical_or(x>=a,x<=b):
-            con = layer.Conv(5)
-            con1 = layer.Conv(3)
+        while (x>=a)or(x<=b):
+            
+            con = layer.Conv(2)
+            con1 = layer.Conv(1)
+            pool = layer.MaxPool()
             out = con.forward(data)
-            out = layer.maxpool(out)
+            out = pool.forward(out)
             out = con1.forward(out)
-            out = layer.maxpool(out)
+            out = pool.forward(out)
             x = out[0].astype(float)
 
         out = out.flatten()
