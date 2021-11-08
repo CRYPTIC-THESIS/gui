@@ -12,7 +12,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from pyqtgraph import PlotWidget, DateAxisItem
+from pyqtgraph import PlotWidget, DateAxisItem, mkPen
 
 from . resources_rc import *
 
@@ -659,12 +659,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_36.setSpacing(0)
         self.verticalLayout_36.setObjectName(u"verticalLayout_36")
         self.verticalLayout_36.setContentsMargins(0, 0, 0, 0)
-        self.home_predGraph = PlotWidget(self.home_predGraphFrame)
+        self.home_predGraph = PlotWidget(self.home_predGraphFrame, axisItems={'bottom': DateAxisItem(orientation='bottom')})
         self.home_predGraph.setObjectName(u"home_predGraph")
         self.home_predGraph.setFrameShape(QFrame.NoFrame)
         brush = QBrush(QColor(44, 49, 58, 1))
         brush.setStyle(Qt.NoBrush)
-        self.home_predGraph.setBackgroundBrush(brush)
+        self.home_predGraph.setBackground('#2C313A')
 
         self.verticalLayout_36.addWidget(self.home_predGraph)
 
@@ -698,6 +698,7 @@ class Ui_MainWindow(object):
         self.home_predSlider.setMinimumSize(QSize(170, 0))
         self.home_predSlider.setMinimum(1)
         self.home_predSlider.setMaximum(14)
+        self.home_predSlider.setSliderPosition(7)
         self.home_predSlider.setOrientation(Qt.Horizontal)
         self.home_predSlider.setTickPosition(QSlider.NoTicks)
         self.home_predSlider.setTickInterval(0)
@@ -1334,10 +1335,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_57.setSpacing(0)
         self.verticalLayout_57.setObjectName(u"verticalLayout_57")
         self.verticalLayout_57.setContentsMargins(0, 0, 0, 0)
-        self.home_histoGraph = PlotWidget(self.home_histoGraphFrame)
+        self.home_histoGraph = PlotWidget(self.home_histoGraphFrame, axisItems={'bottom': DateAxisItem(orientation='bottom')})
         self.home_histoGraph.setObjectName(u"home_histoGraph")
         self.home_histoGraph.setFrameShape(QFrame.NoFrame)
-        self.home_histoGraph.setBackgroundBrush(brush)
+        self.home_histoGraph.setBackground('#2C313A')
+        self.home_histoGraph.addLegend()
 
         self.verticalLayout_57.addWidget(self.home_histoGraph)
 
@@ -1585,7 +1587,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.setSpacing(0)
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.verticalLayout_17.setContentsMargins(5, 5, 5, 5)
-        self.crypto_histoGraph = PlotWidget(self.crypto_histoGraphFrame)
+        self.crypto_histoGraph = PlotWidget(self.crypto_histoGraphFrame, axisItems={'bottom': DateAxisItem(orientation='bottom')})
         self.crypto_histoGraph.setObjectName(u"crypto_histoGraph")
         self.crypto_histoGraph.setStyleSheet(u"border: 0px;")
         self.crypto_histoGraph.setFrameShape(QFrame.NoFrame)
@@ -1942,7 +1944,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_22.setSpacing(0)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
-        self.crypto_predGraph = PlotWidget(self.crypto_predGraphFrame)
+        self.crypto_predGraph = PlotWidget(self.crypto_predGraphFrame, axisItems={'bottom': DateAxisItem(orientation='bottom')})
         self.crypto_predGraph.setObjectName(u"crypto_predGraph")
         self.crypto_predGraph.setFrameShape(QFrame.NoFrame)
         self.crypto_predGraph.setBackgroundBrush(brush)
@@ -1979,6 +1981,7 @@ class Ui_MainWindow(object):
         self.crypto_predSlider.setMinimumSize(QSize(220, 0))
         self.crypto_predSlider.setMinimum(1)
         self.crypto_predSlider.setMaximum(14)
+        self.crypto_predSlider.setSliderPosition(7)
         self.crypto_predSlider.setOrientation(Qt.Horizontal)
         self.crypto_predSlider.setTickPosition(QSlider.NoTicks)
         self.crypto_predSlider.setTickInterval(0)
