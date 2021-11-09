@@ -35,8 +35,9 @@ for i in range(len(crypto)):
     Y = np.array(data['Date'])
     
     dataset = np.array(dataset)
-    a = dataset[1,0]
-    b = dataset[2,0]
+    c = dataset[3,0]
+    a = c+25
+    b = c-25
     #print(dataset)
 
     if(crypto[i]=='BTC'):
