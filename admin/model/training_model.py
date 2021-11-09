@@ -33,11 +33,10 @@ for i in range(len(crypto)):
     dataset['Google'] = data['GoogleTrends']
     
     Y = np.array(data['Date'])
-    a = dataset.loc[0,'High']
-    b = dataset.loc[0,'Low']
-
-    dataset = np.array(dataset)
     
+    dataset = np.array(dataset)
+    a = dataset[1,0]
+    b = dataset[2,0]
     #print(dataset)
 
     if(crypto[i]=='BTC'):
