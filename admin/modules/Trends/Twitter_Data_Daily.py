@@ -9,7 +9,7 @@ def scrape_daily_tweets(dateYesterday,dateToday):
 
     print ("[!] Scraping Start !!!")
 
-    cryptoData = pd.DataFrame({'searchTerm':['#bitcoin OR #btc','#ethereum OR #eth','#dogecoin OR #doge'],'dailyDataName':['gui/admin/modules/Daily-Twitter-Data/BTC_Daily.csv','gui/admin/modules/Daily-Twitter-Data/ETH_Daily.csv','gui/admin/modules/Daily-Twitter-Data/DOGE_Daily.csv'],'cryptoName':['bitcoin','ethereum','dogecoin']})
+    cryptoData = pd.DataFrame({'searchTerm':['#bitcoin OR #btc','#ethereum OR #eth','#dogecoin OR #doge'],'dailyDataName':['gui/admin/modules/Trends/BTC_Daily.csv','gui/admin/modules/Trends/ETH_Daily.csv','gui/admin/modules/Trends/DOGE_Daily.csv'],'cryptoName':['bitcoin','ethereum','dogecoin']})
     dateSince = dateYesterday #Get Yesterday's Date
     dateUntil = dateToday #Get Today's Date
 
