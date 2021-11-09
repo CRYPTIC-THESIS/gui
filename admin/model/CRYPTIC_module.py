@@ -63,7 +63,7 @@ class cryptic():
 
     def train(self,epochs,data,a,b,crypto):
         print('\n\nCRYPTIC NETWORK TRAINING\n')
-        x = 0
+        x = -100
         
         progress(0, epochs, status='Aral tayo')
         while (x>=a)or(x<=b):
