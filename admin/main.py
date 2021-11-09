@@ -50,16 +50,16 @@ class Login(QMainWindow):
         email = self.ui.username_login.text()
         password = self.ui.pass_login.text()
 
-        # try:
-        auth.sign_in_with_email_and_password(email, password)
-        self.window = MainWindow()
-        # # self.windows.append(window)
-        self.window.show()
-        self.close()
-        # except Exception:
-        #     print('INVALID ACCOUNT.')
-        #     self.ui.username_login.clear()
-        #     self.ui.pass_login.clear()
+        try:
+            auth.sign_in_with_email_and_password(email, password)
+            self.window = MainWindow()
+            # self.windows.append(window)
+            self.window.show()
+            self.close()
+        except Exception:
+            print('INVALID ACCOUNT.')
+            self.ui.username_login.clear()
+            self.ui.pass_login.clear()
 
     
     def signupfunction(self):
