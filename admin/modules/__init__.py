@@ -13,6 +13,7 @@ from . datetimeitem import *
 # GUI FILE
 from . ui_login import *
 from . ui_main import *
+from . ui_loading import *
 
 # DATABASE
 from . database import *

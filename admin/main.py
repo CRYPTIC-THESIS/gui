@@ -1,8 +1,6 @@
-import sys
-import os
-import pyrebase
-import requests
-import json
+import sys, os
+import time
+import pyrebase, requests, json
 
 from modules import *
 from dbconnect import *
@@ -52,16 +50,16 @@ class Login(QMainWindow):
         email = self.ui.username_login.text()
         password = self.ui.pass_login.text()
 
-        try:
-            auth.sign_in_with_email_and_password(email, password)
-            self.window = MainWindow()
-            # # self.windows.append(window)
-            self.window.show()
-            self.close()
-        except Exception:
-            print('INVALID ACCOUNT.')
-            self.ui.username_login.clear()
-            self.ui.pass_login.clear()
+        # try:
+        auth.sign_in_with_email_and_password(email, password)
+        self.window = MainWindow()
+        # # self.windows.append(window)
+        self.window.show()
+        self.close()
+        # except Exception:
+        #     print('INVALID ACCOUNT.')
+        #     self.ui.username_login.clear()
+        #     self.ui.pass_login.clear()
 
     
     def signupfunction(self):
@@ -129,7 +127,7 @@ class MainWindow(QMainWindow):
 
         self.setDefaultDisplay()
         self.signals()
-    
+
 
     def setDefaultDisplay(self):
         # DEFAULTS
@@ -355,9 +353,37 @@ class MainWindow(QMainWindow):
         if btnName == 'btn_startTraining':
             widgets.btn_startTraining.hide()
             widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
+            self.process = 'train'
+            self.desc = '<strong>TRAINING</strong> DATA'
         
         if btnName == 'btn_startTesting':
             widgets.btn_viewDataAnalysis.show()
+            self.process = 'test'
+            self.desc = '<strong>TESTING</strong> DATA'
+
+        AppFunctions.loading(self)
+        self.hide()
+        self.p_worker = ImplementModel(self.process)
+        self.p_worker.start()
+        self.p_worker.process_complete.connect(self.catch_output)
+
+    def catch_output(self, output):
+
+        if self.process == 'train':
+            widgets.trainTerminal.clear()
+            widgets.trainTerminal.insertPlainText(output)
+
+        if self.process == 'test':
+            widgets.testTerminal.clear()
+            widgets.testTerminal.insertPlainText(output)
+
+        self.Dialog.ui.loadingBar.setRange(0, 1)
+        self.Dialog.ui.loadingBar.setValue(1)
+        self.Dialog.ui.subtitle.setText("Done!")
+
+        QTimer.singleShot(1300, self.Dialog.close)
+        QTimer.singleShot(1200, self.show)
+
 
     def show_data_analysis(self):
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
@@ -376,6 +402,7 @@ class MainWindow(QMainWindow):
         # QTimer.singleShot(0, run)
         self.db_worker.import_data_complete.connect(lambda: AppFunctions.get_data(self))
     
+
     def get_dataset(self):
         self.ds_worker =  ImportDataset(self.dataset_date_from, 
                                         self.dataset_date_until,
@@ -384,7 +411,26 @@ class MainWindow(QMainWindow):
         self.ds_worker.start()
         self.ds_worker.pass_dataset.connect(self.catch_dataset)
         
-    
+    def catch_dataset(self, my_df):
+        widgets.trainTable.setColumnCount(len(my_df.columns))
+        widgets.trainTable.setHorizontalHeaderLabels(my_df.columns)
+        widgets.trainTable.setRowCount(len(my_df.index))
+
+        for i in range(len(my_df.index)):
+            for j in range(len(my_df.columns)):
+                item = QTableWidgetItem(str(my_df.iat[i, j]))
+                item.setTextAlignment(Qt.AlignCenter)
+                widgets.trainTable.setItem(i, j, item)
+
+        widgets.trainTable.show()
+        widgets.trainTable.resizeColumnsToContents()
+        widgets.trainTable.resizeRowsToContents()
+
+        self.ds_worker.terminate()
+        
+        widgets.btn_startTraining.show()
+
+
     def catch_histo_data(self, histo_data):
         # print('catch_histo_data: ', histo_data)
         widgets.histoGraph.clear()
@@ -436,24 +482,6 @@ class MainWindow(QMainWindow):
     def plot(self, x, y, plot, pen):
         widgets.histoGraph.plot(x, y, name=plot, pen=pen)
 
-    def catch_dataset(self, my_df):
-        widgets.trainTable.setColumnCount(len(my_df.columns))
-        widgets.trainTable.setHorizontalHeaderLabels(my_df.columns)
-        widgets.trainTable.setRowCount(len(my_df.index))
-
-        for i in range(len(my_df.index)):
-            for j in range(len(my_df.columns)):
-                item = QTableWidgetItem(str(my_df.iat[i, j]))
-                item.setTextAlignment(Qt.AlignCenter)
-                widgets.trainTable.setItem(i, j, item)
-
-        widgets.trainTable.show()
-        widgets.trainTable.resizeColumnsToContents()
-        widgets.trainTable.resizeRowsToContents()
-
-        self.ds_worker.terminate()
-        
-        widgets.btn_startTraining.show()
 
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
