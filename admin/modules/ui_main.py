@@ -1086,6 +1086,7 @@ class Ui_MainWindow(object):
         brush = QBrush(QColor(44, 49, 58, 1))
         brush.setStyle(Qt.NoBrush)
         self.predGraph.setBackgroundBrush(brush)
+        self.predGraph.addLegend()
         # self.predGraph = MatplotlibWidget(width=3, height=3)
 
         self.verticalLayout_22 = QVBoxLayout(self.predGraphFrame)
@@ -1535,6 +1536,7 @@ class Ui_MainWindow(object):
         # brush = QBrush(QColor(44, 49, 58, 1))
         # brush.setStyle(Qt.NoBrush)
         self.histoGraph.setBackgroundBrush(brush)
+        self.histoGraph.addLegend()
         # self.histoGraph = MatplotlibWidget(width=4.6, height=2.35)
         
         self.verticalLayout_17 = QVBoxLayout(self.histoGraphFrame)

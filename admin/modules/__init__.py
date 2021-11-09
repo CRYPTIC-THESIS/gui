@@ -1,6 +1,8 @@
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
+
+from functools import partial
 from datetime import datetime, timedelta
 # import seaborn as sn
 # import matplotlib.pyplot as plt
@@ -15,8 +17,8 @@ from . ui_main import *
 # DATABASE
 from . database import *
 
-# APP SETTINGS
-from . app_settings import *
+# # APP SETTINGS
+# from . app_settings import *
 
 # IMPORT FUNCTIONS
 from . ui_functions import *

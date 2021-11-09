@@ -115,36 +115,21 @@ class UIFunctions(MainWindow):
             if w.objectName() != widget:
                 w.setStyleSheet(UIFunctions.deselectHistoDay(w.styleSheet()))
 
-    # IMPORT THEMES FILES QSS/CSS
-    # ///////////////////////////////////////////////////////////////
-    def theme(self, file, useCustomTheme):
-        if useCustomTheme:
-            str = open(file, 'r').read()
-            self.ui.styleSheet.setStyleSheet(str)
 
     # START - GUI DEFINITIONS
     # ///////////////////////////////////////////////////////////////
     def uiDefinitions(self):
+        #STANDARD TITLE BAR
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground, Qt.WA_DeleteOnClose)
 
-        if MainSettings.ENABLE_CUSTOM_TITLE_BAR:
-            #STANDARD TITLE BAR
-            self.setWindowFlags(Qt.FramelessWindowHint)
-            self.setAttribute(Qt.WA_TranslucentBackground)
-
-            # MOVE WINDOW / MAXIMIZE / RESTORE
-            def moveWindow(event):
-                if event.buttons() == Qt.LeftButton:
-                    self.move(self.pos() + event.globalPos() - self.dragPos)
-                    self.dragPos = event.globalPos()
-                    event.accept()
-            self.ui.contentTopBg.mouseMoveEvent = moveWindow
-
-        else:
-            self.ui.appMargins.setContentsMargins(0, 0, 0, 0)
-            self.ui.minimizeAppBtn.hide()
-            self.ui.maximizeRestoreAppBtn.hide()
-            self.ui.closeAppBtn.hide()
-            self.ui.frame_size_grip.hide()
+        # MOVE WINDOW / MAXIMIZE / RESTORE
+        def moveWindow(event):
+            if event.buttons() == Qt.LeftButton:
+                self.move(self.pos() + event.globalPos() - self.dragPos)
+                self.dragPos = event.globalPos()
+                event.accept()
+        self.ui.contentTopBg.mouseMoveEvent = moveWindow
 
         # DROP SHADOW
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -162,22 +147,20 @@ class UIFunctions(MainWindow):
 
 
     def ui_logindefinitions(self):
-        
-        if LoginSettings.ENABLE_CUSTOM_TITLE_BAR:
-            #STANDARD TITLE BAR
-            self.setWindowFlags(Qt.FramelessWindowHint)
-            self.setAttribute(Qt.WA_TranslucentBackground)
+        #STANDARD TITLE BAR
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground, Qt.WA_DeleteOnClose)
 
-            # MOVE WINDOW / MAXIMIZE / RESTORE
-            def moveWindow(event):
-                if event.buttons() == Qt.LeftButton:
-                    self.move(self.pos() + event.globalPos() - self.dragPos)
-                    p = event.globalPosition()
-                    globalPos = p.toPoint()
-                    self.dragPos = globalPos
-                    # self.dragPos = event.globalPos()
-                    event.accept()
-            self.ui.login.mouseMoveEvent = moveWindow
+        # MOVE WINDOW / MAXIMIZE / RESTORE
+        def moveWindow(event):
+            if event.buttons() == Qt.LeftButton:
+                self.move(self.pos() + event.globalPos() - self.dragPos)
+                p = event.globalPosition()
+                globalPos = p.toPoint()
+                self.dragPos = globalPos
+                # self.dragPos = event.globalPos()
+                event.accept()
+        self.ui.login.mouseMoveEvent = moveWindow
 
         # CLOSE APPLICATION
         self.ui.btn_close.clicked.connect(lambda: self.close())
@@ -192,3 +175,34 @@ class UIFunctions(MainWindow):
 
     # ///////////////////////////////////////////////////////////////
     # END - GUI DEFINITIONS
+
+class MainSettings(MainWindow):
+    # MENU SELECTED STYLESHEET
+    MENU_SELECTED_STYLESHEET = """
+    border-left: 22px solid qlineargradient(spread:pad, x1:0.034, y1:0, x2:0.216, y2:0, stop:0.499 #2AB7CA, stop:0.5 rgba(85, 170, 255, 0));
+    background-color: rgb(40, 44, 52);
+    """
+
+    # CRYPTO SELECTED STYLESHEET
+    CRYPTO_SELECTED_STYLESHEET = """
+    background-color: transparent;
+    width: 43px;
+    height: 43px;
+    border: 5px solid;
+    border-color: #2AB7CA;
+    """
+
+    PRICE_SELECTED_STYLESHEET = """
+    background: 'white';
+	border-color: 'white';
+    """
+
+    CURRPRICE_SELECTED_STYLESHEET = """
+    background: #21252B;
+    border-radius: 10px;
+    color: #2AB7CA;
+    """
+
+    HISTODAY_SELECTED_STYLESHEET = """
+    background: #8C88BF;
+    """
