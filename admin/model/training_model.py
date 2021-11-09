@@ -14,6 +14,7 @@ def split_data(x,crypto):
     print(len(x_train),len(x_test))
     return x_train
 
+cryptic_model = nn.cryptic()
 dataset_all = pd.read_csv('csv/dataset.csv')
 
 crypto = np.array(dataset_all['Cryptocurrency'])
@@ -41,24 +42,21 @@ for i in range(len(crypto)):
     #print(dataset)
 
     if(crypto[i]=='BTC'):
-        btc_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        btc_loss= btc_model.train(100,data,a,b,crypto[i])
+        btc_loss= cryptic_model.train(100,data,a,b,crypto[i])
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!')
         trained.append('BTC')
     elif(crypto[i]=='ETH'):
-        eth_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        eth_loss = eth_model.train(100,data,a,b,crypto[i])
+        eth_loss = cryptic_model.train(100,data,a,b,crypto[i])
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!')
         trained.append('ETH')
 
     elif(crypto[i]=='DOGE'):
-        doge_model = nn.cryptic(crypto[i])
         data = split_data(dataset,crypto[i])
-        doge_loss = doge_model.train(100,data,a,b,crypto[i])
+        doge_loss = cryptic_model.train(100,data,a,b,crypto[i])
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!')
         trained.append('DOGE')

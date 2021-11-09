@@ -14,8 +14,6 @@ def progress(count, total, status=''):
         print('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
 
 class cryptic():
-    def __init__(self,crypto):
-        self.network_name = crypto
     def format_LSTM(self,data):
         
         vals = set(data)
