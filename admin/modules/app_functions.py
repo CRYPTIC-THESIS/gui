@@ -2,6 +2,27 @@ from main import *
 
 class AppFunctions(MainWindow):
 
+    def loading(self):
+        self.Dialog = QDialog()
+        self.Dialog.ui = Ui_Dialog()
+        self.Dialog.ui.setupUi(self.Dialog)
+
+        self.Dialog.setWindowFlags(Qt.FramelessWindowHint)
+        self.Dialog.setAttribute(Qt.WA_TranslucentBackground, Qt.WA_DeleteOnClose)
+
+        # DROP SHADOW
+        self.Dialog.shadow = QGraphicsDropShadowEffect(self)
+        self.Dialog.shadow.setBlurRadius(17)
+        self.Dialog.shadow.setXOffset(0)
+        self.Dialog.shadow.setYOffset(0)
+        self.Dialog.shadow.setColor(QColor(0, 0, 0, 150))
+        self.Dialog.ui.frame.setGraphicsEffect(self.Dialog.shadow)
+
+        self.Dialog.ui.loadingBar.setRange(0,0)
+        self.Dialog.ui.title.setText(self.desc)
+        
+        self.Dialog.show()
+
     def get_data(self):
         self.db_worker.terminate()
 
@@ -150,3 +171,24 @@ class GetData(QThread):
             new_lst.append([df, [x, y]])
         self.pass_histo_data.emit(new_lst)
 
+class ImplementModel(QThread):
+    process_complete = Signal(str)
+
+    def __init__(self, process):
+        super().__init__()
+        self.process = process
+
+    def run(self):
+        print(self.process)
+
+        if self.process == 'train':
+            command_line = 'python model/training_model.py'
+        
+        if self.process == 'test':
+            command_line = 'python model/testing_model.py'
+
+        p = os.popen(command_line)
+        if p:
+            output = p.read()
+            print('Done')
+            self.process_complete.emit(output)

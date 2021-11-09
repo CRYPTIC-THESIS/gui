@@ -2,6 +2,8 @@ import numpy as np
 import layers as layer
 import pickle as pl
 import matplotlib.pyplot as plt
+import sys
+sys.path.append('..')
 
 def progress(count, total, status=''):
         bar_len = 60
@@ -93,11 +95,11 @@ class cryptic():
         progress(epochs, epochs, status='Kapagod mag-aral beh')
 
         
-        filehandler = open(str(crypto)+'_con.obj', 'wb') 
+        filehandler = open('model/obj/'+str(crypto)+'_con.obj', 'wb') 
         pl.dump(con, filehandler)
-        filehandler = open(str(crypto)+'_con1.obj', 'wb') 
+        filehandler = open('model/obj/'+str(crypto)+'_con1.obj', 'wb') 
         pl.dump(con1, filehandler)
-        filehandler = open(str(crypto)+'_lstm.obj', 'wb') 
+        filehandler = open('model/obj/'+str(crypto)+'_lstm.obj', 'wb') 
         pl.dump(lstm, filehandler)
 
         return J
@@ -121,11 +123,11 @@ class cryptic():
 
 
     def test(self,data,crypto):
-        file = open(crypto+'_con.obj', 'rb') 
+        file = open('model/obj/'+crypto+'_con.obj', 'rb') 
         con = pl.load(file)
-        file = open(crypto+'_con1.obj', 'rb') 
+        file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
         con1 = pl.load(file)
-        file = open(crypto+'_lstm.obj', 'rb') 
+        file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
 
         out = con.forward(data)
@@ -190,11 +192,11 @@ class cryptic():
         #predict cryptocurrency up to 14 days
 
         #Initialize Model
-        file = open(crypto+'_con.obj', 'rb') 
+        file = open('model/obj/'+crypto+'_con.obj', 'rb') 
         con = pl.load(file)
-        file = open(crypto+'_con1.obj', 'rb') 
+        file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
         con1 = pl.load(file)
-        file = open(crypto+'_lstm.obj', 'rb') 
+        file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
 
         out = con.forward(input)

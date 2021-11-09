@@ -14,9 +14,6 @@ from PySide6.QtWidgets import *
 
 from pyqtgraph import PlotWidget, DateAxisItem, ImageItem, ColorBarItem, PlotItem, ViewBox, mkPen, colormap
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
-
 from . resources_rc import *
 
 
