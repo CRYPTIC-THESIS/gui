@@ -1,6 +1,6 @@
 from pycoingecko import CoinGeckoAPI
 from datetime import datetime, timedelta
-from time import sleep
+import time as t
 import calendar
 import pandas as pd
 
@@ -9,10 +9,10 @@ cg = CoinGeckoAPI()
 
 # REALTIME
 def get_cur():
-    d = datetime.now()
-    t = datetime.now() - timedelta(days = 1)
-    u_d = calendar.timegm(d.timetuple())
-    u_t = calendar.timegm(t.timetuple())
+    d = datetime.utcnow()
+    t = datetime.utcnow() - timedelta(days = 1)
+    u_d = calendar.timegm(d.utctimetuple())
+    u_t = calendar.timegm(t.utctimetuple())
 
     b = cg.get_coin_market_chart_range_by_id(id='bitcoin',vs_currency='usd',from_timestamp=u_t,to_timestamp=u_d)
     btc = b.get('prices')
@@ -283,12 +283,18 @@ def scrape_google_data(currDate): #currDate in YYYY-MM-DD format
 
 # RUN FOREVER
 while True:
+    sleep = 15
+    
     time = datetime.now().strftime("%H:%M")
     print(time)
 
     today = datetime.now().strftime("%Y-%m-%d")
     past = pd.to_datetime(today) - timedelta(days=1)
     past = past.strftime("%Y-%m-%d")
+
+    forward = (datetime.strptime(time, "%H:%M") + timedelta(minutes=15)).strftime("%H:%M")
+    temp = datetime.strptime('23:55', "%H:%M") - datetime.strptime(time, "%H:%M")
+    temp = int(t.strftime("%M", t.gmtime(temp.total_seconds())))
 
     try:
         if time >= '23:55':
@@ -298,9 +304,12 @@ while True:
             update_realtime_data()
     except Exception as e:
         print(e)
-
+    
     # if time >= '23:55':
     #     scrape_daily_tweets(past, today)
     #     scrape_google_data(today)
 
-    sleep(60*5)
+    if forward >= '00:00' and time.startswith('23') and temp < 15:
+        sleep = temp
+
+    t.sleep(60*sleep)

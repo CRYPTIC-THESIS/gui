@@ -27,7 +27,7 @@ def insert_trend_csv(tbl_name,csv_path):
             'doge':row['dogecoin']
     
     })
-    print(csv_path+" Successdully Imported")
+    print(csv_path+" Successfully Imported")
 
 def insert_crypto_csv(tbl_name,csv_path):
     ref = db.reference(tbl_name,default_app)
@@ -41,7 +41,7 @@ def insert_crypto_csv(tbl_name,csv_path):
             'high':row['24h High (USD)'],
             'low':row['24h Low (USD)']
     })
-    print(csv_path+" Successdully Imported")
+    print(csv_path+" Successfully Imported")
 
 def insert_realtime_data(tbl_name, df):
     ref = db.reference(tbl_name,default_app)
@@ -58,7 +58,7 @@ def insert_realtime_data(tbl_name, df):
             'closing':row['Closing']
     
     })
-    print(tbl_name+" Successdully Imported")
+    print(tbl_name+" Successfully Imported")
 
 def get_data_table(tbl_name):
     ref = db.reference(tbl_name,default_app)
@@ -80,7 +80,7 @@ def update_trend(tbl_name,values):
     
     })
     updated(tbl_name)
-    print("Successdully Added "+str(len(values))+ "rows to " + tbl_name)
+    print("Successfully Added "+str(len(values))+ "rows to " + tbl_name)
 
 def update_crypto(tbl_name,values):
     ref = db.reference(tbl_name,default_app)
@@ -96,7 +96,7 @@ def update_crypto(tbl_name,values):
                     'low':row['Low']
             })
     updated(tbl_name)
-    print("Successdully Added "+str(len(values))+ "rows to " + tbl_name)
+    print("Successfully Added "+str(len(values))+ "rows to " + tbl_name)
 
 def update_realtime(tbl_name,values):
     ref = db.reference(tbl_name,default_app)
@@ -112,7 +112,7 @@ def update_realtime(tbl_name,values):
                     'closing':row['Closing']
             })
     updated(tbl_name)
-    print("Successdully Added "+str(len(values))+ "rows to " + tbl_name)
+    print("Successfully Added "+str(len(values))+ "rows to " + tbl_name)
 
 def updated(tbl_name):
     today = dt.today().strftime("%d-%m-%Y")
