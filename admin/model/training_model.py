@@ -46,20 +46,20 @@ for i in range(len(crypto)):
         data = split_data(dataset,crypto[i])
         btc_loss= cryptic_model.train(100,data,a,b,crypto[i])
         losses['btc_loss'] = btc_loss
-        print('BTC Model Trained!!!')
+        print('BTC Model Trained!!!\n\n')
         trained.append('BTC')
     elif(crypto[i]=='ETH'):
         data = split_data(dataset,crypto[i])
         eth_loss = cryptic_model.train(100,data,a,b,crypto[i])
         losses['eth_loss'] = eth_loss
-        print('ETH Model Trained!!!')
+        print('ETH Model Trained!!!\n\n')
         trained.append('ETH')
 
     elif(crypto[i]=='DOGE'):
         data = split_data(dataset,crypto[i])
         doge_loss = cryptic_model.train(100,data,a,b,crypto[i])
         losses['doge_loss'] = doge_loss
-        print('DOGE Model Trained!!!')
+        print('DOGE Model Trained!!!\n\n')
         trained.append('DOGE')
 
     else:

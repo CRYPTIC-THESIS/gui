@@ -63,7 +63,7 @@ class cryptic():
         print('\n\nCRYPTIC NETWORK TRAINING\n')
         x = -100
         
-        progress(0, epochs, status='Aral tayo')
+        progress(0, epochs+1, status='Initializing Model')
         while (x>=a)or(x<=b):
             
             con = layer.Conv(2)
@@ -74,25 +74,27 @@ class cryptic():
             out = con1.forward(out)
             out = pool.forward(out)
             x = out[0].astype(float)
-
+        progress(0.25, epochs+1, status='Convolutions Done')
         out = out.flatten()
         out = out.astype(int)
         vals_to_idx,idx_to_vals,vals,vals_size = self.format_LSTM(out)
         lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size,epochs, lr = 0.01)
+        progress(0.5, epochs+1, status='Passing to LSTM')
         J = []  # to store losses
         verbose = True
     
         num_batches = len(out) // lstm.seq_len
         X_trimmed = out[: num_batches * lstm.seq_len]  # trim input to have full sequences
-        print('X_trimmed:',len(X_trimmed),'\nnum_batches:',num_batches)
+       
         for epoch in range(epochs):
 
             J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
-            progress(epoch, epochs, status='Nag-aaral pa aku beh')
+            progress(epoch+1, epochs+1, status='Wow! New knowledge Obtained')
         net = [con,con1,lstm,h,c]
-        progress(epochs, epochs, status='Kapagod mag-aral beh')
+        progress(epochs+1, epochs+1, status='I feel smarter already')
 
-        
+        print('Total Data Tested: ',len(out))
+        print('Final Loss During Training: ',J[-1])
         filehandler = open('model/obj/'+str(crypto)+'_con.obj', 'wb') 
         pl.dump(con, filehandler)
         filehandler = open('model/obj/'+str(crypto)+'_con1.obj', 'wb') 
@@ -120,14 +122,16 @@ class cryptic():
         return lstm
 
 
-    def test(self,data,crypto):
+    def test(self,data,crypto): 
+        progress(0, len(data)+1, status='Loading Trained Model')
         file = open('model/obj/'+crypto+'_con.obj', 'rb') 
         con = pl.load(file)
         file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
         con1 = pl.load(file)
+        
         file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
-
+        progress(0.5, len(data)+1, status='Trained Model Loaded')
         out = con.forward(data)
         out = layer.maxpool(out)
         out = con1.forward(out)
@@ -150,9 +154,9 @@ class cryptic():
                 i+=1
         
         vals_size = len(p_lstm.vals_to_idx)
-
+        progress(0.7, len(data)+1, status='Preparing Dataset')
         lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
-
+        progress(0.9, len(data)+1, status='Model Initialized')
         verbose = False
     
         num_batches = len(out) // lstm.seq_len
@@ -164,6 +168,7 @@ class cryptic():
 
         for j in range(0, len(X_trimmed) - lstm.seq_len, lstm.seq_len):
             # prepare batches
+            progress(j+1, len(data)+1, status='Testing')
             x_batch = [lstm.vals_to_idx[ch] for ch in X_trimmed[j: j + lstm.seq_len]]
             y_batch = [lstm.vals_to_idx[ch] for ch in X_trimmed[j + 1: j + lstm.seq_len + 1]]
 
@@ -185,7 +190,9 @@ class cryptic():
         pred = s[-(len(out)-1):]
         predx = [i for i in range(len(pred))]
         outx = [i for i in range(len(out))]
-
+        progress(len(data)+1, len(data)+1, status='Done Testing')
+        print('Actual : ',out)
+        print('Predicted: ',pred)
     def predict_crypto(self,input,crypto):
         #predict cryptocurrency up to 14 days
 
