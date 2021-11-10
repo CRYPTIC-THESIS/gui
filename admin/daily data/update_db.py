@@ -9,10 +9,10 @@ cg = CoinGeckoAPI()
 
 # REALTIME
 def get_cur():
-    d = datetime.utcnow()
-    t = datetime.utcnow() - timedelta(days = 1 )
-    u_d = calendar.timegm(d.utctimetuple())
-    u_t = calendar.timegm(t.utctimetuple())
+    d = datetime.now()
+    t = datetime.now() - timedelta(days = 1)
+    u_d = calendar.timegm(d.timetuple())
+    u_t = calendar.timegm(t.timetuple())
 
     b = cg.get_coin_market_chart_range_by_id(id='bitcoin',vs_currency='usd',from_timestamp=u_t,to_timestamp=u_d)
     btc = b.get('prices')
@@ -61,6 +61,12 @@ def update_realtime_data():
     update_realtime('Realtime_ETH', eth)
     update_realtime('Realtime_DOGE', doge)
 
+def new_realtime():
+    
+    btc, eth, doge = get_cur()
+    insert_realtime_data('Realtime_BTC', btc)
+    insert_realtime_data('Realtime_ETH', eth)
+    insert_realtime_data('Realtime_DOGE', doge)
 
 def update_crypto_data():
     # Convert timestamp
@@ -285,16 +291,16 @@ while True:
     past = past.strftime("%Y-%m-%d")
 
     try:
-        update_realtime_data()
-
         if time >= '23:55':
             update_crypto_data()
-    
-    except Exception:
-        pass
+            new_realtime()
+        else:
+            update_realtime_data()
+    except Exception as e:
+        print(e)
 
-    if time >= '23:55':
-        scrape_daily_tweets(past, today)
-        scrape_google_data(today)
+    # if time >= '23:55':
+    #     scrape_daily_tweets(past, today)
+    #     scrape_google_data(today)
 
     sleep(60*5)

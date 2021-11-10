@@ -45,6 +45,9 @@ def insert_crypto_csv(tbl_name,csv_path):
 
 def insert_realtime_data(tbl_name, df):
     ref = db.reference(tbl_name,default_app)
+    ref.delete() # DELETE EXISTING
+    
+    ref = db.reference(tbl_name,default_app)
     for index, row in df.iterrows():
         users_ref = ref.child(str(index))
         users_ref.set({
