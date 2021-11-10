@@ -23,15 +23,20 @@ class AppFunctions(MainWindow):
         
         self.Dialog.show()
 
-    def get_data(self):
-        self.db_worker.terminate()
-
-        self.worker =   GetData(self.selected_crypto, 
+    def dash_histo(self):
+        self.h_worker = GetHistoData(self.selected_crypto, 
                                 self.selected_histo_price, 
                                 self.selected_histo_day, 
                                 self.selected_date)
-        self.worker.start()
-        self.worker.pass_histo_data.connect(self.catch_histo_data)
+        self.h_worker.start()
+        self.h_worker.pass_histo_data.connect(self.catch_histo_data)
+
+    def dash_pred(self):
+        self.p_worker = GetPredData(self.selected_crypto,
+                                self.selected_predicted_price,
+                                self.selected_predicted_day,
+                                self.selected_date)
+        # self.p_worker.pass_pred_data.connect(self.catch_pred_data)
 
     def get_dataset_selection(self):
         self.ui.testTimeFrameList.clear()
@@ -114,7 +119,7 @@ class AppFunctions(MainWindow):
         self.ui.btn_proceed.setEnabled(True)
 
 
-class GetData(QThread):
+class GetHistoData(QThread):
     pass_histo_data = Signal(list)
 
     def __init__(self, crypto, h_price, h_days, today):
@@ -170,6 +175,64 @@ class GetData(QThread):
 
             new_lst.append([df, [x, y]])
         self.pass_histo_data.emit(new_lst)
+
+
+class GetPredData(QThread):
+    pass_pred_data = Signal(list)
+
+    def __init__(self, crypto, p_price, p_days, today):
+        super().__init__()
+        self.crypto = crypto
+        # self.p_price = p_price
+        self.p_days = p_days
+        self.today = today
+
+    def run(self):
+        self.df_btc = pd.read_csv('csv/pred_btc.csv')
+        self.df_eth = pd.read_csv('csv/pred_eth.csv')
+        self.df_doge = pd.read_csv('csv/pred_doge.csv')
+
+        if self.crypto == 'btn_all':
+            lst = [self.df_btc, self.df_eth, self.df_doge]
+        if self.crypto == 'btn_btc':
+            lst = [self.df_btc]
+        if self.crypto == 'btn_eth':
+            lst = [self.df_eth]
+        if self.crypto == 'btn_doge':
+            lst = [self.df_doge]
+
+        # numeric = ['High', 'Low', 'Closing']
+        new_lst = list()
+
+        future_d = self.today + timedelta(days=self.p_days)
+
+        for df in lst:
+            df2 = df.drop(df.columns[0], axis=1)
+            df = df2
+            df.columns = ['Date', 'Price']
+            df['Date'] = pd.to_datetime(df['Date'])
+            df['Price'] = df['Price'].apply(pd.to_numeric, errors='coerce', axis=1)
+            # print(df.head())
+
+            df_date = []
+            df_price = []
+
+            df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
+            df_date = df_['Date']
+            df_price = df_['Price']
+
+            x = []
+            y = []
+
+            for item in df_date:
+                item = datetime.timestamp(item)
+                x.append(item)
+            for item in df_price:
+                y.append(item)
+
+            new_lst.append([df, [x, y]])
+        self.pass_pred_data.emit(new_lst)
+
 
 class ImplementModel(QThread):
     process_complete = Signal(str)

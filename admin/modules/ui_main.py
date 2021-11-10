@@ -1048,23 +1048,23 @@ class Ui_MainWindow(object):
         self.horizontalLayout_21.setSpacing(10)
         self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
         self.horizontalLayout_21.setContentsMargins(0, 0, 0, 0)
-        self.btn_pred_closing = QPushButton(self.predPriceButtons)
-        self.btn_pred_closing.setObjectName(u"btn_pred_closing")
-        self.btn_pred_closing.setMinimumSize(QSize(86, 25))
+        # self.btn_pred_closing = QPushButton(self.predPriceButtons)
+        # self.btn_pred_closing.setObjectName(u"btn_pred_closing")
+        # self.btn_pred_closing.setMinimumSize(QSize(86, 25))
 
-        self.horizontalLayout_21.addWidget(self.btn_pred_closing)
+        # self.horizontalLayout_21.addWidget(self.btn_pred_closing)
 
-        self.btn_pred_high = QPushButton(self.predPriceButtons)
-        self.btn_pred_high.setObjectName(u"btn_pred_high")
-        self.btn_pred_high.setMinimumSize(QSize(65, 25))
+        # self.btn_pred_high = QPushButton(self.predPriceButtons)
+        # self.btn_pred_high.setObjectName(u"btn_pred_high")
+        # self.btn_pred_high.setMinimumSize(QSize(65, 25))
 
-        self.horizontalLayout_21.addWidget(self.btn_pred_high)
+        # self.horizontalLayout_21.addWidget(self.btn_pred_high)
 
-        self.btn_pred_low = QPushButton(self.predPriceButtons)
-        self.btn_pred_low.setObjectName(u"btn_pred_low")
-        self.btn_pred_low.setMinimumSize(QSize(65, 25))
+        # self.btn_pred_low = QPushButton(self.predPriceButtons)
+        # self.btn_pred_low.setObjectName(u"btn_pred_low")
+        # self.btn_pred_low.setMinimumSize(QSize(65, 25))
 
-        self.horizontalLayout_21.addWidget(self.btn_pred_low)
+        # self.horizontalLayout_21.addWidget(self.btn_pred_low)
 
 
         self.horizontalLayout_19.addWidget(self.predPriceButtons, 0, Qt.AlignRight)
@@ -3158,7 +3158,7 @@ class Ui_MainWindow(object):
 
         self.deployCryptoCombo = QComboBox(self.deployCryptoComboFrame)
         self.deployCryptoCombo.setObjectName(u"deployCryptoCombo")
-        self.deployCryptoCombo.setMinimumSize(QSize(110, 0))
+        self.deployCryptoCombo.setMinimumSize(QSize(145, 0))
 
         self.horizontalLayout_39.addWidget(self.deployCryptoCombo)
 
@@ -3173,16 +3173,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_40.setSpacing(10)
         self.horizontalLayout_40.setObjectName(u"horizontalLayout_40")
         self.horizontalLayout_40.setContentsMargins(0, 0, 0, 0)
-        self.label_27 = QLabel(self.deployPriceComboFrame)
-        self.label_27.setObjectName(u"label_27")
+        # self.label_27 = QLabel(self.deployPriceComboFrame)
+        # self.label_27.setObjectName(u"label_27")
 
-        self.horizontalLayout_40.addWidget(self.label_27)
+        # self.horizontalLayout_40.addWidget(self.label_27)
 
-        self.deployPriceCombo = QComboBox(self.deployPriceComboFrame)
-        self.deployPriceCombo.setObjectName(u"deployPriceCombo")
-        self.deployPriceCombo.setMinimumSize(QSize(110, 0))
+        # self.deployPriceCombo = QComboBox(self.deployPriceComboFrame)
+        # self.deployPriceCombo.setObjectName(u"deployPriceCombo")
+        # self.deployPriceCombo.setMinimumSize(QSize(110, 0))
 
-        self.horizontalLayout_40.addWidget(self.deployPriceCombo)
+        # self.horizontalLayout_40.addWidget(self.deployPriceCombo)
 
 
         self.horizontalLayout_36.addWidget(self.deployPriceComboFrame)
@@ -3412,9 +3412,9 @@ class Ui_MainWindow(object):
         self.btn_doge.setText("")
         self.selected_dateLabel.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"PREDICTED PRICES", None))
-        self.btn_pred_closing.setText(QCoreApplication.translate("MainWindow", u"CLOSING", None))
-        self.btn_pred_high.setText(QCoreApplication.translate("MainWindow", u"HIGH", None))
-        self.btn_pred_low.setText(QCoreApplication.translate("MainWindow", u"LOW", None))
+        # self.btn_pred_closing.setText(QCoreApplication.translate("MainWindow", u"CLOSING", None))
+        # self.btn_pred_high.setText(QCoreApplication.translate("MainWindow", u"HIGH", None))
+        # self.btn_pred_low.setText(QCoreApplication.translate("MainWindow", u"LOW", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"DAYS:", None))
         self.daysValue.setText(QCoreApplication.translate("MainWindow", u"7", None))
         self.predictedRangeLabel.setText("")
@@ -3477,7 +3477,7 @@ class Ui_MainWindow(object):
         self.btn_deployDeploy.setText(QCoreApplication.translate("MainWindow", u"DEPLOY", None))
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"FILTER DATE:", None))
         self.label_25.setText(QCoreApplication.translate("MainWindow", u"CRYPTOCURRENCY:", None))
-        self.label_27.setText(QCoreApplication.translate("MainWindow", u"PRICES:", None))
+        # self.label_27.setText(QCoreApplication.translate("MainWindow", u"PRICES:", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"PREDICTED PRICES", None))
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"DAYS:", None))
         self.deployDaysValue.setText(QCoreApplication.translate("MainWindow", u"1", None))

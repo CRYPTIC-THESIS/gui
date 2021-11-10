@@ -50,16 +50,16 @@ class Login(QMainWindow):
         email = self.ui.username_login.text()
         password = self.ui.pass_login.text()
 
-        try:
-            auth.sign_in_with_email_and_password(email, password)
-            self.window = MainWindow()
-            # self.windows.append(window)
-            self.window.show()
-            self.close()
-        except Exception:
-            print('INVALID ACCOUNT.')
-            self.ui.username_login.clear()
-            self.ui.pass_login.clear()
+        # try:
+        auth.sign_in_with_email_and_password(email, password)
+        self.window = MainWindow()
+        # self.windows.append(window)
+        self.window.show()
+        self.close()
+        # except Exception:
+        #     print('INVALID ACCOUNT.')
+        #     self.ui.username_login.clear()
+        #     self.ui.pass_login.clear()
 
     
     def signupfunction(self):
@@ -129,6 +129,8 @@ class MainWindow(QMainWindow):
         self.signals()
 
 
+    # ///////////////////////////////////////////
+    # DISPLAY GUI
     def setDefaultDisplay(self):
         # DEFAULTS
         # DATE
@@ -145,7 +147,7 @@ class MainWindow(QMainWindow):
         widgets.btn_all.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_all.styleSheet()))
         # widgets.btc_card.setStyleSheet(UIFunctions.selectCard(widgets.btc_card.styleSheet()))
         
-        widgets.btn_pred_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_pred_closing.styleSheet()))
+        # widgets.btn_pred_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_pred_closing.styleSheet()))
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
 
         widgets.btn_3.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_3.styleSheet()))
@@ -160,13 +162,16 @@ class MainWindow(QMainWindow):
 
         # VALUES
         self.selected_crypto = 'btn_all'
-        self.selected_predicted_price = 'Closing'
+        self.selected_predicted_price = 'Price'
         self.selected_histo_price = 'Closing'
         self.selected_histo_day = 30
 
+        self.get_pred_day()
         self.access_db()
-        # AppFunctions.get_data(self)
 
+
+    # ///////////////////////////////////////////
+    # SIGNALS
     def signals(self):
         # BUTTON SIGNALS
         # LEFT MENUS
@@ -187,9 +192,9 @@ class MainWindow(QMainWindow):
         widgets.btn_histo_high.clicked.connect(self.get_price)
         widgets.btn_histo_low.clicked.connect(self.get_price)
 
-        widgets.btn_pred_closing.clicked.connect(self.get_price)
-        widgets.btn_pred_high.clicked.connect(self.get_price)
-        widgets.btn_pred_low.clicked.connect(self.get_price)
+        # widgets.btn_pred_closing.clicked.connect(self.get_price)
+        # widgets.btn_pred_high.clicked.connect(self.get_price)
+        # widgets.btn_pred_low.clicked.connect(self.get_price)
 
         # widgets.btn_0.clicked.connect(self.get_histo_day)
         widgets.btn_1.clicked.connect(self.get_histo_day)
@@ -197,7 +202,7 @@ class MainWindow(QMainWindow):
         widgets.btn_3.clicked.connect(self.get_histo_day)
         widgets.btn_4.clicked.connect(self.get_histo_day)
 
-        # ////////// widgets.horizontalSlider.valueChanged.connect(self.get_pred_day)
+        widgets.horizontalSlider.valueChanged.connect(self.get_pred_day)
 
         # TRAIN
         widgets.btn_proceed.clicked.connect(lambda: AppFunctions.get_dataset_selection(self))
@@ -210,6 +215,8 @@ class MainWindow(QMainWindow):
         widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
 
     
+    # ///////////////////////////////////////////
+    # SIDE MENU
     def buttonClick(self):
         # GET BUTTON CLICKED
         btn = self.sender()
@@ -243,6 +250,8 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
     
 
+    # ///////////////////////////////////////////
+    # SLOTS
     def get_selected_date(self):
         date = widgets.dateEdit.date()
         widgets.selected_dateLabel.setText(date.toString('MMMM d, yyyy'))
@@ -250,8 +259,6 @@ class MainWindow(QMainWindow):
         self.selected_date = pd.to_datetime(self.selected_date)
 
         self.access_db()
-        # AppFunctions.get_data(self)
-
 
     def get_selected_crypto(self):
         # GET BUTTON CLICKED
@@ -286,37 +293,39 @@ class MainWindow(QMainWindow):
         btn.setStyleSheet(UIFunctions.selectCrypto(btn.styleSheet()))
         self.selected_crypto = btnName
         
-        # self.access_db()
-        AppFunctions.get_data(self)
+        self.get_data()
 
     def get_price(self):
         # GET BUTTON CLICKED
         btn = self.sender()
         btnName = btn.objectName()
 
-        if btnName == 'btn_histo_closing':
-            self.selected_histo_price = 'Closing'
-        
-        if btnName == 'btn_histo_high':
-            self.selected_histo_price = 'High'
+        if btnName.startswith('btn_histo'):
+            if btnName == 'btn_histo_closing':
+                self.selected_histo_price = 'Closing'
+            
+            if btnName == 'btn_histo_high':
+                self.selected_histo_price = 'High'
 
-        if btnName == 'btn_histo_low':
-            self.selected_histo_price = 'Low'
+            if btnName == 'btn_histo_low':
+                self.selected_histo_price = 'Low'
+                
+            AppFunctions.dash_histo(self)
 
-        if btnName == 'btn_pred_closing':
-            self.selected_predicted_price = 'Closing'
-        
-        if btnName == 'btn_pred_high':
-            self.selected_predicted_price = 'High'
-        
-        if btnName == 'btn_pred_low':
-            self.selected_predicted_price = 'Low'
+        if btnName.startswith('btn_pred'):
+            if btnName == 'btn_pred_closing':
+                self.selected_predicted_price = 'Closing'
+            
+            if btnName == 'btn_pred_high':
+                self.selected_predicted_price = 'High'
+            
+            if btnName == 'btn_pred_low':
+                self.selected_predicted_price = 'Low'
+            
+            AppFunctions.dash_pred(self)
 
         UIFunctions.resetPriceStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectPrice(btn.styleSheet()))
-
-        # self.access_db()
-        AppFunctions.get_data(self)
 
     def get_histo_day(self):
         # GET BUTTON CLICKED
@@ -342,9 +351,24 @@ class MainWindow(QMainWindow):
         btn.setStyleSheet(UIFunctions.selectHistoDay(btn.styleSheet()))
 
         # self.access_db()
-        AppFunctions.get_data(self)
+        AppFunctions.dash_histo(self)
 
+    def get_pred_day(self):
+        self.ui.daysValue.setNum
+        self.selected_predicted_day = int(self.ui.daysValue.text())
+
+        self.pred_day_date = self.selected_date + timedelta(days=self.selected_predicted_day)
+
+        str_sel_date = self.selected_date.strftime('%b %d, %Y')
+        str_pred_date = self.pred_day_date.strftime('%b %d, %Y')
+
+        self.ui.predictedRangeLabel.setText(str_sel_date+' - '+str_pred_date)
+
+        # AppFunctions.dash_pred(self)
     
+
+    # ///////////////////////////////////////////
+    # TRAIN & TEST TERMINAL DISPLAY
     def show_terminal(self):
         # GET BUTTON CLICKED
         btn = self.sender()
@@ -366,9 +390,36 @@ class MainWindow(QMainWindow):
         self.p_worker = ImplementModel(self.process)
         self.p_worker.start()
         self.p_worker.process_complete.connect(self.catch_output)
+    
+    def show_data_analysis(self):
+        widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
+        widgets.btn_viewDataAnalysis.hide()
+
+
+    # ///////////////////////////////////////////
+    # CATCH THREAD SIGNALS
+    def access_db(self):
+        self.db_worker = AccessDatabase(self.selected_date)
+        self.db_worker.start()
+        # run = partial(self.db_worker.access_db, self.selected_date)
+        # QTimer.singleShot(0, run)
+        self.db_worker.import_data_complete.connect(self.get_data)
+
+    def get_data(self):
+        self.db_worker.terminate()
+
+        AppFunctions.dash_pred(self)
+        AppFunctions.dash_histo(self)
+
+    def get_dataset(self):
+        self.ds_worker =  ImportDataset(self.dataset_date_from, 
+                                        self.dataset_date_until,
+                                        self.dataset_crypto, 
+                                        self.dataset_source)
+        self.ds_worker.start()
+        self.ds_worker.pass_dataset.connect(self.catch_dataset)
 
     def catch_output(self, output):
-
         if self.process == 'train':
             widgets.trainTerminal.clear()
             widgets.trainTerminal.insertPlainText(output)
@@ -383,33 +434,6 @@ class MainWindow(QMainWindow):
 
         QTimer.singleShot(1300, self.Dialog.close)
         QTimer.singleShot(1200, self.show)
-
-
-    def show_data_analysis(self):
-        widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
-        widgets.btn_viewDataAnalysis.hide()
-
-    def logout(self):
-        self.window = Login()
-        # self.windows.append(window)
-        self.window.show()
-        self.close()
-
-    def access_db(self):
-        self.db_worker = AccessDatabase(self.selected_date)
-        self.db_worker.start()
-        # run = partial(self.db_worker.access_db, self.selected_date)
-        # QTimer.singleShot(0, run)
-        self.db_worker.import_data_complete.connect(lambda: AppFunctions.get_data(self))
-    
-
-    def get_dataset(self):
-        self.ds_worker =  ImportDataset(self.dataset_date_from, 
-                                        self.dataset_date_until,
-                                        self.dataset_crypto, 
-                                        self.dataset_source)
-        self.ds_worker.start()
-        self.ds_worker.pass_dataset.connect(self.catch_dataset)
         
     def catch_dataset(self, my_df):
         widgets.trainTable.setColumnCount(len(my_df.columns))
@@ -429,7 +453,6 @@ class MainWindow(QMainWindow):
         self.ds_worker.terminate()
         
         widgets.btn_startTraining.show()
-
 
     def catch_histo_data(self, histo_data):
         # print('catch_histo_data: ', histo_data)
@@ -476,13 +499,27 @@ class MainWindow(QMainWindow):
             y = xy[1]
             widgets.histoGraph.plot(x, y, pen=pen)
 
-
-        self.worker.terminate()
-
+        self.h_worker.terminate()
+    
+    def catch_pred_data(self, pred_data):
+        widgets.predGraph.clear()
+        btc = list()
+        eth = list()
+        doge = list()
+    
     def plot(self, x, y, plot, pen):
         widgets.histoGraph.plot(x, y, name=plot, pen=pen)
 
+    
+    # ///////////////////////////////////////////
+    # LOGOUT
+    def logout(self):
+        self.window = Login()
+        # self.windows.append(window)
+        self.window.show()
+        self.close()
 
+    
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
         p = event.globalPosition()
