@@ -128,14 +128,15 @@ class cryptic():
         con = pl.load(file)
         file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
         con1 = pl.load(file)
+        pool = layer.MaxPool()
         
         file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
         progress(0.5, len(data)+1, status='Trained Model Loaded')
         out = con.forward(data)
-        out = layer.maxpool(out)
+        out = pool.forward(out)
         out = con1.forward(out)
-        out = layer.maxpool(out)
+        out = pool.forward(out)
         out = out.flatten()
         out = out.astype(int)
 
