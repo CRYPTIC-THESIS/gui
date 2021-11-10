@@ -76,7 +76,7 @@ class cryptic():
             x = out[0].astype(float)
         progress(0.25, epochs+1, status='Convolutions Done')
         out = out.flatten()
-        out = out.astype(int)
+        
         vals_to_idx,idx_to_vals,vals,vals_size = self.format_LSTM(out)
         lstm = layer.LSTM(vals_to_idx, idx_to_vals, vals_size,epochs, lr = 0.01)
         progress(0.5, epochs+1, status='Passing to LSTM')
@@ -138,7 +138,7 @@ class cryptic():
         out = con1.forward(out)
         out = pool.forward(out)
         out = out.flatten()
-        out = out.astype(int)
+        
 
         vi = len(p_lstm.vals_to_idx)
         iv = len(p_lstm.idx_to_vals)
@@ -210,7 +210,7 @@ class cryptic():
         out = con1.forward(out)
         out = layer.maxpool(out)
         out = out.flatten()
-        out = out.astype(int)
+        
 
 
         if(out in p_lstm.vals_to_idx):
