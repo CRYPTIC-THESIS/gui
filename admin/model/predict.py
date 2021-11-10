@@ -1,7 +1,7 @@
 import CRYPTIC_module as nn
 import numpy as np
 import pickle as pl
-open_file = open('trained.pkl', "rb")
+open_file = open('obj/trained.pkl', "rb")
 cryptos = pl.load(open_file)
 open_file.close()
 
