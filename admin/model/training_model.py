@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import CRYPTIC_module as nn
+import data_analysis as da
 import sys 
 import pickle
 sys.path.append('..')
@@ -33,6 +34,18 @@ for i in range(len(crypto)):
     dataset['Reddit'] = data['Reddit Volume']
     dataset['Google'] = data['GoogleTrends']
     
+    df = pd.DataFrame(columns = ['actual','open','24_high','24_low','google','twitter','reddit'])
+    df['actual'] = data['Closing']
+    df['open'] = data['Open']
+    df['24_high'] = data['High']
+    df['24_low'] = data['Low']
+    df['google'] = data['GoogleTrends']
+    df['twitter'] = data['Twitter Volume']
+    df['reddit'] = data['Reddit Volume']
+
+    da.corr_analysis(df, crypto[i])
+
+    del df
     Y = np.array(data['Date'])
     
     dataset = np.array(dataset)
