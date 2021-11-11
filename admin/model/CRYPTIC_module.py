@@ -4,6 +4,8 @@ import layers as layer
 import pickle as pl
 import matplotlib.pyplot as plt
 import sys
+from datetime import datetime
+from datetime import timedelta
 sys.path.append('..')
 
 def progress(count, total, status=''):
@@ -202,7 +204,9 @@ class cryptic():
 
         return df
 
-    def retrain(self,epochs,data,crypto):
+    def retrain(self,epochs,data,crypto,date):
+        date = []
+        begin = datetime.strptime(str(Y[-1]), "%Y-%m-%d")
         file = open('model/obj/'+crypto+'_con.obj', 'rb') 
         con = pl.load(file)
         file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
@@ -251,10 +255,17 @@ class cryptic():
             out = np.append(out,[pred])
 
             p_lstm = lstm
+            day = begin + timedelta(days=1)
+            date.append(str(day))
+            begin = day
+
         progress(14, 14, status='Finished Retraining')
         print('Sending Predictions to Database')
+        
         s = lstm.sample(h, c, lstm.seq_size)
-        print('14 Day Prediction: ',s[-14:])
+        pred = s[-14:]
+
+        return date,pred
 
 
 

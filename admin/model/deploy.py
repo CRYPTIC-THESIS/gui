@@ -3,6 +3,7 @@ import numpy as np
 import CRYPTIC_module as nn
 import sys 
 import pickle
+import dbconnect as db
 sys.path.append('..')
 
 
@@ -25,22 +26,26 @@ for i in range(len(crypto)):
     dataset['Reddit'] = data['Reddit Volume']
     dataset['Google'] = data['GoogleTrends']
 
+    Y = np.array(data['Date'])
     data = np.array(dataset)
 
     if(crypto[i]=='BTC'):
         print('Retraining BTC Model Before Deployment')
-        cryptic_model.retrain(10,data,crypto[i])       
+        date,pred = cryptic_model.retrain(10,data,crypto[i],Y) 
+        db.add_predictions('BTC_predict',pred,date)    
         print('BTC Model Deployed!!!\n\n')
         deployed.append('BTC')
     elif(crypto[i]=='ETH'):
         print('Retraining ETH Model Before Deployment')
-        cryptic_model.retrain(10,data,crypto[i])        
+        date,pred = cryptic_model.retrain(10,data,crypto[i],Y)        
+        db.add_predictions('ETH_predict',pred,date)
         print('ETH Model Deployed!!!\n\n')
         deployed.append('ETH')
 
     elif(crypto[i]=='DOGE'):
         print('Retraining Doge Model Before Deployment')
-        cryptic_model.retrain(10,data,crypto[i])
+        date,pred = cryptic_model.retrain(10,data,crypto[i],Y)
+        db.add_predictions('DOGE_predict',pred,date)
         print('DOGE Model Deployed!!!\n\n')
         deployed.append('DOGE')
 
