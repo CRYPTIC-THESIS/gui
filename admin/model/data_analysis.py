@@ -57,7 +57,7 @@ def corr_analysis(crypto_df,crypto):
 
 
 # For Precision - Recall - F1-Score - Accuracy
-def classification_analysis(crypto_df):
+def classification_analysis(crypto_df,crypto):
     classification_analysis_df = pd.DataFrame(columns = ['Precision','Recall','F1-Score','Accuracy'])
     actualPrice = pd.DataFrame(crypto_df[['actual']].values)
     predictedPrice = pd.DataFrame(crypto_df[['predicted']].values)
@@ -107,7 +107,7 @@ def classification_analysis(crypto_df):
     plt.xticks([0.5,1.5], ['Decreased', 'Increased'],va='center', weight = 'bold')
     plt.ylabel('Actual Price')
     plt.xlabel('Predicted Price')
-    plt.savefig('images/conf.png', dpi=150, bbox_inches='tight')
+    plt.savefig('images/'+crypto+'_conf.png', dpi=150, bbox_inches='tight')
     plt.close()
     
     pd_data = pd.Series([prec_sco , rec_sco, f1_sco , acc_sco], index=classification_analysis_df.columns)
