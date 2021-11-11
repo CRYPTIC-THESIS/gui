@@ -2751,7 +2751,7 @@ class Ui_MainWindow(object):
 
         self.dataAnalysisTableFrame = QFrame(self.frame_9)
         self.dataAnalysisTableFrame.setObjectName(u"dataAnalysisTableFrame")
-        self.dataAnalysisTableFrame.setStyleSheet(u"background: #41464E;\n"
+        self.dataAnalysisTableFrame.setStyleSheet(u"background: rgb(33, 37, 43);\n"
 "border-radius: 10px;")
         self.dataAnalysisTableFrame.setFrameShape(QFrame.NoFrame)
         self.dataAnalysisTableFrame.setFrameShadow(QFrame.Raised)
@@ -2762,7 +2762,10 @@ class Ui_MainWindow(object):
         self.dataAnalysisTable = QTableWidget(self.dataAnalysisTableFrame)
         self.dataAnalysisTable.setObjectName(u"dataAnalysisTable")
         self.dataAnalysisTable.setFrameShape(QFrame.NoFrame)
+        self.dataAnalysisTable.setStyleSheet(u"color: #2AB7CA;")
+        self.dataAnalysisTable.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.dataAnalysisTable.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.dataAnalysisTable.verticalHeader().setVisible(False)
 
         self.verticalLayout_90.addWidget(self.dataAnalysisTable)
 
@@ -3073,10 +3076,29 @@ class Ui_MainWindow(object):
         self.horizontalLayout_33.setSpacing(20)
         self.horizontalLayout_33.setObjectName(u"horizontalLayout_33")
         self.horizontalLayout_33.setContentsMargins(0, 0, 0, 0)
+        self.btn_reset = QPushButton(self.deployButtonFrame)
+        self.btn_reset.setObjectName(u"btn_reset")
+        self.btn_reset.setMinimumSize(QSize(80, 35))
+        self.btn_reset.setStyleSheet(u"*:hover, *:pressed {\n"
+"	color: #DDDDDD;\n"
+"	background: #E74C53;\n"
+"	border-color: #E74C53;\n"
+"}")
+
+        self.horizontalLayout_33.addWidget(self.btn_reset)
+
         self.btn_deployDeploy = QPushButton(self.deployButtonFrame)
         self.btn_deployDeploy.setObjectName(u"btn_deployDeploy")
         self.btn_deployDeploy.setMinimumSize(QSize(80, 35))
-        self.btn_deployDeploy.setStyleSheet(u"* { background: rgb(33, 37, 43);}")
+        self.btn_deployDeploy.setStyleSheet(u"*{\n"
+"	background: rgb(33, 37, 43);\n"
+"}\n"
+"\n"
+"*:hover, *:pressed {\n"
+"	color: #DDDDDD;\n"
+"	background: #008A66;\n"
+"	border-color: #008A66;\n"
+"}")
 
         self.horizontalLayout_33.addWidget(self.btn_deployDeploy)
 
@@ -3487,6 +3509,8 @@ class Ui_MainWindow(object):
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"DAYS:", None))
         self.deployDaysValue.setText(QCoreApplication.translate("MainWindow", u"1", None))
         self.deployGraphDateLabel.setText("")
+
+        self.btn_reset.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
     # retranslateUi
 
 

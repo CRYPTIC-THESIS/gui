@@ -3,6 +3,7 @@ import pickle as pl
 import CRYPTIC_module as nn
 import sys
 import data_analysis as da
+import pandas as pd
 sys.path.append('..')
 
 open_file = open('model/obj/trained.pkl', "rb")
