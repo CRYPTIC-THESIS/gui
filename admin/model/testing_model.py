@@ -18,6 +18,8 @@ for crypto in trained_list:
         data  = np.genfromtxt('csv/'+str(crypto)+"_test_set.csv", delimiter=',')
         model = nn.cryptic()
         df_data = model.test(data,crypto)
+        classi_analysis = da.classification_analysis(df_data, str(crypto))
+        classi_analysis.to_csv('csv/'+str(crypto)+'_classification_analysis.csv')
 
         if(crypto == 'BTC'):
             btc_df = df_data
@@ -32,7 +34,9 @@ for crypto in trained_list:
     
 error_analysis_df = da.error_analysis(btc_df, eth_df, doge_df)
 
-error_analysis_df.to_csv('csv/Error_Analysis.csv')
+error_analysis_df.to_csv('csv/All_Error_Analysis.csv')
+
+
 
 
 
