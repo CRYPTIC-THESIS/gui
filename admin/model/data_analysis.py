@@ -42,7 +42,7 @@ def error_analysis(btc_df, eth_df, doge_df):
 
 
 #For Correlation Analysis
-def corr_analysis(crypto_df):
+def corr_analysis(crypto_df,crypto):
     columns = ['actual','open','24_high','24_low','google','twitter','reddit']
     dataCorrelation=list(columns)
     corrMatrix = crypto_df[dataCorrelation].corr(method = 'pearson')
@@ -50,9 +50,9 @@ def corr_analysis(crypto_df):
     sn.set(rc = {'figure.figsize':(7,5), 'figure.facecolor': '#21252B', 'xtick.color': 'white', 'ytick.color': 'white'})
     grph = sn.heatmap(corrMatrix, annot=True)
     fig = grph.get_figure()
-    fig.savefig('images/corr.png', dpi=150, bbox_inches='tight')
+    fig.savefig('images/'+crypto+'_corr.png', dpi=150, bbox_inches='tight')
     plt.close()
-
+    
     # return corrMatrix, columns
 
 
