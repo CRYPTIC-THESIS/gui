@@ -37,20 +37,25 @@ class UIFunctions(MainWindow):
                 w.setStyleSheet(UIFunctions.selectCrypto(w.styleSheet()))
 
     def selectStandardPrice(self, widget):
-        if widget.startswith('btn_histo_'):
-            for w in self.ui.histoPriceFrame.findChildren(QPushButton):
+        if widget.startswith('btn_home'):
+            for w in self.ui.home_histoPriceButtons.findChildren(QPushButton):
                 if w.objectName() == widget:
                     w.setStyleSheet(UIFunctions.selectPrice(w.styleSheet()))
 
-        if widget.startswith('btn_pred_'):
-            for w in self.ui.predPriceButtons.findChildren(QPushButton):
+        if widget.startswith('btn_histo'):
+            for w in self.ui.crypto_histoPriceButtons.findChildren(QPushButton):
                 if w.objectName() == widget:
                     w.setStyleSheet(UIFunctions.selectPrice(w.styleSheet()))
 
     def selectStandardHistoday(self, widget):
-        for w in self.ui.daysButtons.findChildren(QPushButton):
-            if w.objectName() == widget:
-                w.setStyleSheet(UIFunctions.selectHistoDay(w.styleSheet()))
+        if widget.startswith('btn_home'):
+            for w in self.ui.home_histoDayButtons.findChildren(QPushButton):
+                if w.objectName() == widget:
+                    w.setStyleSheet(UIFunctions.selectHistoDay(w.styleSheet()))
+        else:
+            for w in self.ui.crypto_daysButtons.findChildren(QPushButton):
+                if w.objectName() == widget:
+                    w.setStyleSheet(UIFunctions.selectHistoDay(w.styleSheet()))
 
     # RESET SELECTION
     def resetCryptoStyle(self, widget):
@@ -59,20 +64,25 @@ class UIFunctions(MainWindow):
                 w.setStyleSheet(UIFunctions.deselectCrypto(w.styleSheet()))
 
     def resetPriceStyle(self, widget):
-        if widget.startswith('btn_histo_'):
-            for w in self.ui.histoPriceFrame.findChildren(QPushButton):
+        if widget.startswith('btn_home'):
+            for w in self.ui.home_histoPriceButtons.findChildren(QPushButton):
                 if w.objectName() != widget:
                     w.setStyleSheet(UIFunctions.deselectPrice(w.styleSheet()))
 
-        if widget.startswith('btn_pred_'):
-            for w in self.ui.predPriceButtons.findChildren(QPushButton):
+        if widget.startswith('btn_histo'):
+            for w in self.ui.crypto_histoPriceButtons.findChildren(QPushButton):
                 if w.objectName() != widget:
                     w.setStyleSheet(UIFunctions.deselectPrice(w.styleSheet()))
 
     def resetHistoDayStyle(self, widget):
-        for w in self.ui.daysButtons.findChildren(QPushButton):
-            if w.objectName() != widget:
-                w.setStyleSheet(UIFunctions.deselectHistoDay(w.styleSheet()))
+        if widget.startswith('btn_home'):
+            for w in self.ui.home_histoDayButtons.findChildren(QPushButton):
+                if w.objectName() != widget:
+                    w.setStyleSheet(UIFunctions.deselectHistoDay(w.styleSheet()))
+        else:
+            for w in self.ui.crypto_daysButtons.findChildren(QPushButton):
+                if w.objectName() != widget:
+                    w.setStyleSheet(UIFunctions.deselectHistoDay(w.styleSheet()))
 
     def uiDefinitions(self):
         self.setWindowFlags(Qt.FramelessWindowHint)
