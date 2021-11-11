@@ -87,6 +87,14 @@ def updated(tbl_name):
     users_ref = ref.child(tbl_name)
     users_ref.set(today)
 
+def add_predictions(tbl_name,data,date):
+    ref = db.reference(tbl_name,default_app)
+    
+    for i in range(data):
+        users_ref = ref.child(date[i])
+        users_ref.set(data[i])
+    print("Predictions Added")
+
 #insert_trend_csv('Twitter_Data','path of twitter data')
 #insert_trend_csv('Reddit_Data','path of reddit data')
 #insert_trend_csv('Google_Data','path of google trend data')
