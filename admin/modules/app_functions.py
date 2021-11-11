@@ -62,6 +62,12 @@ class AppFunctions(MainWindow):
                                 self.selected_date)
         # self.p_worker.pass_pred_data.connect(self.catch_pred_data)
 
+    def get_accuracy(self):
+        self.a_worker = GetAccuracy(self.analyze_crypto)
+        self.a_worker.start()
+        self.a_worker.pass_acc_data.connect(self.catch_analysis)
+
+
     def get_dataset_selection(self):
         self.ui.testTimeFrameList.clear()
         self.ui.testCryptoList.clear()
@@ -292,3 +298,40 @@ class ImplementModel(QThread):
             output = p.read()
             print('Done')
             self.process_complete.emit(output)
+
+
+class GetAccuracy(QThread):
+    pass_acc_data = Signal(pd.DataFrame)
+
+    def __init__(self, crypto):
+        super().__init__()
+        self.crypto = crypto
+
+    def run(self):
+        df = pd.DataFrame()
+
+        error_ = pd.read_csv('csv/All_Error_Analysis.csv', index_col=[0])
+        print(error_)
+        if self.crypto.startswith('Bitcoin') == True:
+            error_ = error_.loc[['BTC']]
+            class_ = pd.read_csv('csv/BTC_classification_analysis.csv', index_col=[0])
+
+        if self.crypto.startswith('Ethereum') == True:
+            error_ = error_.loc[['ETH']]
+            class_ = pd.read_csv('csv/ETH_classification_analysis.csv', index_col=[0])
+        
+        if self.crypto.startswith('Dogecoin') == True:
+            error_ = error_.loc[['DOGE']]
+            class_ = pd.read_csv('csv/DOGE_classification_analysis.csv', index_col=[0])
+        
+        class_.reset_index(drop=True, inplace=True)
+        error_.reset_index(drop=True, inplace=True)
+
+        df = pd.concat([df, error_], axis=1)
+        df = pd.concat([df, class_], axis=1)
+
+        print('error_: ', error_)
+        print('class_: ', class_)
+        print('df: ', df)
+
+        self.pass_acc_data.emit(df)

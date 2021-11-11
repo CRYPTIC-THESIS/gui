@@ -422,9 +422,48 @@ class MainWindow(QMainWindow):
         self.p_worker.start()
         self.p_worker.process_complete.connect(self.catch_output)
     
+    
+    # ///////////////////////////////////////////
+    # DATA ANALYSIS
+    def get_crypto_analyze(self, value):
+        self.analyze_crypto = str(value)
+
+        self.get_analysis()
+
+    def get_analysis(self):
+        widgets.corrAnalysisGraph.clear()
+        widgets.conMatrixGraph.clear()
+        widgets.dataAnalysisTable.clear()
+
+        AppFunctions.get_accuracy(self)
+
+        if self.analyze_crypto.startswith('Bitcoin') == True:
+            corr = 'images\BTC_corr.png'
+            conf = 'images\BTC_conf.png'
+
+        if self.analyze_crypto.startswith('Ethereum') == True:
+            corr = 'images\ETH_corr.png'
+            conf = 'images\ETH_conf.png'
+        
+        if self.analyze_crypto.startswith('Dogecoin') == True:
+            corr = 'images\DOGE_corr.png'
+            conf = 'images\DOGE_conf.png'
+
+        pixmap = QPixmap(corr)
+        pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
+        widgets.corrAnalysisGraph.setPixmap(pixmap)
+
+        pixmap = QPixmap(conf)
+        pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
+        widgets.conMatrixGraph.setPixmap(pixmap)
+
     def show_data_analysis(self):
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
         widgets.btn_viewDataAnalysis.hide()
+
+        widgets.testCryptoCombo.currentTextChanged.connect(self.get_crypto_analyze)
+        self.analyze_crypto = str(widgets.testCryptoCombo.currentText())
+        self.get_analysis()
 
 
     # ///////////////////////////////////////////
@@ -438,6 +477,7 @@ class MainWindow(QMainWindow):
 
     def get_data(self):
         self.db_worker.terminate()
+        del self.db_worker
 
         AppFunctions.dash_pred(self)
         AppFunctions.dash_histo(self)
@@ -484,6 +524,7 @@ class MainWindow(QMainWindow):
         widgets.trainTable.resizeRowsToContents()
         
         self.ds_worker.terminate()
+        del self.ds_worker
         widgets.btn_startTraining.show()
 
     def catch_histo_data(self, histo_data):
@@ -532,6 +573,7 @@ class MainWindow(QMainWindow):
             widgets.histoGraph.plot(x, y, pen=pen)
 
         self.h_worker.terminate()
+        del self.h_worker
     
     def catch_pred_data(self, pred_data):
         widgets.predGraph.clear()
@@ -541,6 +583,26 @@ class MainWindow(QMainWindow):
     
     def plot(self, x, y, plot, pen):
         widgets.histoGraph.plot(x, y, name=plot, pen=pen)
+
+    def catch_analysis(self, my_df):
+        self.a_worker.terminate()
+        del self.a_worker
+
+        widgets.dataAnalysisTable.setColumnCount(len(my_df.columns))
+        widgets.dataAnalysisTable.setHorizontalHeaderLabels(my_df.columns)
+        widgets.dataAnalysisTable.setRowCount(len(my_df.index))
+
+        for i in range(len(my_df.index)):
+            for j in range(len(my_df.columns)):
+                item = QTableWidgetItem(str(my_df.iat[i, j]))
+                item.setTextAlignment(Qt.AlignCenter)
+                widgets.dataAnalysisTable.setItem(i, j, item)
+        
+        
+        # widgets.dataAnalysisTable.resizeColumnsToContents()
+        widgets.dataAnalysisTable.show()
+        # if len(self.dataset_source) > 0:
+        widgets.dataAnalysisTable.resizeRowsToContents()
 
     
     # ///////////////////////////////////////////
