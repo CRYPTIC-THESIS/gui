@@ -2,9 +2,10 @@ import pandas as pd
 import numpy as np
 import CRYPTIC_module as nn
 import sys 
+sys.path.append('..')
 import pickle
 import dbconnect as db
-sys.path.append('..')
+
 
 
 cryptic_model = nn.cryptic()
