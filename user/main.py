@@ -122,22 +122,22 @@ class MainWindow(QMainWindow):
     def default_values(self):
         # HOME
         widgets.btn_home.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_home.styleSheet()))
-        widgets.btn_homePredClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homePredClosing.styleSheet()))
+        # widgets.btn_homePredClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homePredClosing.styleSheet()))
         widgets.btn_homeHistoClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homeHistoClosing.styleSheet()))
-        widgets.btn_home1w.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_home1w.styleSheet()))
+        widgets.btn_home1d.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_home1d.styleSheet()))
 
         # BTC, ETH, DOGE
         widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
-        widgets.btn_predPriceClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_predPriceClosing.styleSheet()))
+        # widgets.btn_predPriceClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_predPriceClosing.styleSheet()))
 
 
         # VALUES
         self.selected_crypto = 'btn_home'
-        self.home_pred_price = 'Closing'
+        self.home_pred_price = 'Price'
         self.home_histo_price = 'Closing'
         self.home_pred_days = int(widgets.home_daysValue.text())
-        self.home_histo_days = 7
+        self.home_histo_days = 1
         
         AppFunctions.get_df(self)
         # AppFunctions.pred_graph(self)
