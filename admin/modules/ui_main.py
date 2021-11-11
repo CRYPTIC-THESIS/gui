@@ -1954,36 +1954,41 @@ class Ui_MainWindow(object):
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_34.setContentsMargins(0, 0, 0, 0)
         
-        self.checkBox_histo = QCheckBox(self.sourceCheckBox)
-        self.checkBox_histo.setObjectName(u"checkBox_histo")
-        self.checkBox_histo.setCheckState(Qt.Checked)
-        self.checkBox_histo.setEnabled(False)
+        self.radioButton_histo = QRadioButton(self.sourceCheckBox)
+        self.radioButton_histo.setObjectName(u"radioButton_histo")
+        # self.checkBox_histo.setCheckState(Qt.Checked)
+        # self.checkBox_histo.setEnabled(False)
 
-        self.verticalLayout_34.addWidget(self.checkBox_histo)
+        self.verticalLayout_34.addWidget(self.radioButton_histo)
 
-        self.checkBox_twitter = QCheckBox(self.sourceCheckBox)
-        self.checkBox_twitter.setObjectName(u"checkBox_twitter")
-        self.checkBox_twitter.setCheckState(Qt.Checked)
-        self.checkBox_twitter.setEnabled(False)
+        self.radioButton_histo_trends = QRadioButton(self.sourceCheckBox)
+        self.radioButton_histo_trends.setObjectName(u"radioButton_histo_trends")
+        # self.radioButton_histo_trends.setCheckState(Qt.Checked)
+        # self.radioButton_histo_trends.setEnabled(False)
 
-        self.verticalLayout_34.addWidget(self.checkBox_twitter)
+        self.verticalLayout_34.addWidget(self.radioButton_histo_trends)
 
-        self.checkBox_reddit = QCheckBox(self.sourceCheckBox)
-        self.checkBox_reddit.setObjectName(u"checkBox_reddit")
-        self.checkBox_reddit.setCheckState(Qt.Checked)
-        self.checkBox_reddit.setEnabled(False)
+        # self.checkBox_reddit = QCheckBox(self.sourceCheckBox)
+        # self.checkBox_reddit.setObjectName(u"checkBox_reddit")
+        # self.checkBox_reddit.setCheckState(Qt.Checked)
+        # self.checkBox_reddit.setEnabled(False)
 
-        self.verticalLayout_34.addWidget(self.checkBox_reddit)
+        # self.verticalLayout_34.addWidget(self.checkBox_reddit)
 
-        self.checkBox_gtrends = QCheckBox(self.sourceCheckBox)
-        self.checkBox_gtrends.setObjectName(u"checkBox_gtrends")
-        self.checkBox_gtrends.setCheckState(Qt.Checked)
-        self.checkBox_gtrends.setEnabled(False)
+        # self.checkBox_gtrends = QCheckBox(self.sourceCheckBox)
+        # self.checkBox_gtrends.setObjectName(u"checkBox_gtrends")
+        # self.checkBox_gtrends.setCheckState(Qt.Checked)
+        # self.checkBox_gtrends.setEnabled(False)
 
-        self.verticalLayout_34.addWidget(self.checkBox_gtrends)
+        # self.verticalLayout_34.addWidget(self.checkBox_gtrends)
 
 
-        self.verticalLayout_33.addWidget(self.sourceCheckBox, 0, Qt.AlignLeft)
+        self.verticalLayout_33.addWidget(self.sourceCheckBox, 0, Qt.AlignLeft|Qt.AlignTop)
+
+
+        self.RadioGroup = QButtonGroup()
+        self.RadioGroup.addButton(self.radioButton_histo)
+        self.RadioGroup.addButton(self.radioButton_histo_trends)
 
 
         self.verticalLayout_31.addWidget(self.sourceCheckBoxFrame)
@@ -3448,10 +3453,10 @@ class Ui_MainWindow(object):
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"FROM:", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"UNTIL:", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Source", None))
-        self.checkBox_histo.setText(QCoreApplication.translate("MainWindow", u"CoinDesk Historical Data", None))
-        self.checkBox_twitter.setText(QCoreApplication.translate("MainWindow", u"Twitter Volume", None))
-        self.checkBox_reddit.setText(QCoreApplication.translate("MainWindow", u"Reddit Volume", None))
-        self.checkBox_gtrends.setText(QCoreApplication.translate("MainWindow", u"GoogleTrends", None))
+        self.radioButton_histo.setText(QCoreApplication.translate("MainWindow", u"Historical Data", None))
+        self.radioButton_histo_trends.setText(QCoreApplication.translate("MainWindow", u"Historical Data + Internet Trends", None))
+        # self.checkBox_reddit.setText(QCoreApplication.translate("MainWindow", u"Reddit Volume", None))
+        # self.checkBox_gtrends.setText(QCoreApplication.translate("MainWindow", u"GoogleTrends", None))
         self.btn_cancel.setText(QCoreApplication.translate("MainWindow", u"CANCEL", None))
         self.btn_proceed.setText(QCoreApplication.translate("MainWindow", u"PROCEED", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"DATASET", None))

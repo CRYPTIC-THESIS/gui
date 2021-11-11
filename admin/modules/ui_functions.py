@@ -206,3 +206,9 @@ class MainSettings(MainWindow):
     HISTODAY_SELECTED_STYLESHEET = """
     background: #8C88BF;
     """
+
+    DISABLED = """
+    *{
+	    background: rgb(33, 37, 43);
+	    color: rgb(94, 106, 130);
+    }"""
