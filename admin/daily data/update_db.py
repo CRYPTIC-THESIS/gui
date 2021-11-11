@@ -281,12 +281,12 @@ def scrape_google_data(currDate): #currDate in YYYY-MM-DD format
     
 #scrape_google_data('2021-11-02') #sample run
 
+
 # RUN FOREVER
 while True:
     sleep = 15
     
     time = datetime.now().strftime("%H:%M")
-    print(time)
 
     today = datetime.now().strftime("%Y-%m-%d")
     past = pd.to_datetime(today) - timedelta(days=1)
@@ -296,7 +296,11 @@ while True:
     temp = datetime.strptime('23:55', "%H:%M") - datetime.strptime(time, "%H:%M")
     temp = int(t.strftime("%M", t.gmtime(temp.total_seconds())))
 
+    if forward >= '00:00' and time.startswith('23') and temp < 15:
+        sleep = temp
+
     try:
+        print(time)
         if time >= '23:55':
             update_crypto_data()
             new_realtime()
@@ -304,12 +308,10 @@ while True:
             update_realtime_data()
     except Exception as e:
         print(e)
+        sleep = 1
     
     # if time >= '23:55':
     #     scrape_daily_tweets(past, today)
     #     scrape_google_data(today)
-
-    if forward >= '00:00' and time.startswith('23') and temp < 15:
-        sleep = temp
 
     t.sleep(60*sleep)

@@ -93,9 +93,9 @@ class ImportDataset(QThread):
             elif item == 'CoinDesk Historical Data':
                 if table_name[crypto] == 'btc':
                     historical = 'Bitcoin_Data'
-                elif table_name[crypto] == 'eth':
+                if table_name[crypto] == 'eth':
                     historical = 'Ethereum_Data'
-                else:
+                if table_name[crypto] == 'doge':
                     historical = 'Dogecoin_Data'
                 crypto_data = pd.DataFrame(get_data_table(historical))
                 crypto_data['date'] = pd.to_datetime(crypto_data['date']).dt.date

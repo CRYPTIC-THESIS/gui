@@ -990,7 +990,7 @@ Button */
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../../user/ui_files/resources.qrc">
+                   <iconset resource="../resources.qrc">
                     <normaloff>:/icons/images/icons/icon_minimize.png</normaloff>:/icons/images/icons/icon_minimize.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -1013,7 +1013,7 @@ Button */
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../../user/ui_files/resources.qrc">
+                   <iconset resource="../resources.qrc">
                     <normaloff>:/icons/images/icons/icon_close.png</normaloff>:/icons/images/icons/icon_close.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -1111,7 +1111,7 @@ Button */
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>1</number>
                      </property>
                      <widget class="QWidget" name="dash">
                       <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -3657,7 +3657,7 @@ border-radius: 10px;</string>
                                        <property name="bottomMargin">
                                         <number>0</number>
                                        </property>
-                                       <item alignment="Qt::AlignLeft">
+                                       <item alignment="Qt::AlignLeft|Qt::AlignTop">
                                         <widget class="QFrame" name="sourceCheckBox">
                                          <property name="frameShape">
                                           <enum>QFrame::NoFrame</enum>
@@ -3682,30 +3682,16 @@ border-radius: 10px;</string>
                                            <number>0</number>
                                           </property>
                                           <item>
-                                           <widget class="QCheckBox" name="checkBox_histo">
+                                           <widget class="QRadioButton" name="radioButton_histo">
                                             <property name="text">
-                                             <string>CoinDesk Historical Data</string>
+                                             <string>Historical Data</string>
                                             </property>
                                            </widget>
                                           </item>
                                           <item>
-                                           <widget class="QCheckBox" name="checkBox_twitter">
+                                           <widget class="QRadioButton" name="radioButton_twitter">
                                             <property name="text">
-                                             <string>Twitter Volume</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                          <item>
-                                           <widget class="QCheckBox" name="checkBox_reddit">
-                                            <property name="text">
-                                             <string>Reddit Volume</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                          <item>
-                                           <widget class="QCheckBox" name="checkBox_gtrends">
-                                            <property name="text">
-                                             <string>GoogleTrends</string>
+                                             <string>Historical Data + Internet Trends</string>
                                             </property>
                                            </widget>
                                           </item>

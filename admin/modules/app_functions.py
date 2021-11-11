@@ -23,6 +23,30 @@ class AppFunctions(MainWindow):
         
         self.Dialog.show()
 
+    def popup(self, arg):
+        print(arg)
+        self.Popup = QDialog()
+        self.Popup.ui = Ui_Popup()
+        self.Popup.ui.setupUi(self.Popup)
+
+        self.Popup.setWindowFlags(Qt.FramelessWindowHint)
+        self.Popup.setAttribute(Qt.WA_TranslucentBackground, Qt.WA_DeleteOnClose)
+
+        # DROP SHADOW
+        self.Popup.shadow = QGraphicsDropShadowEffect(self)
+        self.Popup.shadow.setBlurRadius(17)
+        self.Popup.shadow.setXOffset(0)
+        self.Popup.shadow.setYOffset(0)
+        self.Popup.shadow.setColor(QColor(0, 0, 0, 150))
+        self.Popup.ui.frame.setGraphicsEffect(self.Popup.shadow)
+
+        if arg == 1:
+            self.Popup.ui.ok.hide()
+            self.Popup.ui.cancel.setStyleSheet(u"border: 2px solid #54B9CA;")
+        
+        self.Popup.setModal(True)
+        self.Popup.show()
+
     def dash_histo(self):
         self.h_worker = GetHistoData(self.selected_crypto, 
                                 self.selected_histo_price, 
@@ -53,6 +77,7 @@ class AppFunctions(MainWindow):
         self.ui.trainTable.clear()
 
         self.ui.btn_proceed.setEnabled(False)
+        self.disable('proceed')
 
         # DATE
         self.dataset_date_from = self.ui.trainFromDateEdit.date().toString()
@@ -67,9 +92,18 @@ class AppFunctions(MainWindow):
                 self.dataset_crypto.append(checkBox.text())
         
         # SOURCE
-        for checkBox in self.ui.sourceCheckBox.findChildren(QCheckBox):
+        for checkBox in self.ui.sourceCheckBox.findChildren(QRadioButton):
             if checkBox.isChecked() == True:
-                self.dataset_source.append(checkBox.text())
+                temp_source = checkBox.text()
+        print(temp_source)
+        
+        if temp_source == 'Historical Data':
+            self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.dataset_source = ['CoinDesk Historical Data']
+        else:
+            self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+            self.dataset_source = ['CoinDesk Historical Data', 'Twitter Volume', 'Reddit Volume', 'GoogleTrends']
+        print(self.dataset_source)
 
         # self.train_dataset_table()
         self.get_dataset()
@@ -77,11 +111,11 @@ class AppFunctions(MainWindow):
 
         self.ui.testTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
         self.ui.testCryptoList.addItems(self.dataset_crypto)
-        self.ui.testSourceList.addItems(self.dataset_source)
+        self.ui.testSourceList.addItem(temp_source)
 
         self.ui.deployTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
         self.ui.deployCryptoList.addItems(self.dataset_crypto)
-        self.ui.deploySourceList.addItems(self.dataset_source)
+        self.ui.deploySourceList.addItem(temp_source)
 
         self.ui.testCryptoCombo.addItems(self.dataset_crypto)
         self.ui.deployCryptoCombo.addItems(self.dataset_crypto)
@@ -98,9 +132,11 @@ class AppFunctions(MainWindow):
             checkBox.setChecked(False)
         self.dataset_crypto = list()
         
-        # # SOURCE
-        # for checkBox in self.ui.sourceCheckBox.findChildren(QCheckBox):
-        #     checkBox.setChecked(False)
+        # SOURCE
+        self.ui.RadioGroup.setExclusive(False)
+        for checkBox in self.ui.sourceCheckBox.findChildren(QRadioButton):
+            checkBox.setChecked(False)
+        self.ui.RadioGroup.setExclusive(True)
         self.dataset_source = list()
 
         self.ui.btn_startTraining.hide()
@@ -116,6 +152,7 @@ class AppFunctions(MainWindow):
         self.ui.trainTable.clear()
         self.ui.trainTable.hide()
 
+        self.enable('proceed')
         self.ui.btn_proceed.setEnabled(True)
 
 

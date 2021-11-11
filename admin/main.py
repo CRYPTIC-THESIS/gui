@@ -50,16 +50,23 @@ class Login(QMainWindow):
         email = self.ui.username_login.text()
         password = self.ui.pass_login.text()
 
-        # try:
-        auth.sign_in_with_email_and_password(email, password)
-        self.window = MainWindow()
-        # self.windows.append(window)
-        self.window.show()
-        self.close()
-        # except Exception:
-        #     print('INVALID ACCOUNT.')
-        #     self.ui.username_login.clear()
-        #     self.ui.pass_login.clear()
+        try:
+            auth.sign_in_with_email_and_password(email, password)
+            self.window = MainWindow()
+            # self.windows.append(window)
+            self.window.show()
+            self.close()
+            
+        except Exception as e:
+            error = json.loads(e.args[1])['error']['message']
+            print(error)
+            self.ui.username_login.clear()
+            self.ui.pass_login.clear()
+
+            AppFunctions.popup(self, 1)
+            self.Popup.ui.cancel.clicked.connect(lambda: self.Popup.close())
+            self.Popup.ui.error_message.setText(str(error)+". Try Again?")
+            self.Popup.ui.cancel.setText('OK')
 
     
     def signupfunction(self):
@@ -80,8 +87,17 @@ class Login(QMainWindow):
                 self.ui.username_signup.clear()
                 self.ui.pass_signup.clear()
                 self.ui.confirmPass.clear()
+
+                AppFunctions.popup(self, 1)
+                self.Popup.ui.cancel.clicked.connect(lambda: self.Popup.close())
+                self.Popup.ui.error_message.setText(str(error)+"\nTry Again?")
+                self.Popup.ui.cancel.setText('OK')
         else:
-            print('PASSWORD NOT MATCH')
+            error = 'PASSWORD NOT MATCH'
+            AppFunctions.popup(self, 1)
+            self.Popup.ui.cancel.clicked.connect(lambda: self.Popup.close())
+            self.Popup.ui.error_message.setText(str(error)+". Try Again?")
+            self.Popup.ui.cancel.setText('OK')
     
 
     def mousePressEvent(self, event):
@@ -93,7 +109,7 @@ class Login(QMainWindow):
 
 
 # Main Window Dashboard
-from model import *
+# from model import *
 
 widgets = None
 class MainWindow(QMainWindow):
@@ -121,7 +137,7 @@ class MainWindow(QMainWindow):
 
         # QTableWidget Stretch
         widgets.predictedTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        widgets.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        widgets.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         widgets.dataAnalysisTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         widgets.deployTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
@@ -210,7 +226,8 @@ class MainWindow(QMainWindow):
         widgets.btn_startTraining.clicked.connect(self.show_terminal)
 
         # TEST
-        widgets.btn_startTesting.clicked.connect(self.show_terminal)
+        # widgets.btn_startTesting.clicked.connect(self.show_terminal)
+        self.disable('test')
         widgets.btn_getData.clicked.connect(self.buttonClick)
         widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
 
@@ -365,6 +382,18 @@ class MainWindow(QMainWindow):
         self.ui.predictedRangeLabel.setText(str_sel_date+' - '+str_pred_date)
 
         # AppFunctions.dash_pred(self)
+
+    def disable(self, arg):
+        if arg == 'proceed':
+            widgets.btn_proceed.setStyleSheet(widgets.btn_proceed.styleSheet() + MainSettings.DISABLED)
+        if arg == 'test':
+            widgets.btn_startTesting.setStyleSheet(widgets.btn_startTesting.styleSheet() + MainSettings.DISABLED)
+    
+    def enable(self, arg):
+        if arg == 'proceed':
+            widgets.btn_proceed.setStyleSheet(widgets.btn_proceed.styleSheet().replace(MainSettings.DISABLED, ""))
+        if arg == 'test':
+            widgets.btn_startTesting.setStyleSheet(widgets.btn_startTesting.styleSheet().replace(MainSettings.DISABLED, ""))
     
 
     # ///////////////////////////////////////////
@@ -376,7 +405,9 @@ class MainWindow(QMainWindow):
 
         if btnName == 'btn_startTraining':
             widgets.btn_startTraining.hide()
+            self.enable('test')
             widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
+            widgets.btn_startTesting.clicked.connect(self.show_terminal)
             self.process = 'train'
             self.desc = '<strong>TRAINING</strong> DATA'
         
@@ -445,13 +476,14 @@ class MainWindow(QMainWindow):
                 item = QTableWidgetItem(str(my_df.iat[i, j]))
                 item.setTextAlignment(Qt.AlignCenter)
                 widgets.trainTable.setItem(i, j, item)
-
-        widgets.trainTable.show()
-        widgets.trainTable.resizeColumnsToContents()
-        widgets.trainTable.resizeRowsToContents()
-
-        self.ds_worker.terminate()
         
+        
+        widgets.trainTable.resizeColumnsToContents()
+        widgets.trainTable.show()
+        # if len(self.dataset_source) > 0:
+        widgets.trainTable.resizeRowsToContents()
+        
+        self.ds_worker.terminate()
         widgets.btn_startTraining.show()
 
     def catch_histo_data(self, histo_data):
