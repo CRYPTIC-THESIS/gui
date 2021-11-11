@@ -13,6 +13,4 @@ for crypto in trained_list:
     print("\n\nTesting "+str(crypto)+" model...")
     data  = np.genfromtxt('csv/'+str(crypto)+"_test_set.csv", delimiter=',')
     model = nn.cryptic(crypto)
-    model.test(data,crypto)
-    
-
+    pred,actual = model.test(data,crypto)

@@ -188,6 +188,8 @@ class cryptic():
         predx = [i for i in range(len(pred))]
         outx = [i for i in range(len(out))]
 
+        return pred,out
+
     def predict_crypto(self,input,crypto):
         #predict cryptocurrency up to 14 days
 
