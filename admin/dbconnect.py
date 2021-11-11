@@ -123,7 +123,7 @@ def updated(tbl_name):
 def add_predictions(tbl_name,data,date):
     ref = db.reference(tbl_name,default_app)
     
-    for i in range(data):
+    for i in range(len(data)):
         users_ref = ref.child(date[i])
         users_ref.set(data[i])
     print("Predictions Added")

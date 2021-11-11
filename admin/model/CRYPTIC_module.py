@@ -211,9 +211,9 @@ class cryptic():
 
         return df
 
-    def retrain(self,epochs,data,crypto,date):
+    def retrain(self,epochs,data,crypto,end):
         date = []
-        begin = datetime.strptime(str(Y[-1]), "%Y-%m-%d")
+        begin = datetime.strptime(str(end), "%Y-%m-%d")
         file = open('model/obj/'+crypto+'_con.obj', 'rb') 
         con = pl.load(file)
         file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
