@@ -15,8 +15,14 @@ def split_data(x,crypto):
     print(len(x_train),len(x_test))
     return x_train
 
+mod_type = ''
 cryptic_model = nn.cryptic()
 dataset_all = pd.read_csv('csv/dataset.csv')
+if (dataset_all.shape[1] == 7):
+    mod_type = 'full'
+elif (dataset_all.shape[1] == 4):
+    mod_type = 'half'
+else:print('Invalid Dataset')
 
 crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
@@ -30,20 +36,24 @@ for i in range(len(crypto)):
     dataset['High'] = data['High']
     dataset['Low'] = data['Low']
     dataset['Close'] = data['Closing']
-    dataset['Twitter'] = data['Twitter Volume']
-    dataset['Reddit'] = data['Reddit Volume']
-    dataset['Google'] = data['GoogleTrends']
+
+    if(mod_type == 'full'):
+        dataset['Twitter'] = data['Twitter Volume']
+        dataset['Reddit'] = data['Reddit Volume']
+        dataset['Google'] = data['GoogleTrends']
     
     df = pd.DataFrame(columns = ['actual','open','24_high','24_low','google','twitter','reddit'])
     df['actual'] = data['Closing']
     df['open'] = data['Open']
     df['24_high'] = data['High']
     df['24_low'] = data['Low']
-    df['google'] = data['GoogleTrends']
-    df['twitter'] = data['Twitter Volume']
-    df['reddit'] = data['Reddit Volume']
 
-    da.corr_analysis(df, crypto[i])
+    if(mod_type == 'full'):
+        df['google'] = data['GoogleTrends']
+        df['twitter'] = data['Twitter Volume']
+        df['reddit'] = data['Reddit Volume']
+
+        da.corr_analysis(df, crypto[i])
 
     del df
     Y = np.array(data['Date'])
@@ -57,20 +67,20 @@ for i in range(len(crypto)):
 
     if(crypto[i]=='BTC'):
         data = split_data(dataset,crypto[i])
-        btc_loss= cryptic_model.train(100,data,a,b,crypto[i])
+        btc_loss= cryptic_model.train(100,data,a,b,crypto[i],mod_type)
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!\n\n')
         trained.append('BTC')
     elif(crypto[i]=='ETH'):
         data = split_data(dataset,crypto[i])
-        eth_loss = cryptic_model.train(100,data,a,b,crypto[i])
+        eth_loss = cryptic_model.train(100,data,a,b,crypto[i],mod_type)
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!\n\n')
         trained.append('ETH')
 
     elif(crypto[i]=='DOGE'):
         data = split_data(dataset,crypto[i])
-        doge_loss = cryptic_model.train(100,data,a,b,crypto[i])
+        doge_loss = cryptic_model.train(100,data,a,b,crypto[i],mod_type)
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!\n\n')
         trained.append('DOGE')

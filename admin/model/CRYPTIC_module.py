@@ -62,15 +62,22 @@ class cryptic():
 
         return J,h_prev, c_prev  #,s
 
-    def train(self,epochs,data,a,b,crypto):
+    def train(self,epochs,data,a,b,crypto,model_type):
         print('\n\nCRYPTIC NETWORK TRAINING\n')
         x = -100
         
         progress(0, epochs+1, status='Initializing Model')
+        if(model_type == 'full'):
+            f1 = 2
+            f2 = 1
+        else:
+            f1 = 5
+            f2 = 1
+
         while (x>=a)or(x<=b):
             
-            con = layer.Conv(2)
-            con1 = layer.Conv(1)
+            con = layer.Conv(f1)
+            con1 = layer.Conv(f2)
             pool = layer.MaxPool()
             out = con.forward(data)
             out = pool.forward(out)
