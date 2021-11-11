@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import layers as layer
 import pickle as pl
 import matplotlib.pyplot as plt
@@ -192,10 +193,14 @@ class cryptic():
         predx = [i for i in range(len(pred))]
         outx = [i for i in range(len(out))]
         progress(len(data)+1, len(data)+1, status='Done Testing')
-        print('Actual : ',out)
+        print('Actual : ',out[1:])
         print('Predicted: ',pred)
 
-        return pred,out
+        df = pd.DataFrame(columns=['actual','predicted'])
+        df['actual'] = pd.Series(out[1:])
+        df['predicted'] = pd.Series(pred)
+
+        return df
 
     def predict_crypto(self,input,crypto):
         #predict cryptocurrency up to 14 days
@@ -207,11 +212,12 @@ class cryptic():
         con1 = pl.load(file)
         file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
+        pool = layer.MaxPool()
 
         out = con.forward(input)
-        out = layer.maxpool(out)
+        out = pool.forward(out)
         out = con1.forward(out)
-        out = layer.maxpool(out)
+        out = pool.forward(out)
         out = out.flatten()
         
 
