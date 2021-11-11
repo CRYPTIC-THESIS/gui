@@ -27,8 +27,8 @@ def error_analysis(btc_df, eth_df, doge_df):
     crypto_df = [btc_df,eth_df,doge_df]
     error_analysis_df = pd.DataFrame(columns = ['MAE','RMSE','R-Squared','Mape'])
     for df in crypto_df:
-        actualPrice = pd.DataFrame(df[['actual']].values)
-        predictedPrice = pd.DataFrame(df[['predicted']].values)
+        actualPrice = crypto_df['actual']
+        predictedPrice = crypto_df['predicted']
         mae_res = mae(actualPrice, predictedPrice)
         rmse_res = sqrt(mse(actualPrice, predictedPrice))
         r2_res = r2(actualPrice, predictedPrice)
