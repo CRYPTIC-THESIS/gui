@@ -398,14 +398,14 @@ class LSTM:
         """
         Checks the magnitude of gradients against expected approximate values
         """
-        print("**********************************")
-        print("Gradient check...\n")
+        #print("**********************************")
+        #print("Gradient check...\n")
 
         _, _, _ = self.forward_backward(x, y, h_prev, c_prev)
         grads_numerical = self.grads
 
         for key in self.params:
-            print("---------", key, "---------")
+            #print("---------", key, "---------")
             test = True
 
             dims = self.params[key].shape
@@ -438,5 +438,5 @@ class LSTM:
                     test = False
                     assert (test)
 
-            print('Approximate: \t%e, Exact: \t%e =>  Error: \t%e' % (grad_numerical, grad_analytical, rel_error))
-        print("\nGradient Test successful!")
+            #print('Approximate: \t%e, Exact: \t%e =>  Error: \t%e' % (grad_numerical, grad_analytical, rel_error))
+        #print("\nGradient Test successful!")

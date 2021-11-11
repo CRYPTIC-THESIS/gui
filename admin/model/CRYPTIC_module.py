@@ -202,66 +202,63 @@ class cryptic():
 
         return df
 
-    def predict_crypto(self,input,crypto):
-        #predict cryptocurrency up to 14 days
-
-        #Initialize Model
+    def retrain(self,epochs,data,crypto):
         file = open('model/obj/'+crypto+'_con.obj', 'rb') 
         con = pl.load(file)
         file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
         con1 = pl.load(file)
+        pool = layer.MaxPool()
         file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
-        pool = layer.MaxPool()
 
-        out = con.forward(input)
+        out = con.forward(data)
         out = pool.forward(out)
         out = con1.forward(out)
         out = pool.forward(out)
         out = out.flatten()
         
+        for i in range(14):
+            progress(i, 14, status='Retraining')
+            vi = len(p_lstm.vals_to_idx)
+            iv = len(p_lstm.idx_to_vals)
+
+            i=0
+            x=0
+            for i in range(len(out)):
+                if(out[i] in p_lstm.vals_to_idx):
+                    x+=1
+                    #print('existing:',p_lstm.vals_to_idx[out[i-1]])
+                else:
+                    p_lstm.vals_to_idx[out[i]] = vi+i-x
+                    p_lstm.idx_to_vals[iv+i-x] = out[i]
+                    i+=1
+            
+            vals_size = len(p_lstm.vals_to_idx)
+            lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
+
+            J = []  # to store losses
+            verbose = False
+        
+            num_batches = len(out) // lstm.seq_len
+            X_trimmed = out[: num_batches * lstm.seq_len]  # trim input to have full sequences
+        
+            for epoch in range(epochs):
+                J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
+            print('Loss: ',J[-1])
+            s = lstm.sample(h, c, lstm.seq_size)
+            pred = s[-1]
+
+            out = np.append(out,[pred])
+
+            p_lstm = lstm
+        progress(14, 14, status='Finished Retraining')
+        print('Sending Predictions to Database')
+        s = lstm.sample(h, c, lstm.seq_size)
+        print('14 Day Prediction: ',s[-14:])
 
 
-        if(out in p_lstm.vals_to_idx):
-            pass
-        else:
-            p_lstm.vals_to_idx[out] = len(p_lstm.vals_to_idx) +1
-            p_lstm.idx_to_vals[len(p_lstm.vals_to_idx)+1] = out
 
-        vals_size = len(p_lstm.vals_to_idx)
 
-        lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
+            
 
-        verbose = False
-    
-        num_batches = len(out) // lstm.seq_len
-        X_trimmed = out[: num_batches * lstm.seq_len]
-
-        s = []         
-        h_prev = np.zeros((lstm.n_h, 1))
-        c_prev = np.zeros((lstm.n_h, 1))
-
-        for j in range(0, len(X_trimmed) - lstm.seq_len, lstm.seq_len):
-            # prepare batches
-            x_batch = [lstm.vals_to_idx[ch] for ch in X_trimmed[j: j + lstm.seq_len]]
-
-            x, z = {}, {}
-            f, i, c_bar, c, o = {}, {}, {}, {}, {}
-            y_hat, v, h = {}, {}, {}
-
-            # Values at t= - 1
-            h[-1] = h_prev
-            c[-1] = c_prev
-
-            for t in range(lstm.seq_len):
-                x[t] = np.zeros((lstm.seq_size, 1))
-                x[t][x_batch[t]] = 1
-
-                y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
-                    lstm.forward_step(x[t], h[t - 1], c[t - 1])
-            s = lstm.sample(h_prev, c_prev, lstm.seq_size)
-        pred = s[-(len(out)-1):]
-        predx = [i for i in range(len(pred))]
-        outx = [i for i in range(len(out))]
-
-        return pred
+            
