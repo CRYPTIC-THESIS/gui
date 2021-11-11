@@ -5,21 +5,27 @@ class AccessDatabase(QThread):
     import_data_complete = Signal()
     
     def run(self):
-        
+
         db_btc = get_data_table('Bitcoin_Data')
         db_eth = get_data_table('Ethereum_Data')
         db_doge = get_data_table('Dogecoin_Data')
 
-        lst = [db_btc, db_eth, db_doge]
-        fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv']
+        rt_btc = get_data_table('Realtime_BTC')
+        rt_eth = get_data_table('Realtime_ETH')
+        rt_doge = get_data_table('Realtime_DOGE')
+
+        lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge]
+        fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
+              'csv/rt_btc.csv', 'csv/rt_eth.csv', 'csv/rt_doge.csv']
 
         today = datetime.today().strftime('%Y-%m-%d')
         today = pd.to_datetime(today)
         past = today - timedelta(days=365)
 
         for i, df in enumerate(lst):
-            df['date'] = pd.to_datetime(df['date'])
-            df = df.loc[(df['date'] >= past) & (df['date'] <= today)]
+            if i <= 2:
+                df['date'] = pd.to_datetime(df['date'])
+                df = df.loc[(df['date'] >= past) & (df['date'] <= today)] 
             df.to_csv(fn[i])
 
         print(today)
