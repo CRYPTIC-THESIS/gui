@@ -194,6 +194,9 @@ class cryptic():
         progress(len(data)+1, len(data)+1, status='Done Testing')
         print('Actual : ',out)
         print('Predicted: ',pred)
+
+        return pred,out
+
     def predict_crypto(self,input,crypto):
         #predict cryptocurrency up to 14 days
 
