@@ -66,6 +66,12 @@ def get_data_table(tbl_name):
     data = pd.DataFrame(data)
     return data
 
+def get_pred_table(tbl_name):
+    ref = db.reference(tbl_name,default_app)
+    data = ref.get()
+    data = pd.DataFrame.from_dict(data, orient='index')
+    return data
+
 def update_trend(tbl_name,values):
     ref = db.reference(tbl_name,default_app)
     data = ref.get()
