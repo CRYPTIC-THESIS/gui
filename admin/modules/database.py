@@ -13,13 +13,25 @@ class AccessDatabase(QThread):
         db_eth = get_data_table('Ethereum_Data')
         db_doge = get_data_table('Dogecoin_Data')
 
-        lst = [db_btc, db_eth, db_doge]
-        fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv']
+        p_btc = get_pred_table('BTC_predict')
+        p_eth = get_pred_table('ETH_predict')
+        p_doge = get_pred_table('DOGE_predict')
+
+        lst = [db_btc, db_eth, db_doge, p_btc, p_eth, p_doge] # 
+        fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
+              'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv']
         past = self.today - timedelta(days=365)
 
         for i, df in enumerate(lst):
-            df['date'] = pd.to_datetime(df['date'])
-            df = df.loc[(df['date'] >= past) & (df['date'] <= self.today)]
+            if i <= 2:
+                df['date'] = pd.to_datetime(df['date'])
+                df = df.loc[(df['date'] >= past) & (df['date'] <= self.today)]
+            else:
+                df['Date'] = df.index
+                df['Date'] = pd.to_datetime(df['Date']).dt.date
+                df.reset_index(drop=True, inplace=True)
+                df.columns = ['Price', 'Date']
+                df = df.reindex(columns=['Date', 'Price'])
             df.to_csv(fn[i])
 
         # print(today)

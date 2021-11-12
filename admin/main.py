@@ -231,6 +231,10 @@ class MainWindow(QMainWindow):
         widgets.btn_getData.clicked.connect(self.buttonClick)
         widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
 
+        # DEPLOY
+        widgets.btn_deployDeploy.clicked.connect(self.deploy)
+        # widgets.btn_reset.clicked.connect()
+
     
     # ///////////////////////////////////////////
     # SIDE MENU
@@ -381,7 +385,7 @@ class MainWindow(QMainWindow):
 
         self.ui.predictedRangeLabel.setText(str_sel_date+' - '+str_pred_date)
 
-        # AppFunctions.dash_pred(self)
+        AppFunctions.dash_pred(self)
 
     def disable(self, arg):
         if arg == 'proceed':
@@ -421,7 +425,28 @@ class MainWindow(QMainWindow):
         self.p_worker = ImplementModel(self.process)
         self.p_worker.start()
         self.p_worker.process_complete.connect(self.catch_output)
+
     
+    def deploy(self):
+        self.process = 'deploy'
+        self.desc = '<strong>DEPLOYING</strong> PREDICTED DATA'
+        AppFunctions.loading(self)
+        self.hide()
+        self.d_worker = ImplementModel(self.process)
+        self.d_worker.start()
+        self.d_worker.deploy_complete.connect(self.complete)
+
+    def complete(self):
+        print('Complete!')
+        self.d_worker.terminate()
+
+        self.Dialog.ui.loadingBar.setRange(0, 1)
+        self.Dialog.ui.loadingBar.setValue(1)
+        self.Dialog.ui.subtitle.setText("Done!")
+
+        QTimer.singleShot(1300, self.Dialog.close)
+        QTimer.singleShot(1200, self.show)
+
     
     # ///////////////////////////////////////////
     # DATA ANALYSIS
@@ -477,7 +502,7 @@ class MainWindow(QMainWindow):
 
     def get_data(self):
         self.db_worker.terminate()
-        del self.db_worker
+        # del self.db_worker
 
         AppFunctions.dash_pred(self)
         AppFunctions.dash_histo(self)
@@ -576,13 +601,107 @@ class MainWindow(QMainWindow):
         del self.h_worker
     
     def catch_pred_data(self, pred_data):
+        # print('pred_data: \n', pred_data)
         widgets.predGraph.clear()
+        widgets.predictedTable.clear()
         btc = list()
         eth = list()
         doge = list()
+
+        if self.selected_crypto == 'btn_all':
+            for i, data in enumerate(pred_data):
+                if i == 0:
+                    btc = data
+                    xy = btc[1]
+                    x = xy[0]
+                    y = xy[1]
+                if i == 1:
+                    eth = data
+                    xy = eth[1]
+                    y2 = xy[1]
+                if i == 2:
+                    doge = data
+                    xy = doge[1]
+                    y3 = xy[1]
+            
+            self.pplot(x, y, 'BITCOIN', pen=mkPen('#F9AA4B', width=2.5))
+            self.pplot(x, y2, 'ETHEREUM', pen=mkPen('#2082FA', width=2.5))
+            self.pplot(x, y3, 'DOGECOIN', pen=mkPen('#6374C3', width=2.5))
+
+            # x = datetime.fromtimestamp(int(x)).strftime('%Y-%m-%d')
+            dates = list()
+            for date in x:
+                dates.append(datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d'))
+            tbl = pd.concat([pd.Series(dates,name='Date'),pd.Series(y,name='BITCOIN'), pd.Series(y2,name='ETHEREUM'), pd.Series(y3,name='DOGECOIN')], axis=1)
+            # print(tbl)
+            
+            widgets.predictedTable.setColumnCount(len(tbl.columns))
+            widgets.predictedTable.setRowCount(len(tbl.index))
+
+            for i in range(len(tbl.index)):
+                for j in range(len(tbl.columns)):
+                    item = QTableWidgetItem(str(tbl.iat[i, j]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    widgets.predictedTable.setItem(i, j, item)
+
+            widgets.predictedTable.setHorizontalHeaderLabels(tbl.columns)
+            widgets.predictedTable.resizeColumnsToContents()
+            widgets.predictedTable.resizeRowsToContents()
+            widgets.predictedTable.show()
+
+        else:
+            if self.selected_crypto == 'btn_btc':
+                btc = pred_data[0]
+                xy = btc[1]
+                pen=mkPen('#F9AA4B', width=2.5)
+                columns = btc[0].columns
+                ind = btc[0].index
+                new_df = btc[0]
+            
+            if self.selected_crypto == 'btn_eth':
+                eth = pred_data[0]
+                xy = eth[1]
+                pen=mkPen('#2082FA', width=2.5)
+                columns = eth[0].columns
+                ind = eth[0].index
+                new_df = eth[0]
+            
+            if self.selected_crypto == 'btn_doge':
+                doge = pred_data[0]
+                xy = doge[1]
+                pen=mkPen('#6374C3', width=2.5)
+                columns = doge[0].columns
+                ind = doge[0].index
+                new_df = doge[0]
+            
+            x = xy[0]
+            y = xy[1]
+            widgets.predGraph.plot(x, y, pen=pen)
+
+            widgets.predictedTable.setColumnCount(len(columns))
+            widgets.predictedTable.setRowCount(len(ind))
+
+            for i in range(len(ind)):
+                for j in range(len(columns)):
+                    item = QTableWidgetItem(str(new_df.iat[i, j]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    widgets.predictedTable.setItem(i, j, item)
+
+            widgets.predictedTable.setHorizontalHeaderLabels(new_df.columns)
+            widgets.predictedTable.resizeColumnsToContents()
+            widgets.predictedTable.resizeRowsToContents()
+            widgets.predictedTable.show()
+
+        self.pg_worker.terminate()
+        del self.pg_worker
+
+        
     
     def plot(self, x, y, plot, pen):
         widgets.histoGraph.plot(x, y, name=plot, pen=pen)
+
+    def pplot(self, x, y, plot, pen):
+        widgets.predGraph.plot(x, y, name=plot, pen=pen)
 
     def catch_analysis(self, my_df):
         self.a_worker.terminate()

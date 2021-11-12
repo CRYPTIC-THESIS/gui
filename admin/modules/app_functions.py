@@ -24,7 +24,7 @@ class AppFunctions(MainWindow):
         self.Dialog.show()
 
     def popup(self, arg):
-        print(arg)
+        # print(arg)
         self.Popup = QDialog()
         self.Popup.ui = Ui_Popup()
         self.Popup.ui.setupUi(self.Popup)
@@ -56,11 +56,11 @@ class AppFunctions(MainWindow):
         self.h_worker.pass_histo_data.connect(self.catch_histo_data)
 
     def dash_pred(self):
-        self.p_worker = GetPredData(self.selected_crypto,
-                                self.selected_predicted_price,
+        self.pg_worker = GetPredData(self.selected_crypto,
                                 self.selected_predicted_day,
                                 self.selected_date)
-        # self.p_worker.pass_pred_data.connect(self.catch_pred_data)
+        self.pg_worker.start()
+        self.pg_worker.pass_pred_data.connect(self.catch_pred_data)
 
     def get_accuracy(self):
         self.a_worker = GetAccuracy(self.analyze_crypto)
@@ -223,7 +223,7 @@ class GetHistoData(QThread):
 class GetPredData(QThread):
     pass_pred_data = Signal(list)
 
-    def __init__(self, crypto, p_price, p_days, today):
+    def __init__(self, crypto, p_days, today):
         super().__init__()
         self.crypto = crypto
         # self.p_price = p_price
@@ -231,9 +231,9 @@ class GetPredData(QThread):
         self.today = today
 
     def run(self):
-        self.df_btc = pd.read_csv('csv/pred_btc.csv')
-        self.df_eth = pd.read_csv('csv/pred_eth.csv')
-        self.df_doge = pd.read_csv('csv/pred_doge.csv')
+        self.df_btc = pd.read_csv('csv/p_btc.csv')
+        self.df_eth = pd.read_csv('csv/p_eth.csv')
+        self.df_doge = pd.read_csv('csv/p_doge.csv')
 
         if self.crypto == 'btn_all':
             lst = [self.df_btc, self.df_eth, self.df_doge]
@@ -247,31 +247,30 @@ class GetPredData(QThread):
         # numeric = ['High', 'Low', 'Closing']
         new_lst = list()
 
-        future_d = self.today + timedelta(days=self.p_days)
+        # future_d = self.today + timedelta(days=self.p_days)
 
         for df in lst:
             df2 = df.drop(df.columns[0], axis=1)
             df = df2
-            df.columns = ['Date', 'Price']
             df['Date'] = pd.to_datetime(df['Date'])
-            df['Price'] = df['Price'].apply(pd.to_numeric, errors='coerce', axis=1)
+            df['Price'] = pd.to_numeric(df['Price'])
+            df['Price'] = df['Price'].round(4)
             # print(df.head())
 
             df_date = []
             df_price = []
 
-            df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
-            df_date = df_['Date']
-            df_price = df_['Price']
+            # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
+            df_date = df['Date']
+            df_price = df['Price']
+            df['Date'] = pd.to_datetime(df['Date']).dt.date
 
             x = []
             y = []
 
-            for item in df_date:
-                item = datetime.timestamp(item)
-                x.append(item)
-            for item in df_price:
-                y.append(item)
+            for i in range(self.p_days):
+                x.append(datetime.timestamp(df_date[i]))
+                y.append(df_price[i])
 
             new_lst.append([df, [x, y]])
         self.pass_pred_data.emit(new_lst)
@@ -279,6 +278,7 @@ class GetPredData(QThread):
 
 class ImplementModel(QThread):
     process_complete = Signal(str)
+    deploy_complete = Signal()
 
     def __init__(self, process):
         super().__init__()
@@ -287,17 +287,24 @@ class ImplementModel(QThread):
     def run(self):
         print(self.process)
 
-        if self.process == 'train':
-            command_line = 'python model/training_model.py'
-        
-        if self.process == 'test':
-            command_line = 'python model/testing_model.py'
+        if self.process == 'deploy':
+            command_line = 'python model/deploy.py'
+            p = os.popen(command_line)
+            if p:
+                print('Done')
+                self.deploy_complete.emit()
+        else:
+            if self.process == 'train':
+                command_line = 'python model/training_model.py'
+            
+            if self.process == 'test':
+                command_line = 'python model/testing_model.py'
 
-        p = os.popen(command_line)
-        if p:
-            output = p.read()
-            print('Done')
-            self.process_complete.emit(output)
+            p = os.popen(command_line)
+            if p:
+                output = p.read()
+                print('Done')
+                self.process_complete.emit(output)
 
 
 class GetAccuracy(QThread):
@@ -311,7 +318,7 @@ class GetAccuracy(QThread):
         df = pd.DataFrame()
 
         error_ = pd.read_csv('csv/All_Error_Analysis.csv', index_col=[0])
-        print(error_)
+        # print(error_)
         if self.crypto.startswith('Bitcoin') == True:
             error_ = error_.loc[['BTC']]
             class_ = pd.read_csv('csv/BTC_classification_analysis.csv', index_col=[0])
@@ -327,11 +334,14 @@ class GetAccuracy(QThread):
         class_.reset_index(drop=True, inplace=True)
         error_.reset_index(drop=True, inplace=True)
 
+        error_ = error_.round(4)
+        class_ = class_.round(4)
+
         df = pd.concat([df, error_], axis=1)
         df = pd.concat([df, class_], axis=1)
 
-        print('error_: ', error_)
-        print('class_: ', class_)
-        print('df: ', df)
+        # print('error_: ', error_)
+        # print('class_: ', class_)
+        # print('df: ', df)
 
         self.pass_acc_data.emit(df)
