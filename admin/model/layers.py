@@ -3,91 +3,6 @@ from numpy.core.fromnumeric import argmax
 import pandas as pd
 from random import uniform
 
-class ReLU:
-    def __init__(self):
-        self.layer_name = "Activation Layer\t\t"
-
-    def forward(X):
-        out = np.maximum(X, 0)
-        cache = X
-        return out, cache
-
-    def backward(dout, cache):
-        dX = dout.copy()
-        dX[cache <= 0] = 0
-        return dX
-
-class Dropout:
-    def __init__(self):
-        self.layer_name = "Dropout Layer\t\t\t"
-
-    def forward(X, p_dropout):
-        u = np.random.binomial(1, p_dropout, size=X.shape) / p_dropout
-        out = X * u
-        cache = u
-        return out, cache
-
-
-    def backward(dout, cache):
-        dX = dout * cache
-        return dX
-
-class Batch_norm:
-    def __init__(self):
-        self.layer_name = 'Batch Normalization Layer\t'
-        self.param = {'mode':'','running_mean': 0,'running_var': 0}
-        self.gamma = 1
-        self.beta = 0
-
-    def forward(x, gamma, beta,param):
-        mode = param['mode']
-        eps = param.get('eps', 1e-5)
-        momentum = param.get('momentum', 0.9)
-
-        N, D = x.shape
-        running_mean = param.get('running_mean', np.zeros(D, dtype=x.dtype))
-        running_var = param.get('running_var', np.zeros(D, dtype=x.dtype))
-
-        if mode == 'train':
-            sample_mean = x.mean(axis=0)
-            sample_var = x.var(axis=0)
-            
-            running_mean = momentum * running_mean + (1 - momentum) * sample_mean
-            running_var = momentum * running_var + (1 - momentum) * sample_var
-            
-            std = np.sqrt(sample_var + eps)
-            x_centered = x - sample_mean
-            x_norm = x_centered / std
-            out = gamma * x_norm + beta
-            
-            cache = (x_norm, x_centered, std, gamma)
-            
-        elif mode == 'test':
-            x_norm = (x - running_mean) / np.sqrt(running_var + eps)
-            out = out = gamma * x_norm + beta
-        
-        else:
-            raise ValueError('Invalid forward batchnorm mode "%s"' % mode)
-
-        # Store the updated running means back into param
-        param['running_mean'] = running_mean
-        param['running_var'] = running_var
-
-        return out, cache
-
-    def backward(dout, cache):
-        
-        N = dout.shape[0]
-        x_norm, x_centered, std, gamma = cache
-        
-        dgamma = (dout * x_norm).sum(axis=0)
-        dbeta = dout.sum(axis=0)
-        
-        dx_norm = dout * gamma
-        dx = 1/N / std * (N * dx_norm - 
-                        dx_norm.sum(axis=0) - 
-                        x_norm * (dx_norm * x_norm).sum(axis=0))
-        return dx, dgamma, dbeta
 class Conv:
     
     def __init__(self, num_filters):
@@ -235,12 +150,83 @@ class LSTM:
         """
         return 1 / (1 + np.exp(-x))
 
+    def relu(self,X):
+        out = np.maximum(X, 0)
+        cache = X
+        return out, cache
+
+    def relu_b(self,dout, cache):
+        dX = dout.copy()
+        dX[cache <= 0] = 0
+        return dX
+    
+    def dropout(self,X, p_dropout):
+        u = np.random.binomial(1, p_dropout, size=X.shape) / p_dropout
+        out = X * u
+        cache = u
+        return out, cache
+
+
+    def dropout_b(self,dout, cache):
+        dX = dout * cache
+        return dX
+
     def softmax(self, x):
         """
         Normalizes output into a probability distribution
         """
         e_x = np.exp(x - np.max(x))  # max(x) subtracted for numerical stability
         return e_x / np.sum(e_x)
+    
+    def batchnorm(self,x, gamma, beta,param):
+        mode = param['mode']
+        eps = param.get('eps', 1e-5)
+        momentum = param.get('momentum', 0.9)
+
+        N, D = x.shape
+        running_mean = param.get('running_mean', np.zeros(D, dtype=x.dtype))
+        running_var = param.get('running_var', np.zeros(D, dtype=x.dtype))
+
+        if mode == 'train':
+            sample_mean = x.mean(axis=0)
+            sample_var = x.var(axis=0)
+            
+            running_mean = momentum * running_mean + (1 - momentum) * sample_mean
+            running_var = momentum * running_var + (1 - momentum) * sample_var
+            
+            std = np.sqrt(sample_var + eps)
+            x_centered = x - sample_mean
+            x_norm = x_centered / std
+            out = gamma * x_norm + beta
+            
+            cache = (x_norm, x_centered, std, gamma)
+            
+        elif mode == 'test':
+            x_norm = (x - running_mean) / np.sqrt(running_var + eps)
+            out = out = gamma * x_norm + beta
+        
+        else:
+            raise ValueError('Invalid forward batchnorm mode "%s"' % mode)
+
+        # Store the updated running means back into param
+        param['running_mean'] = running_mean
+        param['running_var'] = running_var
+
+        return out, cache
+
+    def batchnorm_b(self,dout, cache):
+        
+        N = dout.shape[0]
+        x_norm, x_centered, std, gamma = cache
+        
+        dgamma = (dout * x_norm).sum(axis=0)
+        dbeta = dout.sum(axis=0)
+        
+        dx_norm = dout * gamma
+        dx = 1/N / std * (N * dx_norm - 
+                        dx_norm.sum(axis=0) - 
+                        x_norm * (dx_norm * x_norm).sum(axis=0))
+        return dx, dgamma, dbeta
 
     def clip_grads(self):
         """
@@ -312,7 +298,30 @@ class LSTM:
         h = o * np.tanh(c)
 
         v = np.dot(self.params["Wv"], h) + self.params["bv"]
-        y_hat = self.softmax(v)
+
+        out,ca_dr = self.dropout(v, 0.9)
+        out,ca_re = self.relu(out)
+
+        '''out = out.reshape(out.shape[0],1) 
+        N, D = out.shape
+        gamma = np.random.randn(D)
+        beta = np.random.randn(D)
+        dout = np.random.randn(N, D)
+        gamma1 = np.random.randn(D)
+        beta1 = np.random.randn(D)
+        dout1 = np.random.randn(N, D)
+        bn_param = {'mode': 'train'}
+        bn_param1 = {'mode': 'train'}
+        
+        out,ca_bn = self.batchnorm(out, gamma, beta, bn_param)'''
+
+        out,ca_dr1 = self.dropout(out, 0.9)
+        out,ca_re1 = self.relu(out)
+
+        '''out = out.reshape(out.shape[0],1) 
+        out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)'''
+        y_hat = self.softmax(out)
+        
         return y_hat, v, h, o, c, c_bar, i, f, z
 
     def backward_step(self, y, y_hat, dh_next, dc_next, c_prev, z, f, i, c_bar, c, o, h):
