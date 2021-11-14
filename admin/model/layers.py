@@ -307,7 +307,7 @@ class LSTM:
         out,ca_dr = self.dropout(v, 0.9)
         out,ca_re = self.relu(out)
         out,ca_dr1 = self.dropout(out, 0.9)
-        #out,ca_re1 = self.relu(out)
+        out,ca_re1 = self.relu(out)
         y_hat = self.softmax(out)
         
         #y_hat,ca_re1 = self.relu(out)
