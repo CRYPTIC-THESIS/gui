@@ -2,10 +2,10 @@ from main import *
 
 class AppFunctions(MainWindow):
 
-    # def get_df(self):
-    #     self.worker = GetData(self.selected_crypto, self.home_histo_price, self.home_histo_days, self.today)
-    #     self.worker.start()
-    #     self.worker.pass_histo_data.connect(self.catch_histo_data)
+    def display_prices(self):
+        self.prices = GetPrices()
+        self.prices.start()
+        self.prices.import_complete.connect(self.display_this)
 
     def dash_histo(self):
         if self.selected_crypto == 'btn_home':
@@ -22,12 +22,31 @@ class AppFunctions(MainWindow):
         self.h_worker.pass_histo_data.connect(self.catch_histo_data)
 
     def dash_pred(self):
-        print('prediction')
-        # self.p_worker = GetPredData(self.selected_crypto,
-        #                         self.selected_predicted_price,
-        #                         self.selected_predicted_day,
-        #                         self.today)
-        # self.p_worker.pass_pred_data.connect(self.catch_pred_data)
+        # print('prediction')
+        self.pg_worker = GetPredData(self.selected_crypto,
+                                self.selected_predicted_day,
+                                self.today)
+        self.pg_worker.start()
+        self.pg_worker.pass_pred_data.connect(self.catch_pred_data)
+
+
+class GetPrices(QThread):
+    import_complete = Signal(dict)
+
+    def run(self):
+        dfs = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]
+        dct = {}
+        cn = ['btc', 'eth', 'doge']
+
+        for i, df in enumerate(dfs):
+            dct[cn[i]] = [df['closing'].iat[-1].round(4),
+                          df['open'].iat[-1].round(4),
+                          df['high'].iat[-1].round(4),
+                          df['low'].iat[-1].round(4)
+                         ]
+        
+        # print(dct)
+        self.import_complete.emit(dct)
 
 
 class GetHistoData(QThread):
@@ -129,7 +148,7 @@ class GetHistoData(QThread):
 class GetPredData(QThread):
     pass_pred_data = Signal(list)
 
-    def __init__(self, crypto, p_price, p_days, today):
+    def __init__(self, crypto, p_days, today):
         super().__init__()
         self.crypto = crypto
         # self.p_price = p_price
@@ -137,11 +156,11 @@ class GetPredData(QThread):
         self.today = today
 
     def run(self):
-        self.df_btc = pd.read_csv('csv/pred_btc.csv')
-        self.df_eth = pd.read_csv('csv/pred_eth.csv')
-        self.df_doge = pd.read_csv('csv/pred_doge.csv')
+        self.df_btc = pd.read_csv('csv/p_btc.csv')
+        self.df_eth = pd.read_csv('csv/p_eth.csv')
+        self.df_doge = pd.read_csv('csv/p_doge.csv')
 
-        if self.crypto == 'btn_all':
+        if self.crypto == 'btn_home':
             lst = [self.df_btc, self.df_eth, self.df_doge]
         if self.crypto == 'btn_btc':
             lst = [self.df_btc]
@@ -153,31 +172,30 @@ class GetPredData(QThread):
         # numeric = ['High', 'Low', 'Closing']
         new_lst = list()
 
-        future_d = self.today + timedelta(days=self.p_days)
+        # future_d = self.today + timedelta(days=self.p_days)
 
         for df in lst:
             df2 = df.drop(df.columns[0], axis=1)
             df = df2
-            df.columns = ['Date', 'Price']
             df['Date'] = pd.to_datetime(df['Date'])
-            df['Price'] = df['Price'].apply(pd.to_numeric, errors='coerce', axis=1)
+            df['Price'] = pd.to_numeric(df['Price'])
+            df['Price'] = df['Price'].round(4)
             # print(df.head())
 
             df_date = []
             df_price = []
 
-            df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
-            df_date = df_['Date']
-            df_price = df_['Price']
+            # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
+            df_date = df['Date']
+            df_price = df['Price']
+            df['Date'] = pd.to_datetime(df['Date']).dt.date
 
             x = []
             y = []
 
-            for item in df_date:
-                item = datetime.timestamp(item)
-                x.append(item)
-            for item in df_price:
-                y.append(item)
+            for i in range(self.p_days):
+                x.append(datetime.timestamp(df_date[i]))
+                y.append(df_price[i])
 
             new_lst.append([df, [x, y]])
         self.pass_pred_data.emit(new_lst)

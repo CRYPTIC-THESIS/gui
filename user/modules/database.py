@@ -14,9 +14,15 @@ class AccessDatabase(QThread):
         rt_eth = get_data_table('Realtime_ETH')
         rt_doge = get_data_table('Realtime_DOGE')
 
-        lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge]
+        p_btc = get_pred_table('BTC_predict')
+        p_eth = get_pred_table('ETH_predict')
+        p_doge = get_pred_table('DOGE_predict')
+
+        lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge, p_btc, p_eth, p_doge]
         fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
-              'csv/rt_btc.csv', 'csv/rt_eth.csv', 'csv/rt_doge.csv']
+              'csv/rt_btc.csv', 'csv/rt_eth.csv', 'csv/rt_doge.csv',
+              'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv']
+        cn = ['csv/curr_btc.csv', 'csv/curr_eth.csv', 'csv/curr_doge.csv',]
 
         today = datetime.today().strftime('%Y-%m-%d')
         today = pd.to_datetime(today)
@@ -26,10 +32,20 @@ class AccessDatabase(QThread):
             if i <= 2:
                 df['date'] = pd.to_datetime(df['date'])
                 df = df.loc[(df['date'] >= past) & (df['date'] <= today)] 
+            elif i >= 3 and i <= 5:
+                csv = df.iloc[[-1]]
+                csv.to_csv(cn[i-3])
+            else:
+                df['Date'] = df.index
+                df['Date'] = pd.to_datetime(df['Date']).dt.date
+                df.reset_index(drop=True, inplace=True)
+                df.columns = ['Price', 'Date']
+                df['Price'] = df['Price'].round(4)
+                df = df.reindex(columns=['Date', 'Price'])
             df.to_csv(fn[i])
 
-        print(today)
-        print(past)
+        # print(today)
+        # print(past)
 
         self.import_data_complete.emit()
 

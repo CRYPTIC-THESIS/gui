@@ -380,10 +380,10 @@ class MainWindow(QMainWindow):
 
         self.pred_day_date = self.selected_date + timedelta(days=self.selected_predicted_day)
 
-        str_sel_date = self.selected_date.strftime('%b %d, %Y')
-        str_pred_date = self.pred_day_date.strftime('%b %d, %Y')
+        # str_sel_date = self.selected_date.strftime('%b %d, %Y')
+        # str_pred_date = self.pred_day_date.strftime('%b %d, %Y')
 
-        self.ui.predictedRangeLabel.setText(str_sel_date+' - '+str_pred_date)
+        # self.ui.predictedRangeLabel.setText(str_sel_date+' - '+str_pred_date)
 
         AppFunctions.dash_pred(self)
 
@@ -549,7 +549,7 @@ class MainWindow(QMainWindow):
         widgets.trainTable.resizeRowsToContents()
         
         self.ds_worker.terminate()
-        del self.ds_worker
+        # del self.ds_worker
         widgets.btn_startTraining.show()
 
     def catch_histo_data(self, histo_data):
@@ -579,6 +579,14 @@ class MainWindow(QMainWindow):
             self.plot(x, y2, 'ETHEREUM', pen=mkPen('#2082FA', width=2.5))
             self.plot(x, y3, 'DOGECOIN', pen=mkPen('#6374C3', width=2.5))
 
+            widgets.btcCurrPriceLabel.clear()
+            widgets.ethCurrPriceLabel.clear()
+            widgets.dogeCurrPriceLabel.clear()
+
+            # widgets.btcCurrPriceLabel.setText('$'+str(y))
+            # widgets.ethCurrPriceLabel.setText('$'+str(y2))
+            # widgets.dogeCurrPriceLabel.setText('$'+str(y3))
+
         else:
             if self.selected_crypto == 'btn_btc':
                 btc = histo_data[0]
@@ -598,7 +606,7 @@ class MainWindow(QMainWindow):
             widgets.histoGraph.plot(x, y, pen=pen)
 
         self.h_worker.terminate()
-        del self.h_worker
+        # del self.h_worker
     
     def catch_pred_data(self, pred_data):
         # print('pred_data: \n', pred_data)
@@ -632,8 +640,10 @@ class MainWindow(QMainWindow):
             dates = list()
             for date in x:
                 dates.append(datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d'))
-            tbl = pd.concat([pd.Series(dates,name='Date'),pd.Series(y,name='BITCOIN'), pd.Series(y2,name='ETHEREUM'), pd.Series(y3,name='DOGECOIN')], axis=1)
-            # print(tbl)
+            tbl = pd.concat([pd.Series(dates,name='Date'),
+                             pd.Series(y,name='BITCOIN'), 
+                             pd.Series(y2,name='ETHEREUM'), 
+                             pd.Series(y3,name='DOGECOIN')], axis=1)
             
             widgets.predictedTable.setColumnCount(len(tbl.columns))
             widgets.predictedTable.setRowCount(len(tbl.index))
@@ -693,9 +703,8 @@ class MainWindow(QMainWindow):
             widgets.predictedTable.show()
 
         self.pg_worker.terminate()
-        del self.pg_worker
-
-        
+        # del self.pg_worker
+    
     
     def plot(self, x, y, plot, pen):
         widgets.histoGraph.plot(x, y, name=plot, pen=pen)
@@ -705,7 +714,7 @@ class MainWindow(QMainWindow):
 
     def catch_analysis(self, my_df):
         self.a_worker.terminate()
-        del self.a_worker
+        # del self.a_worker
 
         widgets.dataAnalysisTable.setColumnCount(len(my_df.columns))
         widgets.dataAnalysisTable.setHorizontalHeaderLabels(my_df.columns)
