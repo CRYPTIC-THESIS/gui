@@ -205,17 +205,27 @@ class LSTM:
         Smoothes out values in the range of [0,1]
         """
         return 1 / (1 + np.exp(-x))
-    
+
     def relu(self,X):
         out = np.maximum(X, 0)
         cache = X
-        return out
+        return out, cache
 
+    def relu_b(self,dout, cache):
+        dX = dout.copy()
+        dX[cache <= 0] = 0
+        return dX
+    
     def dropout(self,X, p_dropout):
         u = np.random.binomial(1, p_dropout, size=X.shape) / p_dropout
         out = X * u
         cache = u
         return out, cache
+
+
+    def dropout_b(self,dout, cache):
+        dX = dout * cache
+        return dX
 
     def softmax(self, x):
         """
@@ -294,13 +304,13 @@ class LSTM:
         h = o * np.tanh(c)
 
         v = np.dot(self.params["Wv"], h) + self.params["bv"]
-        out,ca_dr = self.dropout(v, 0.3)
-        out,ca_re = relu(out)
-        out,ca_dr = self.dropout(out, 0.3)
-        out,ca_re = relu(out)
-        y_hat = self.softmax(v)
+        out,ca_dr = self.dropout(v, 0.9)
+        out,ca_re = self.relu(out)
+        out,ca_dr1 = self.dropout(out, 0.9)
+        #out,ca_re1 = self.relu(out)
+        y_hat = self.softmax(out)
         
-
+        #y_hat,ca_re1 = self.relu(out)
         return y_hat, v, h, o, c, c_bar, i, f, z
 
     def backward_step(self, y, y_hat, dh_next, dc_next, c_prev, z, f, i, c_bar, c, o, h):

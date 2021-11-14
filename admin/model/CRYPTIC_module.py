@@ -46,8 +46,10 @@ class cryptic():
 
             # check gradients
             if epoch == 0 and j == 0:
-                lstm.gradient_check(x_batch, y_batch, h_prev, c_prev, num_checks=10, delta=1e-7)
-
+                try:
+                    lstm.gradient_check(x_batch, y_batch, h_prev, c_prev, num_checks=10, delta=1e-7)
+                except AssertionError as msg:
+                    print(msg)
             lstm.clip_grads()
 
             batch_num = epoch * lstm.epochs + j / lstm.seq_len + 1
