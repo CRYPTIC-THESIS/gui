@@ -209,7 +209,7 @@ class LSTM:
     def relu(self,X):
         out = np.maximum(X, 0)
         cache = X
-        return out, cache
+        return out
 
     def dropout(self,X, p_dropout):
         u = np.random.binomial(1, p_dropout, size=X.shape) / p_dropout
@@ -294,7 +294,12 @@ class LSTM:
         h = o * np.tanh(c)
 
         v = np.dot(self.params["Wv"], h) + self.params["bv"]
+        out,ca_dr = self.dropout(v, 0.3)
+        out,ca_re = relu(out)
+        out,ca_dr = self.dropout(out, 0.3)
+        out,ca_re = relu(out)
         y_hat = self.softmax(v)
+        
 
         return y_hat, v, h, o, c, c_bar, i, f, z
 
