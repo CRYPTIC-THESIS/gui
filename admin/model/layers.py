@@ -3,35 +3,6 @@ from numpy.core.fromnumeric import argmax
 import pandas as pd
 from random import uniform
 
-class ReLU:
-    def __init__(self):
-        self.layer_name = "Activation Layer\t\t"
-
-    def forward(X):
-        out = np.maximum(X, 0)
-        cache = X
-        return out, cache
-
-    def backward(dout, cache):
-        dX = dout.copy()
-        dX[cache <= 0] = 0
-        return dX
-
-class Dropout:
-    def __init__(self):
-        self.layer_name = "Dropout Layer\t\t\t"
-
-    def forward(X, p_dropout):
-        u = np.random.binomial(1, p_dropout, size=X.shape) / p_dropout
-        out = X * u
-        cache = u
-        return out, cache
-
-
-    def backward(dout, cache):
-        dX = dout * cache
-        return dX
-
 class Batch_norm:
     def __init__(self):
         self.layer_name = 'Batch Normalization Layer\t'
@@ -234,6 +205,17 @@ class LSTM:
         Smoothes out values in the range of [0,1]
         """
         return 1 / (1 + np.exp(-x))
+    
+    def relu(self,X):
+        out = np.maximum(X, 0)
+        cache = X
+        return out, cache
+
+    def dropout(self,X, p_dropout):
+        u = np.random.binomial(1, p_dropout, size=X.shape) / p_dropout
+        out = X * u
+        cache = u
+        return out, cache
 
     def softmax(self, x):
         """
@@ -313,6 +295,7 @@ class LSTM:
 
         v = np.dot(self.params["Wv"], h) + self.params["bv"]
         y_hat = self.softmax(v)
+
         return y_hat, v, h, o, c, c_bar, i, f, z
 
     def backward_step(self, y, y_hat, dh_next, dc_next, c_prev, z, f, i, c_bar, c, o, h):
