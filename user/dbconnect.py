@@ -45,6 +45,9 @@ def insert_crypto_csv(tbl_name,csv_path):
 
 def insert_realtime_data(tbl_name, df):
     ref = db.reference(tbl_name,default_app)
+    ref.delete() # DELETE EXISTING
+    
+    ref = db.reference(tbl_name,default_app)
     for index, row in df.iterrows():
         users_ref = ref.child(str(index))
         users_ref.set({
@@ -61,6 +64,12 @@ def get_data_table(tbl_name):
     ref = db.reference(tbl_name,default_app)
     data = ref.get()
     data = pd.DataFrame(data)
+    return data
+
+def get_pred_table(tbl_name):
+    ref = db.reference(tbl_name,default_app)
+    data = ref.get()
+    data = pd.DataFrame.from_dict(data, orient='index')
     return data
 
 def update_trend(tbl_name,values):
@@ -116,6 +125,16 @@ def updated(tbl_name):
     ref = db.reference('A_Last_Updated',default_app)
     users_ref = ref.child(tbl_name)
     users_ref.set(today)
+
+def add_predictions(tbl_name,data,date):
+    ref = db.reference(tbl_name,default_app)
+    ref.delete() # DELETE EXISTING
+    
+    ref = db.reference(tbl_name,default_app)
+    for i in range(len(data)):
+        users_ref = ref.child(date[i])
+        users_ref.set(data[i])
+    print("Predictions Added")
 
 #insert_trend_csv('Twitter_Data','path of twitter data')
 #insert_trend_csv('Reddit_Data','path of reddit data')

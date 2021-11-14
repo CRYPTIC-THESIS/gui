@@ -292,6 +292,7 @@ class ImplementModel(QThread):
             p = os.popen(command_line)
             if p:
                 print('Done')
+                print(p.read())
                 self.deploy_complete.emit()
         else:
             if self.process == 'train':

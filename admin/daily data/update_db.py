@@ -9,13 +9,34 @@ cg = CoinGeckoAPI()
 
 # REALTIME
 def get_cur():
-    d = datetime.utcnow()
+    d_ = datetime.utcnow()
     t = datetime.utcnow() - timedelta(days = 1)
-    u_d = calendar.timegm(d.utctimetuple())
+    u_d = calendar.timegm(d_.utctimetuple())
     u_t = calendar.timegm(t.utctimetuple())
 
+    btc = list()
+    eth = list()
+    doge = list()
+
     b = cg.get_coin_market_chart_range_by_id(id='bitcoin',vs_currency='usd',from_timestamp=u_t,to_timestamp=u_d)
-    btc = b.get('prices')
+    btc_p = b.get('prices')
+
+    e = cg.get_coin_market_chart_range_by_id(id='ethereum',vs_currency='usd',from_timestamp=u_t,to_timestamp=u_d)
+    eth_p = e.get('prices')
+
+    d = cg.get_coin_market_chart_range_by_id(id='dogecoin',vs_currency='usd',from_timestamp=u_t,to_timestamp=u_d)
+    doge_p = d.get('prices')
+    
+    lst = [btc_p, eth_p, doge_p]
+    for i, c in enumerate(lst):
+        for val in c:
+            date = datetime.fromtimestamp(val[0] / 1e3).strftime('%Y-%m-%d')
+            if date == d_.strftime('%Y-%m-%d'):
+                if i == 0: btc.append(val)
+                if i == 1: eth.append(val)
+                if i == 2: doge.append(val)
+    
+
     btc = [val[1] for val in btc]
     btc_o = btc[0]
     btc_c = btc[-1]
@@ -23,8 +44,7 @@ def get_cur():
     btc_l = min(btc)
     btc = [u_d, btc_o, btc_h, btc_l, btc_c]
 
-    e = cg.get_coin_market_chart_range_by_id(id='ethereum',vs_currency='usd',from_timestamp=u_t,to_timestamp=u_d)
-    eth = e.get('prices')
+    
     eth = [val[1] for val in eth]
     eth_o = eth[0]
     eth_c = eth[-1]
@@ -32,14 +52,13 @@ def get_cur():
     eth_l = min(eth)
     eth = [u_d, eth_o, eth_h, eth_l, eth_c]
 
-    d = cg.get_coin_market_chart_range_by_id(id='dogecoin',vs_currency='usd',from_timestamp=u_t,to_timestamp=u_d)
-    dog = d.get('prices')
-    dog = [val[1] for val in dog]
-    dog_o = dog[0]
-    dog_c = dog[-1]
-    dog_h = max(dog)
-    dog_l = min(dog)
-    doge = [u_d, dog_o, dog_h, dog_l, dog_c]
+    
+    doge = [val[1] for val in doge]
+    doge_o = doge[0]
+    doge_c = doge[-1]
+    doge_h = max(doge)
+    doge_l = min(doge)
+    doge = [u_d, doge_o, doge_h, doge_l, doge_c]
 
     # print(btc, eth, doge)
 
@@ -51,7 +70,6 @@ def get_cur():
     # print(btc, eth, doge)
 
     return btc, eth, doge
-
 
 def update_realtime_data():
     
@@ -295,10 +313,7 @@ while True:
     forward = (datetime.strptime(time, "%H:%M") + timedelta(minutes=15)).strftime("%H:%M")
     temp = datetime.strptime('23:55', "%H:%M") - datetime.strptime(time, "%H:%M")
     temp = int(t.strftime("%M", t.gmtime(temp.total_seconds())))
-
-    if forward >= '00:00' and time.startswith('23') and temp < 15:
-        sleep = temp
-
+    
     try:
         print(time)
         if time >= '23:55':
@@ -306,6 +321,9 @@ while True:
             new_realtime()
         else:
             update_realtime_data()
+
+            if forward.startswith('00') and time.startswith('23') and temp < 15:
+                sleep = temp
     except Exception as e:
         print(e)
         sleep = 1

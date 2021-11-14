@@ -76,6 +76,11 @@ class MainWindow(QMainWindow):
 
         # DISPLAY
         widgets.stackedWidget.setCurrentWidget(widgets.homePage)
+        widgets.help.hide()
+
+        # QTableWidget Stretch
+        widgets.home_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        widgets.cryptoPredTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         # AppFunctions.df(self)
         self.default_values()
@@ -90,17 +95,24 @@ class MainWindow(QMainWindow):
         widgets.btn_homeHistoClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homeHistoClosing.styleSheet()))
         widgets.btn_home1d.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_home1d.styleSheet()))
 
+        widgets.btn_homeHistoHigh.setEnabled(False)
+        widgets.btn_homeHistoLow.setEnabled(False)
+
         # BTC, ETH, DOGE
         widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
         # widgets.btn_predPriceClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_predPriceClosing.styleSheet()))
 
+        widgets.btn_histo_high.setEnabled(False)
+        widgets.btn_histo_low.setEnabled(False)
+
         # VALUES
         self.selected_crypto = 'btn_home'
-        # self.home_pred_price = 'all'
         self.home_histo_price = 'Closing'
         # self.home_pred_days = int(widgets.home_daysValue.text())
         self.home_histo_days = 1
+        
+        
 
         # self.btc_pred_price = 'btc'
         self.btc_histo_price = 'Closing'
@@ -113,7 +125,9 @@ class MainWindow(QMainWindow):
         # self.doge_pred_price = 'doge'
         self.doge_histo_price = 'Closing'
         self.doge_histo_days = 1
+
         
+        self.get_pred_day()
         self.get_df()
         # AppFunctions.pred_graph(self)
 
@@ -134,7 +148,7 @@ class MainWindow(QMainWindow):
         widgets.btn_home1m.clicked.connect(self.get_histo_day)
         widgets.btn_home1y.clicked.connect(self.get_histo_day)
 
-        # widgets.home_predSlider.valueChanged.connect(self.get_pred_day)
+        widgets.home_predSlider.valueChanged.connect(self.get_pred_day)
 
         # CRYPTO PAGE
         widgets.btn_histo_closing.clicked.connect(self.get_price)
@@ -147,11 +161,12 @@ class MainWindow(QMainWindow):
         widgets.btn_3.clicked.connect(self.get_histo_day)
         widgets.btn_4.clicked.connect(self.get_histo_day)
 
-        # widgets.crypto_predSlider.valueChanged.connect(self.get_pred_day)
+        widgets.crypto_predSlider.valueChanged.connect(self.get_pred_day)
 
 
     def get_df(self):
-        AppFunctions.dash_pred(self)
+        AppFunctions.display_prices(self)
+        # AppFunctions.dash_pred(self)
         AppFunctions.dash_histo(self)
 
     def buttonClick(self):
@@ -161,7 +176,12 @@ class MainWindow(QMainWindow):
 
         if btnName == "btn_home":
             widgets.stackedWidget.setCurrentWidget(widgets.homePage)
+            widgets.crypto_histoGraph.clear()
+            widgets.crypto_predGraph.clear()
         else:
+
+            widgets.home_histoGraph.clear()
+            widgets.home_predGraph.clear()
 
             # self.btc_pred_price = 'btc'
             self.btc_histo_price = 'Closing'
@@ -181,20 +201,36 @@ class MainWindow(QMainWindow):
             widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
             widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
 
+            widgets.btn_histo_high.setEnabled(False)
+            widgets.btn_histo_low.setEnabled(False)
+
             if btnName == "btn_btc":
                 widgets.cryptocurrency.setText("BITCOIN (BTC)")
+                widgets.histoCurrPriceLabel.setText(widgets.home_btc_currPriceLabel.text())
+                widgets.histoOpenPriceLabel.setText(widgets.home_btc_openPriceLabel.text())
+                widgets.histoHighPriceLabel.setText(widgets.home_btc_highPriceLabel.text())
+                widgets.histoLowPriceLabel.setText(widgets.home_btc_lowPriceLabel.text())
 
             if btnName == "btn_eth":
                 widgets.cryptocurrency.setText("ETHEREUM (ETH)")
+                widgets.histoCurrPriceLabel.setText(widgets.home_eth_currPriceLabel.text())
+                widgets.histoOpenPriceLabel.setText(widgets.home_eth_openPriceLabel.text())
+                widgets.histoHighPriceLabel.setText(widgets.home_eth_highPriceLabel.text())
+                widgets.histoLowPriceLabel.setText(widgets.home_eth_lowPriceLabel.text())
 
             if btnName == "btn_doge":
                 widgets.cryptocurrency.setText("DOGECOIN (DOGE)")
+                widgets.histoCurrPriceLabel.setText(widgets.home_doge_currPriceLabel.text())
+                widgets.histoOpenPriceLabel.setText(widgets.home_doge_openPriceLabel.text())
+                widgets.histoHighPriceLabel.setText(widgets.home_doge_highPriceLabel.text())
+                widgets.histoLowPriceLabel.setText(widgets.home_doge_lowPriceLabel.text())
 
             widgets.stackedWidget.setCurrentWidget(widgets.cryptoPage)
 
         UIFunctions.resetCryptoStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectCrypto(btn.styleSheet()))
         self.selected_crypto = btnName
+        self.get_pred_day()
 
         # self.default_values()
         # AppFunctions.get_df(self)
@@ -251,58 +287,122 @@ class MainWindow(QMainWindow):
         if btnName == 'btn_0' or btnName == 'btn_home1d':
             if self.selected_crypto == 'btn_home':
                 self.home_histo_days = 1
-            if self.selected_crypto == 'btn_btc':
-                self.btc_histo_days = 1
-            if self.selected_crypto == 'btn_eth':
-                self.eth_histo_days = 1
-            if self.selected_crypto == 'btn_doge':
-                self.doge_histo_days = 1
-
+                widgets.btn_homeHistoHigh.setEnabled(False)
+                widgets.btn_homeHistoLow.setEnabled(False)
+            else:
+                if self.selected_crypto == 'btn_btc':
+                    self.btc_histo_days = 1
+                if self.selected_crypto == 'btn_eth':
+                    self.eth_histo_days = 1
+                if self.selected_crypto == 'btn_doge':
+                    self.doge_histo_days = 1
+                widgets.btn_histo_high.setEnabled(False)
+                widgets.btn_histo_low.setEnabled(False)
+            
         if btnName == 'btn_1' or btnName == 'btn_home3d':
             if self.selected_crypto == 'btn_home':
                 self.home_histo_days = 3
-            if self.selected_crypto == 'btn_btc':
-                self.btc_histo_days = 3
-            if self.selected_crypto == 'btn_eth':
-                self.eth_histo_days = 3
-            if self.selected_crypto == 'btn_doge':
-                self.doge_histo_days = 3
+                widgets.btn_homeHistoHigh.setEnabled(True)
+                widgets.btn_homeHistoLow.setEnabled(True)
+            else:
+                if self.selected_crypto == 'btn_btc':
+                    self.btc_histo_days = 3
+                if self.selected_crypto == 'btn_eth':
+                    self.eth_histo_days = 3
+                if self.selected_crypto == 'btn_doge':
+                    self.doge_histo_days = 3
+                widgets.btn_histo_high.setEnabled(True)
+                widgets.btn_histo_low.setEnabled(True)
+
         
         if btnName == 'btn_2' or btnName == 'btn_home1w':
             if self.selected_crypto == 'btn_home':
                 self.home_histo_days = 7
-            if self.selected_crypto == 'btn_btc':
-                self.btc_histo_days = 7
-            if self.selected_crypto == 'btn_eth':
-                self.eth_histo_days = 7
-            if self.selected_crypto == 'btn_doge':
-                self.doge_histo_days = 7
+                widgets.btn_homeHistoHigh.setEnabled(True)
+                widgets.btn_homeHistoLow.setEnabled(True)
+            else:
+                if self.selected_crypto == 'btn_btc':
+                    self.btc_histo_days = 7
+                if self.selected_crypto == 'btn_eth':
+                    self.eth_histo_days = 7
+                if self.selected_crypto == 'btn_doge':
+                    self.doge_histo_days = 7
+                widgets.btn_histo_high.setEnabled(True)
+                widgets.btn_histo_low.setEnabled(True)
+
 
         if btnName == 'btn_3' or btnName == 'btn_home1m':
             if self.selected_crypto == 'btn_home':
                 self.home_histo_days = 30
-            if self.selected_crypto == 'btn_btc':
-                self.btc_histo_days = 30
-            if self.selected_crypto == 'btn_eth':
-                self.eth_histo_days = 30
-            if self.selected_crypto == 'btn_doge':
-                self.doge_histo_days = 30
+                widgets.btn_homeHistoHigh.setEnabled(True)
+                widgets.btn_homeHistoLow.setEnabled(True)
+            else:
+                if self.selected_crypto == 'btn_btc':
+                    self.btc_histo_days = 30
+                if self.selected_crypto == 'btn_eth':
+                    self.eth_histo_days = 30
+                if self.selected_crypto == 'btn_doge':
+                    self.doge_histo_days = 30
+                widgets.btn_histo_high.setEnabled(True)
+                widgets.btn_histo_low.setEnabled(True)
+
 
         if btnName == 'btn_4' or btnName == 'btn_home1y':
             if self.selected_crypto == 'btn_home':
                 self.home_histo_days = 365
-            if self.selected_crypto == 'btn_btc':
-                self.btc_histo_days = 365
-            if self.selected_crypto == 'btn_eth':
-                self.eth_histo_days = 365
-            if self.selected_crypto == 'btn_doge':
-                self.doge_histo_days = 365
+                widgets.btn_homeHistoHigh.setEnabled(True)
+                widgets.btn_homeHistoLow.setEnabled(True)
+            else:
+                if self.selected_crypto == 'btn_btc':
+                    self.btc_histo_days = 365
+                if self.selected_crypto == 'btn_eth':
+                    self.eth_histo_days = 365
+                if self.selected_crypto == 'btn_doge':
+                    self.doge_histo_days = 365
+                widgets.btn_histo_high.setEnabled(True)
+                widgets.btn_histo_low.setEnabled(True)
+
 
         UIFunctions.resetHistoDayStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectHistoDay(btn.styleSheet()))
 
         # self.access_db()
         AppFunctions.dash_histo(self)
+
+    
+    def get_pred_day(self):
+        if self.selected_crypto == 'btn_home':
+            widgets.home_daysValue.setNum
+            text = widgets.home_daysValue.text()
+        else:
+            widgets.crypto_daysValue.setNum
+            text = widgets.crypto_daysValue.text()
+        self.selected_predicted_day = int(text)
+
+        AppFunctions.dash_pred(self)
+
+
+    def display_this(self, dct):
+        b = dct.get('btc')
+        e = dct.get('eth')
+        d = dct.get('doge')
+        # self.prices.terminate()
+
+        widgets.home_btc_currPriceLabel.setText('$'+str(b[0]))
+        widgets.home_eth_currPriceLabel.setText('$'+str(e[0]))
+        widgets.home_doge_currPriceLabel.setText('$'+str(d[0]))
+
+        widgets.home_btc_openPriceLabel.setText('$'+str(b[1]))
+        widgets.home_eth_openPriceLabel.setText('$'+str(e[1]))
+        widgets.home_doge_openPriceLabel.setText('$'+str(d[1]))
+
+        widgets.home_btc_highPriceLabel.setText('$'+str(b[2]))
+        widgets.home_eth_highPriceLabel.setText('$'+str(e[2]))
+        widgets.home_doge_highPriceLabel.setText('$'+str(d[2]))
+
+        widgets.home_btc_lowPriceLabel.setText('$'+str(b[3]))
+        widgets.home_eth_lowPriceLabel.setText('$'+str(e[3]))
+        widgets.home_doge_lowPriceLabel.setText('$'+str(d[3]))
 
 
     def catch_histo_data(self, histo_data):
@@ -351,10 +451,113 @@ class MainWindow(QMainWindow):
             y = xy[1]
             widgets.crypto_histoGraph.plot(x, y, pen=pen)
 
-        self.h_worker.terminate()
+        # self.h_worker.terminate()
 
+    def catch_pred_data(self, pred_data):
+        # print('pred_data: \n', pred_data)
+        widgets.home_predGraph.clear()
+        widgets.home_tableWidget.clear()
+        widgets.crypto_predGraph.clear()
+        widgets.cryptoPredTable.clear()
+
+        btc = list()
+        eth = list()
+        doge = list()
+
+        if self.selected_crypto == 'btn_home':
+            for i, data in enumerate(pred_data):
+                if i == 0:
+                    btc = data
+                    xy = btc[1]
+                    x = xy[0]
+                    y = xy[1]
+                if i == 1:
+                    eth = data
+                    xy = eth[1]
+                    y2 = xy[1]
+                if i == 2:
+                    doge = data
+                    xy = doge[1]
+                    y3 = xy[1]
+            
+            self.pplot(x, y, 'BITCOIN', pen=mkPen('#F9AA4B', width=2.5))
+            self.pplot(x, y2, 'ETHEREUM', pen=mkPen('#2082FA', width=2.5))
+            self.pplot(x, y3, 'DOGECOIN', pen=mkPen('#6374C3', width=2.5))
+
+            # x = datetime.fromtimestamp(int(x)).strftime('%Y-%m-%d')
+            dates = list()
+            for date in x:
+                dates.append(datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d'))
+            tbl = pd.concat([pd.Series(dates,name='Date'),
+                             pd.Series(y,name='BITCOIN'), 
+                             pd.Series(y2,name='ETHEREUM'), 
+                             pd.Series(y3,name='DOGECOIN')], axis=1)
+            
+            widgets.home_tableWidget.setColumnCount(len(tbl.columns))
+            widgets.home_tableWidget.setRowCount(len(tbl.index))
+
+            for i in range(len(tbl.index)):
+                for j in range(len(tbl.columns)):
+                    item = QTableWidgetItem(str(tbl.iat[i, j]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    widgets.home_tableWidget.setItem(i, j, item)
+
+            widgets.home_tableWidget.setHorizontalHeaderLabels(tbl.columns)
+            widgets.home_tableWidget.resizeColumnsToContents()
+            widgets.home_tableWidget.resizeRowsToContents()
+            widgets.home_tableWidget.show()
+
+        else:
+            if self.selected_crypto == 'btn_btc':
+                btc = pred_data[0]
+                xy = btc[1]
+                pen=mkPen('#F9AA4B', width=2.5)
+                columns = btc[0].columns
+                ind = btc[0].index
+                new_df = btc[0]
+            
+            if self.selected_crypto == 'btn_eth':
+                eth = pred_data[0]
+                xy = eth[1]
+                pen=mkPen('#2082FA', width=2.5)
+                columns = eth[0].columns
+                ind = eth[0].index
+                new_df = eth[0]
+            
+            if self.selected_crypto == 'btn_doge':
+                doge = pred_data[0]
+                xy = doge[1]
+                pen=mkPen('#6374C3', width=2.5)
+                columns = doge[0].columns
+                ind = doge[0].index
+                new_df = doge[0]
+            
+            x = xy[0]
+            y = xy[1]
+            widgets.crypto_predGraph.plot(x, y, pen=pen)
+
+            widgets.cryptoPredTable.setColumnCount(len(columns))
+            widgets.cryptoPredTable.setRowCount(len(ind))
+
+            for i in range(len(ind)):
+                for j in range(len(columns)):
+                    item = QTableWidgetItem(str(new_df.iat[i, j]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    widgets.cryptoPredTable.setItem(i, j, item)
+
+            widgets.cryptoPredTable.setHorizontalHeaderLabels(new_df.columns)
+            widgets.cryptoPredTable.resizeColumnsToContents()
+            widgets.cryptoPredTable.resizeRowsToContents()
+            widgets.cryptoPredTable.show()
+
+        # self.pg_worker.terminate()
+        # del self.pg_worker
+    
     def plot(self, x, y, plot, pen):
         widgets.home_histoGraph.plot(x, y, name=plot, pen=pen)
+
+    def pplot(self, x, y, plot, pen):
+        widgets.home_predGraph.plot(x, y, name=plot, pen=pen)
 
 
     def mousePressEvent(self, event):
