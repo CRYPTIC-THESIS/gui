@@ -12,7 +12,6 @@ def split_data(x,crypto):
     x_train, x_test = train_test_split(x, test_size=0.30)
     np.savetxt('csv/'+str(crypto)+"_train_set.csv", x_train, delimiter=",")
     np.savetxt('csv/'+str(crypto)+"_test_set.csv", x_test, delimiter=",")
-    print(len(x_train),len(x_test))
     return x_train
 
 mod_type = ''

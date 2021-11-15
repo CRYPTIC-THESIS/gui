@@ -21,7 +21,6 @@ class cryptic():
         
         vals = set(data)
         vals_size = len(vals)
-        print(vals_size)
 
         vals_to_idx = {w: i for i,w in enumerate(vals)}
         idx_to_vals = {i: w for i,w in enumerate(vals)}
