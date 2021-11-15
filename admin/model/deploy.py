@@ -26,7 +26,7 @@ for i in range(len(crypto)):
     dataset['Low'] = data['Low']
     dataset['Close'] = data['Closing']
     if(mod_type == 'full'):
-        dataset['Twitter'] = data['Twitter Volume']
+        dataset['Twitter'] = data['Twitter']
         dataset['Reddit'] = data['Reddit Volume']
         dataset['Google'] = data['GoogleTrends']
 

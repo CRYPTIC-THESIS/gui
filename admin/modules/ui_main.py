@@ -1864,7 +1864,7 @@ class Ui_MainWindow(object):
 "border-radius: 7px;")
 
         self.trainFromDateEdit.setMinimumDate(QDate(2020, 1, 1))
-        # self.trainFromDateEdit.setMaximumDate(QDate.currentDate())
+        self.trainFromDateEdit.setMaximumDate(QDate(2021, 10, 31))
         self.trainFromDateEdit.setDate(QDate(2020, 1, 1))
 
         self.horizontalLayout_24.addWidget(self.trainFromDateEdit)
@@ -1893,8 +1893,8 @@ class Ui_MainWindow(object):
 "border-radius: 7px;")
 
         self.trainUntilDateEdit.setMinimumDate(QDate(2020, 1, 1))
-        # self.trainUntilDateEdit.setMaximumDate(QDate.currentDate())
-        self.trainUntilDateEdit.setDate(QDate(2021, 5, 31))
+        self.trainUntilDateEdit.setMaximumDate(QDate(2021, 10, 31))
+        self.trainUntilDateEdit.setDate(QDate(2021, 10, 31))
 
         self.horizontalLayout_25.addWidget(self.trainUntilDateEdit)
 
@@ -3149,23 +3149,23 @@ class Ui_MainWindow(object):
         self.horizontalLayout_38.setSpacing(10)
         self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
         self.horizontalLayout_38.setContentsMargins(0, 0, 0, 0)
-        self.label_22 = QLabel(self.deployDateEditFrame)
-        self.label_22.setObjectName(u"label_22")
+#         self.label_22 = QLabel(self.deployDateEditFrame)
+#         self.label_22.setObjectName(u"label_22")
 
-        self.horizontalLayout_38.addWidget(self.label_22)
+#         self.horizontalLayout_38.addWidget(self.label_22)
 
-        self.deployDateEdit = QDateEdit(self.deployDateEditFrame, calendarPopup=True)
-        self.deployDateEdit.setObjectName(u"deployDateEdit")
-        self.deployDateEdit.setMinimumSize(QSize(110, 0))
-        self.deployDateEdit.setStyleSheet(u"font: 15px \"Segoe UI\"; \n"
-"background-color: #21252B;\n"
-"border-radius: 7px;")
+#         self.deployDateEdit = QDateEdit(self.deployDateEditFrame, calendarPopup=True)
+#         self.deployDateEdit.setObjectName(u"deployDateEdit")
+#         self.deployDateEdit.setMinimumSize(QSize(110, 0))
+#         self.deployDateEdit.setStyleSheet(u"font: 15px \"Segoe UI\"; \n"
+# "background-color: #21252B;\n"
+# "border-radius: 7px;")
 
-        self.deployDateEdit.setMinimumDate(QDate(2020, 1, 1))
-        self.deployDateEdit.setMaximumDate(QDate.currentDate())
-        self.deployDateEdit.setDate(QDate.currentDate())
+#         self.deployDateEdit.setMinimumDate(QDate(2020, 1, 1))
+#         self.deployDateEdit.setMaximumDate(QDate.currentDate())
+#         self.deployDateEdit.setDate(QDate.currentDate())
 
-        self.horizontalLayout_38.addWidget(self.deployDateEdit)
+#         self.horizontalLayout_38.addWidget(self.deployDateEdit)
 
 
         self.horizontalLayout_36.addWidget(self.deployDateEditFrame)
@@ -3502,7 +3502,7 @@ class Ui_MainWindow(object):
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Time Frame", None))
         self.label_26.setText(QCoreApplication.translate("MainWindow", u"Source", None))
         self.btn_deployDeploy.setText(QCoreApplication.translate("MainWindow", u"DEPLOY", None))
-        self.label_22.setText(QCoreApplication.translate("MainWindow", u"FILTER DATE:", None))
+        # self.label_22.setText(QCoreApplication.translate("MainWindow", u"FILTER DATE:", None))
         self.label_25.setText(QCoreApplication.translate("MainWindow", u"CRYPTOCURRENCY:", None))
         # self.label_27.setText(QCoreApplication.translate("MainWindow", u"PRICES:", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"PREDICTED PRICES", None))

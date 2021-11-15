@@ -36,7 +36,7 @@ for i in range(len(crypto)):
     dataset['Close'] = data['Closing']
 
     if(mod_type == 'full'):
-        dataset['Twitter'] = data['Twitter Volume']
+        dataset['Twitter'] = data['Twitter']
         dataset['Reddit'] = data['Reddit Volume']
         dataset['Google'] = data['GoogleTrends']
     
@@ -48,7 +48,7 @@ for i in range(len(crypto)):
 
     if(mod_type == 'full'):
         df['google'] = data['GoogleTrends']
-        df['twitter'] = data['Twitter Volume']
+        df['twitter'] = data['Twitter']
         df['reddit'] = data['Reddit Volume']
 
         da.corr_analysis(df, crypto[i])
