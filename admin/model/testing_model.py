@@ -30,8 +30,9 @@ for crypto in trained_list:
             doge_df = df_data
         else:
             print('Invalid Crypto')
-    except:
-        print('No '+str(crypto)+' Trained Model Found')
+    except Exception as a:
+        print(a)
+        
     
 error_analysis_df = da.error_analysis(btc_df, eth_df, doge_df)
 

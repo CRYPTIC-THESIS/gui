@@ -18,11 +18,10 @@ def split_data(x,crypto):
 mod_type = ''
 cryptic_model = nn.cryptic()
 dataset_all = pd.read_csv('csv/dataset.csv')
-if (dataset_all.shape[1] == 7):
-    mod_type = 'full'
-elif (dataset_all.shape[1] == 4):
+
+if (dataset_all.shape[1] == 4):
     mod_type = 'half'
-else:print('Invalid Dataset')
+else:mod_type = 'full'
 
 crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
