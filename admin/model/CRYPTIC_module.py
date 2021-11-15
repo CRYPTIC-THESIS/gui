@@ -22,8 +22,8 @@ class cryptic():
         vals = set(data)
         vals_size = len(vals)
 
-        vals_to_idx = {w: i for i,w in enumerate(vals)}
-        idx_to_vals = {i: w for i,w in enumerate(vals)}
+        vals_to_idx = {w: i for i,w in enumerate(vals)} #{'vals':1,.....}
+        idx_to_vals = {i: w for i,w in enumerate(vals)} 
  
         return vals_to_idx,idx_to_vals,vals,vals_size
 
@@ -85,6 +85,7 @@ class cryptic():
             out = con1.forward(out)
             out = pool.forward(out)
             x = out[0].astype(float)
+
         progress(0.25, epochs+1, status='Convolutions Done')
         out = out.flatten()
         
@@ -101,7 +102,7 @@ class cryptic():
 
             J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
             progress(epoch+1, epochs+1, status='Wow! New knowledge Obtained')
-        net = [con,con1,lstm,h,c]
+        
         progress(epochs+1, epochs+1, status='I feel smarter already')
 
         print('Total Data Tested: ',len(out))
