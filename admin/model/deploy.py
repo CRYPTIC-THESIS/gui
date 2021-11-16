@@ -41,13 +41,15 @@ for i in range(len(crypto)):
         preds['date'] = pd.Series(date)  
         preds['pred'] = pd.Series(pred)
         preds.to_csv('csv/BTC_Predictions.csv')
-        del preds,date,pred  
         print('BTC Model Deployed!!!\n\n')
         deployed.append('BTC')
     elif(crypto[i]=='ETH'):
         print('Retraining ETH Model Before Deployment')
         date,pred = cryptic_model.retrain(10,data,crypto[i],Y[-1])        
         db.add_predictions('ETH_predict',pred,date)
+        preds['date'] = pd.Series(date)  
+        preds['pred'] = pd.Series(pred)
+        preds.to_csv('csv/BTC_Predictions.csv')
         print('ETH Model Deployed!!!\n\n')
         deployed.append('ETH')
 
@@ -55,6 +57,9 @@ for i in range(len(crypto)):
         print('Retraining Doge Model Before Deployment')
         date,pred = cryptic_model.retrain(10,data,crypto[i],Y[-1])
         db.add_predictions('DOGE_predict',pred,date)
+        preds['date'] = pd.Series(date)  
+        preds['pred'] = pd.Series(pred)
+        preds.to_csv('csv/BTC_Predictions.csv')
         print('DOGE Model Deployed!!!\n\n')
         deployed.append('DOGE')
 

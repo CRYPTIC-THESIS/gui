@@ -27,7 +27,7 @@ def error_analysis(btc_df, eth_df, doge_df):
     crypto_df = [btc_df,eth_df,doge_df]
     error_analysis_df = pd.DataFrame(columns = ['MAE','RMSE','R-Squared','Mape'])
     for df in crypto_df:
-        print(df)
+        #print(df)
         actualPrice = df['actual']
         predictedPrice = df['predicted']
         mae_res = mae(actualPrice, predictedPrice)
@@ -59,7 +59,7 @@ def corr_analysis(crypto_df,crypto):
 
 # For Precision - Recall - F1-Score - Accuracy
 def classification_analysis(crypto_df,crypto):
-    print(crypto_df)
+    #print(crypto_df)
     classification_analysis_df = pd.DataFrame(columns = ['Precision','Recall','F1-Score','Accuracy'])
     actualPrice = crypto_df['actual']
     predictedPrice = crypto_df['predicted']
