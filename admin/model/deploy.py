@@ -10,9 +10,9 @@ cryptic_model = nn.cryptic()
 dataset_all = pd.read_csv('csv/dataset.csv')
 mod_type = ''
 if (dataset_all.shape[1] == 7):
-    mod_type = 'full'
-elif (dataset_all.shape[1] == 4):
     mod_type = 'half'
+else:
+    mod_type = 'full'
 crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
 losses = pd.DataFrame()
