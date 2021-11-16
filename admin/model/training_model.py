@@ -17,7 +17,7 @@ def split_data(x,crypto):
 mod_type = ''
 cryptic_model = nn.cryptic()
 dataset_all = pd.read_csv('csv/dataset.csv')
-print(dataset_all.shape)
+
 if (dataset_all.shape[1] == 7):
     mod_type = 'half'
 else:mod_type = 'full'
