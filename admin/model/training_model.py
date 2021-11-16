@@ -57,12 +57,13 @@ for i in range(len(crypto)):
     Y = np.array(data['Date'])
     
     dataset = np.array(dataset)
-    l = dataset[-1:]
+    l = dataset[:1]
     c = l[0][3]
     d = c*0.005
     a = c+d
     b = c-d
-
+    
+    
     if(crypto[i]=='BTC'):
         data = split_data(dataset,crypto[i])
         btc_loss= cryptic_model.train(100,data,a,b,crypto[i],mod_type)
