@@ -57,7 +57,7 @@ for i in range(len(crypto)):
     Y = np.array(data['Date'])
     
     dataset = np.array(dataset)
-    c = dataset[3,0]
+    c = dataset[3,-1]
     d = c*0.005
     a = c+d
     b = c-d

@@ -84,7 +84,7 @@ class cryptic():
             out = pool.forward(out)
             out = con1.forward(out)
             out = pool.forward(out)
-            x = out[0].astype(float)
+            x = out[-1].astype(float)
 
         progress(0.25, epochs+1, status='Convolutions Done')
         out = out.flatten()
