@@ -33,11 +33,15 @@ for i in range(len(crypto)):
     Y = np.array(data['Date'])
     
     data = np.array(dataset)
-
+    preds = pd.DataFrame(columns = ['date','prediction'])
     if(crypto[i]=='BTC'):
         print('Retraining BTC Model Before Deployment')
         date,pred = cryptic_model.retrain(10,data,crypto[i],Y[-1]) 
-        db.add_predictions('BTC_predict',pred,date)    
+        db.add_predictions('BTC_predict',pred,date)
+        preds['date'] = pd.Series(date)  
+        preds['pred'] = pd.Series(pred)
+        preds.to_csv('csv/BTC_Predictions.csv')
+        del preds,date,pred  
         print('BTC Model Deployed!!!\n\n')
         deployed.append('BTC')
     elif(crypto[i]=='ETH'):

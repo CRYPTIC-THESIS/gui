@@ -59,7 +59,7 @@ for i in range(len(crypto)):
     dataset = np.array(dataset)
     l = dataset[-1:]
     c = l[0][3]
-    d = c*0.008
+    d = c*0.005
     a = c+d
     b = c-d
     

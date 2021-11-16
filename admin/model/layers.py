@@ -301,8 +301,7 @@ class LSTM:
 
         out,ca_dr = self.dropout(v, 0.9)
         out,ca_re = self.relu(out)
-
-        out = out.reshape(out.shape[0],1) 
+ 
         N, D = out.shape
         gamma = np.random.randn(D)
         beta = np.random.randn(D)
@@ -318,7 +317,6 @@ class LSTM:
         out,ca_dr1 = self.dropout(out, 0.9)
         out,ca_re1 = self.relu(out)
 
-        out = out.reshape(out.shape[0],1) 
         out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
         y_hat = self.softmax(out)
         
