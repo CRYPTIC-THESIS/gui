@@ -302,7 +302,7 @@ def scrape_google_data(currDate): #currDate in YYYY-MM-DD format
 
 # RUN FOREVER
 while True:
-    sleep = 15
+    sleep = 10
     
     time = datetime.now().strftime("%H:%M")
 
@@ -310,7 +310,7 @@ while True:
     past = pd.to_datetime(today) - timedelta(days=1)
     past = past.strftime("%Y-%m-%d")
 
-    forward = (datetime.strptime(time, "%H:%M") + timedelta(minutes=15)).strftime("%H:%M")
+    forward = (datetime.strptime(time, "%H:%M") + timedelta(minutes=10)).strftime("%H:%M")
     temp = datetime.strptime('23:55', "%H:%M") - datetime.strptime(time, "%H:%M")
     temp = int(t.strftime("%M", t.gmtime(temp.total_seconds())))
     
