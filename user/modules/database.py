@@ -14,11 +14,15 @@ class AccessDatabase(QThread):
         rt_eth = get_data_table('Realtime_ETH')
         rt_doge = get_data_table('Realtime_DOGE')
 
-        p_btc = get_pred_table('BTC_predict')
-        p_eth = get_pred_table('ETH_predict')
-        p_doge = get_pred_table('DOGE_predict')
+        try:
+            p_btc = get_pred_table('BTC_predict')
+            p_eth = get_pred_table('ETH_predict')
+            p_doge = get_pred_table('DOGE_predict')
 
-        lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge, p_btc, p_eth, p_doge]
+            lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge, p_btc, p_eth, p_doge]
+        except Exception:
+            lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge]
+        
         fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
               'csv/rt_btc.csv', 'csv/rt_eth.csv', 'csv/rt_doge.csv',
               'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv']
