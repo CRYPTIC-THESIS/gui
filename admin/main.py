@@ -172,6 +172,10 @@ class MainWindow(QMainWindow):
         widgets.trainContent.setCurrentWidget(widgets.getDataPage)
         widgets.btn_startTraining.hide()
 
+        for checkBox in widgets.sourceCheckBox.findChildren(QRadioButton):
+            if checkBox.isChecked() == True:
+                print('the audacity !')
+
         # TEST PAGE
         widgets.testContent.setCurrentWidget(widgets.testingPage)
         widgets.btn_viewDataAnalysis.hide()
@@ -232,8 +236,9 @@ class MainWindow(QMainWindow):
         widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
 
         # DEPLOY
-        widgets.btn_deployDeploy.clicked.connect(self.deploy)
-        # widgets.btn_reset.clicked.connect()
+        self.disable('deploy')
+        # widgets.btn_deployDeploy.clicked.connect(self.deploy)
+        widgets.btn_reset.clicked.connect(self.reset_all)
 
     
     # ///////////////////////////////////////////
@@ -273,6 +278,43 @@ class MainWindow(QMainWindow):
 
     # ///////////////////////////////////////////
     # SLOTS
+    def check_form(self):
+        empty = True
+        while empty:
+            crypto = False
+            source = False
+            
+            # CRYPTO
+            for checkBox in self.ui.cryptoCheckBox.findChildren(QCheckBox):
+                if checkBox.isChecked() == True:
+                    crypto = True
+            
+            # SOURCE
+            for checkBox in self.ui.sourceCheckBox.findChildren(QRadioButton):
+                if checkBox.isChecked() == True:
+                    source = True
+            
+            if crypto and source:
+                empty = False
+        widgets.btn_proceed.clicked.connect(lambda: AppFunctions.get_dataset_selection(self))
+
+    def empty_ds(self):
+        AppFunctions.popup(self, 2)
+        self.Popup.ui.ok.clicked.connect(lambda: self.Popup.close())
+        self.Popup.ui.cancel.clicked.connect(lambda: AppFunctions.cancel_selection(self))
+        self.Popup.ui.error_message.setText("Please COMPLETE your Dataset Selection.")
+        self.Popup.ui.ok.setText('OK')
+        self.Popup.ui.cancel.setText('CANCEL')
+
+    def reset_all(self):
+        self.window = MainWindow()
+        self.window.ui.stackedWidget.setCurrentWidget(self.window.ui.deploy)
+        UIFunctions.resetStyle(self.window, 'btn_deploy')
+        self.window.ui.btn_deploy.setStyleSheet(UIFunctions.selectMenu(self.window.ui.btn_deploy.styleSheet()))
+        self.window.show()
+        self.close()
+
+
     def get_selected_date(self):
         date = widgets.dateEdit.date()
         widgets.selected_dateLabel.setText(date.toString('MMMM d, yyyy'))
@@ -392,12 +434,20 @@ class MainWindow(QMainWindow):
             widgets.btn_proceed.setStyleSheet(widgets.btn_proceed.styleSheet() + MainSettings.DISABLED)
         if arg == 'test':
             widgets.btn_startTesting.setStyleSheet(widgets.btn_startTesting.styleSheet() + MainSettings.DISABLED)
+            widgets.btn_startTesting.setEnabled(False)
+        if arg == 'deploy':
+            widgets.btn_deployDeploy.setStyleSheet(widgets.btn_deployDeploy.styleSheet() + MainSettings.DISABLED)
+            widgets.btn_deployDeploy.setEnabled(False)
     
     def enable(self, arg):
         if arg == 'proceed':
             widgets.btn_proceed.setStyleSheet(widgets.btn_proceed.styleSheet().replace(MainSettings.DISABLED, ""))
         if arg == 'test':
             widgets.btn_startTesting.setStyleSheet(widgets.btn_startTesting.styleSheet().replace(MainSettings.DISABLED, ""))
+            widgets.btn_startTesting.setEnabled(True)
+        if arg == 'deploy':
+            widgets.btn_deployDeploy.setStyleSheet(widgets.btn_deployDeploy.styleSheet().replace(MainSettings.DISABLED, ""))
+            widgets.btn_deployDeploy.setEnabled(True)
     
 
     # ///////////////////////////////////////////
@@ -417,6 +467,8 @@ class MainWindow(QMainWindow):
         
         if btnName == 'btn_startTesting':
             widgets.btn_viewDataAnalysis.show()
+            self.enable('deploy')
+            widgets.btn_deployDeploy.clicked.connect(self.deploy)
             self.process = 'test'
             self.desc = '<strong>TESTING</strong> DATA'
 
@@ -438,7 +490,7 @@ class MainWindow(QMainWindow):
 
     def complete(self):
         print('Complete!')
-        self.d_worker.terminate()
+        self.d_worker.quit()
 
         self.Dialog.ui.loadingBar.setRange(0, 1)
         self.Dialog.ui.loadingBar.setValue(1)
@@ -460,27 +512,29 @@ class MainWindow(QMainWindow):
         widgets.conMatrixGraph.clear()
         widgets.dataAnalysisTable.clear()
 
-        AppFunctions.get_accuracy(self)
+        if widgets.testCryptoCombo.count() > 0:
 
-        if self.analyze_crypto.startswith('Bitcoin') == True:
-            corr = 'images\BTC_corr.png'
-            conf = 'images\BTC_conf.png'
+            AppFunctions.get_accuracy(self)
 
-        if self.analyze_crypto.startswith('Ethereum') == True:
-            corr = 'images\ETH_corr.png'
-            conf = 'images\ETH_conf.png'
-        
-        if self.analyze_crypto.startswith('Dogecoin') == True:
-            corr = 'images\DOGE_corr.png'
-            conf = 'images\DOGE_conf.png'
+            if self.analyze_crypto.startswith('Bitcoin') == True:
+                corr = 'images\BTC_corr.png'
+                conf = 'images\BTC_conf.png'
 
-        pixmap = QPixmap(corr)
-        pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
-        widgets.corrAnalysisGraph.setPixmap(pixmap)
+            if self.analyze_crypto.startswith('Ethereum') == True:
+                corr = 'images\ETH_corr.png'
+                conf = 'images\ETH_conf.png'
+            
+            if self.analyze_crypto.startswith('Dogecoin') == True:
+                corr = 'images\DOGE_corr.png'
+                conf = 'images\DOGE_conf.png'
 
-        pixmap = QPixmap(conf)
-        pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
-        widgets.conMatrixGraph.setPixmap(pixmap)
+            pixmap = QPixmap(corr)
+            pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
+            widgets.corrAnalysisGraph.setPixmap(pixmap)
+
+            pixmap = QPixmap(conf)
+            pixmap = pixmap.scaled(471, 324, Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
+            widgets.conMatrixGraph.setPixmap(pixmap)
 
     def show_data_analysis(self):
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
@@ -501,7 +555,7 @@ class MainWindow(QMainWindow):
         self.db_worker.import_data_complete.connect(self.get_data)
 
     def get_data(self):
-        self.db_worker.terminate()
+        self.db_worker.quit()
         # del self.db_worker
 
         AppFunctions.dash_pred(self)
@@ -528,8 +582,13 @@ class MainWindow(QMainWindow):
         self.Dialog.ui.loadingBar.setValue(1)
         self.Dialog.ui.subtitle.setText("Done!")
 
-        QTimer.singleShot(1300, self.Dialog.close)
-        QTimer.singleShot(1200, self.show)
+        # QTimer.singleShot(1300, self.Dialog.close)
+        # QTimer.singleShot(1200, self.show)
+        self.show()
+        self.Dialog.close()        
+
+        self.p_worker.quit()
+        del self.p_worker
         
     def catch_dataset(self, my_df):
         widgets.trainTable.setColumnCount(len(my_df.columns))
@@ -545,10 +604,9 @@ class MainWindow(QMainWindow):
         
         widgets.trainTable.resizeColumnsToContents()
         widgets.trainTable.show()
-        # if len(self.dataset_source) > 0:
         widgets.trainTable.resizeRowsToContents()
         
-        self.ds_worker.terminate()
+        self.ds_worker.quit()
         # del self.ds_worker
         widgets.btn_startTraining.show()
 
@@ -605,7 +663,7 @@ class MainWindow(QMainWindow):
             y = xy[1]
             widgets.histoGraph.plot(x, y, pen=pen)
 
-        self.h_worker.terminate()
+        self.h_worker.quit()
         # del self.h_worker
     
     def catch_pred_data(self, pred_data):
@@ -702,7 +760,7 @@ class MainWindow(QMainWindow):
             widgets.predictedTable.resizeRowsToContents()
             widgets.predictedTable.show()
 
-        self.pg_worker.terminate()
+        self.pg_worker.quit()
         # del self.pg_worker
     
     
@@ -713,7 +771,7 @@ class MainWindow(QMainWindow):
         widgets.predGraph.plot(x, y, name=plot, pen=pen)
 
     def catch_analysis(self, my_df):
-        self.a_worker.terminate()
+        self.a_worker.quit()
         # del self.a_worker
 
         widgets.dataAnalysisTable.setColumnCount(len(my_df.columns))

@@ -69,67 +69,78 @@ class AppFunctions(MainWindow):
 
 
     def get_dataset_selection(self):
-        self.ui.testTimeFrameList.clear()
-        self.ui.testCryptoList.clear()
-        self.ui.testSourceList.clear()
-
-        self.ui.deployTimeFrameList.clear()
-        self.ui.deployCryptoList.clear()
-        self.ui.deploySourceList.clear()
-
-        self.ui.testCryptoCombo.clear()
-        self.ui.deployCryptoCombo.clear()
-
-        self.ui.trainTable.clear()
-
-        self.ui.btn_proceed.setEnabled(False)
-        self.disable('proceed')
-
-        # DATE
-        self.dataset_date_from = self.ui.trainFromDateEdit.date().toString()
-        self.dataset_date_from = pd.to_datetime(self.dataset_date_from).date()
-
-        self.dataset_date_until = self.ui.trainUntilDateEdit.date().toString()
-        self.dataset_date_until = pd.to_datetime(self.dataset_date_until).date()
-
         # CRYPTO
         for checkBox in self.ui.cryptoCheckBox.findChildren(QCheckBox):
             if checkBox.isChecked() == True:
                 self.dataset_crypto.append(checkBox.text())
         
         # SOURCE
+        temp_source = None
         for checkBox in self.ui.sourceCheckBox.findChildren(QRadioButton):
             if checkBox.isChecked() == True:
                 temp_source = checkBox.text()
-        print(temp_source)
+                # print(temp_source)
+
+        if (not self.dataset_crypto) or (temp_source is None):
+            print('Incomplete Selection.')
+            self.empty_ds()
         
-        if temp_source == 'Historical Data':
-            self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-            self.dataset_source = ['CoinDesk Historical Data']
         else:
-            self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-            self.dataset_source = ['CoinDesk Historical Data', 'Twitter Volume', 'Reddit Volume', 'GoogleTrends']
-        print(self.dataset_source)
+            self.ui.testTimeFrameList.clear()
+            self.ui.testCryptoList.clear()
+            self.ui.testSourceList.clear()
 
-        # self.train_dataset_table()
-        self.get_dataset()
-        # self.ui.btn_startTraining.show()
+            self.ui.deployTimeFrameList.clear()
+            self.ui.deployCryptoList.clear()
+            self.ui.deploySourceList.clear()
 
-        self.ui.testTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
-        self.ui.testCryptoList.addItems(self.dataset_crypto)
-        self.ui.testSourceList.addItem(temp_source)
+            self.ui.testCryptoCombo.clear()
+            self.ui.deployCryptoCombo.clear()
 
-        self.ui.deployTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
-        self.ui.deployCryptoList.addItems(self.dataset_crypto)
-        self.ui.deploySourceList.addItem(temp_source)
+            self.ui.trainTable.clear()
 
-        self.ui.testCryptoCombo.addItems(self.dataset_crypto)
-        self.ui.deployCryptoCombo.addItems(self.dataset_crypto)
+            self.ui.btn_proceed.setEnabled(False)
+            self.disable('proceed')
+
+            # DATE
+            self.dataset_date_from = self.ui.trainFromDateEdit.date().toString()
+            self.dataset_date_from = pd.to_datetime(self.dataset_date_from).date()
+
+            self.dataset_date_until = self.ui.trainUntilDateEdit.date().toString()
+            self.dataset_date_until = pd.to_datetime(self.dataset_date_until).date()
+            
+            if temp_source == 'Historical Data':
+                self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+                self.dataset_source = ['CoinDesk Historical Data']
+            elif temp_source == 'Historical Data + Internet Trends':
+                self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+                self.dataset_source = ['CoinDesk Historical Data', 'Twitter', 'Reddit Volume', 'GoogleTrends']
+            # print(self.dataset_source)
+
+            # self.train_dataset_table()
+            self.get_dataset()
+            # self.ui.btn_startTraining.show()
+
+            self.ui.testTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
+            self.ui.testCryptoList.addItems(self.dataset_crypto)
+            self.ui.testSourceList.addItem(temp_source)
+
+            self.ui.deployTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
+            self.ui.deployCryptoList.addItems(self.dataset_crypto)
+            self.ui.deploySourceList.addItem(temp_source)
+
+            self.ui.testCryptoCombo.addItems(self.dataset_crypto)
+            self.ui.deployCryptoCombo.addItems(self.dataset_crypto)
 
     def cancel_selection(self):
+        try:
+            self.Popup.close()
+        except Exception:
+            pass
+
         # DATE
         self.ui.trainFromDateEdit.setDate(QDate(2020, 1, 1))
-        self.ui.trainUntilDateEdit.setDate(QDate(2021, 5, 31))
+        self.ui.trainUntilDateEdit.setDate(QDate(2021, 10, 31))
         self.dataset_date_from = None
         self.dataset_date_until = None
 
@@ -145,6 +156,10 @@ class AppFunctions(MainWindow):
         self.ui.RadioGroup.setExclusive(True)
         self.dataset_source = list()
 
+        for checkBox in self.ui.sourceCheckBox.findChildren(QRadioButton):
+            if checkBox.isChecked() == True:
+                print('the audacity !')
+
         self.ui.btn_startTraining.hide()
 
         self.ui.testTimeFrameList.clear()
@@ -154,6 +169,9 @@ class AppFunctions(MainWindow):
         self.ui.deployTimeFrameList.clear()
         self.ui.deployCryptoList.clear()
         self.ui.deploySourceList.clear()
+
+        self.ui.testCryptoCombo.clear()
+        self.ui.deployCryptoCombo.clear()
 
         self.ui.trainTable.clear()
         self.ui.trainTable.hide()
