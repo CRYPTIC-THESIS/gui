@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from admin import dbconnect as db
-import pickle
+import pickle as pl
 
 open_file = open('model/obj/ready_to_deploy.pkl', "rb")
 to_deploy = pl.load(open_file)
@@ -17,7 +17,7 @@ for crypto in to_deploy:
 
 file_name = 'model/obj/deployed.pkl'
 open_file = open(file_name, "wb")
-pickle.dump(deployed, open_file)
+pl.dump(deployed, open_file)
 open_file.close()
 
 
