@@ -114,7 +114,7 @@ class AppFunctions(MainWindow):
                 self.dataset_source = ['CoinDesk Historical Data']
             elif temp_source == 'Historical Data + Internet Trends':
                 self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-                self.dataset_source = ['CoinDesk Historical Data', 'Twitter', 'Reddit Volume', 'GoogleTrends']
+                self.dataset_source = ['CoinDesk Historical Data', 'Twitter', 'Reddit', 'GoogleTrends']
             # print(self.dataset_source)
 
             # self.train_dataset_table()
@@ -294,7 +294,7 @@ class GetPredData(QThread):
         self.pass_pred_data.emit(new_lst)
 
 
-class ImplementModel(QThread):
+class ImplementModel(QObject):
     process_complete = Signal(str)
     deploy_complete = Signal()
 
@@ -302,7 +302,7 @@ class ImplementModel(QThread):
         super().__init__()
         self.process = process
 
-    def run(self):
+    def run_terminal(self):
         print(self.process)
 
         if self.process == 'deploy':

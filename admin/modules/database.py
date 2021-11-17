@@ -1,13 +1,13 @@
 from main import *
 
-class AccessDatabase(QThread):
+class AccessDatabase(QObject):
     import_data_complete = Signal()
     
     def __init__(self, today):
         super().__init__()
         self.today = today
     
-    def run(self):
+    def access_now(self):
         
         db_btc = get_data_table('Bitcoin_Data')
         db_eth = get_data_table('Ethereum_Data')
@@ -74,7 +74,7 @@ class ImportDataset(QThread):
 
         table_name = {
             'Bitcoin (BTC)': 'btc', 'Ethereum (ETH)': 'eth', 'Dogecoin (DOGE)': 'doge',
-            'Twitter': 'Twitter_Data_12Day_EMA', 'Reddit Volume': 'Reddit_Data', 'GoogleTrends': 'Google_Data_12Day_EMA'
+            'Twitter': 'Twitter_Data_12Day_EMA', 'Reddit': 'Reddit_Data_12Day_EMA', 'GoogleTrends': 'Google_Data_12Day_EMA'
         }
         
         for item in self.ds_source:
@@ -88,7 +88,7 @@ class ImportDataset(QThread):
                 # df = pd.concat([df, twitter], ignore_index=True)
                 df = pd.merge(df, twitter, how='outer', on='Date')
             
-            elif item == 'Reddit Volume':
+            elif item == 'Reddit':
                 reddit = pd.DataFrame(get_data_table(table_name[item]))
                 reddit = reddit[['date', table_name[crypto]]]
                 reddit['date'] = pd.to_datetime(reddit['date']).dt.date

@@ -257,7 +257,7 @@ class cryptic():
         
             for epoch in range(epochs):
                 J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
-            print('Loss: ',J[-1])
+            # print('Loss: ',J[-1])
             s = lstm.sample(h, c, lstm.seq_size)
             pred = s[-1]
 

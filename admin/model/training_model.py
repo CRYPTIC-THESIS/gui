@@ -37,7 +37,7 @@ for i in range(len(crypto)):
 
     if(mod_type == 'full'):
         dataset['Twitter'] = data['Twitter']
-        dataset['Reddit'] = data['Reddit Volume']
+        dataset['Reddit'] = data['Reddit']
         dataset['Google'] = data['GoogleTrends']
     
     df = pd.DataFrame(columns = ['actual','open','24_high','24_low','google','twitter','reddit'])
@@ -49,11 +49,11 @@ for i in range(len(crypto)):
     if(mod_type == 'full'):
         df['google'] = data['GoogleTrends']
         df['twitter'] = data['Twitter']
-        df['reddit'] = data['Reddit Volume']
+        df['reddit'] = data['Reddit']
 
         da.corr_analysis(df, crypto[i])
 
-    del df
+    # del df
     Y = np.array(data['Date'])
     
     dataset = np.array(dataset)

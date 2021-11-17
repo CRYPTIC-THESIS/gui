@@ -27,7 +27,7 @@ for i in range(len(crypto)):
     dataset['Close'] = data['Closing']
     if(mod_type == 'full'):
         dataset['Twitter'] = data['Twitter']
-        dataset['Reddit'] = data['Reddit Volume']
+        dataset['Reddit'] = data['Reddit']
         dataset['Google'] = data['GoogleTrends']
 
     Y = np.array(data['Date'])
@@ -49,7 +49,7 @@ for i in range(len(crypto)):
         db.add_predictions('ETH_predict',pred,date)
         preds['date'] = pd.Series(date)  
         preds['pred'] = pd.Series(pred)
-        preds.to_csv('csv/BTC_Predictions.csv')
+        preds.to_csv('csv/ETH_Predictions.csv')
         print('ETH Model Deployed!!!\n\n')
         deployed.append('ETH')
 
@@ -59,7 +59,7 @@ for i in range(len(crypto)):
         db.add_predictions('DOGE_predict',pred,date)
         preds['date'] = pd.Series(date)  
         preds['pred'] = pd.Series(pred)
-        preds.to_csv('csv/BTC_Predictions.csv')
+        preds.to_csv('csv/DOGE_Predictions.csv')
         print('DOGE Model Deployed!!!\n\n')
         deployed.append('DOGE')
 
