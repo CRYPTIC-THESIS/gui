@@ -1,3 +1,13 @@
+# ------------------------------------------------------------------------------------------- #
+#    CRYPTIC: AN IMPROVED CNN-LSTM CRYPTOCURRENCY PRICE FORECASTING USING INTERNET TRENDS
+# 
+# Authors:
+# Arconado, Kristine N.             Dalay, Jeremy Tristen A.
+# Berse, Nikko R.                   Faustino, Kyle C.
+# 
+# BSCS 4-2 AY 2021-2022
+# ------------------------------------------------------------------------------------------- #
+
 import numpy as np
 import pandas as pd
 import layers as layer
