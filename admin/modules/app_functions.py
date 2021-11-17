@@ -76,6 +76,16 @@ class AppFunctions(MainWindow):
         self.a_worker.pass_acc_data.connect(self.catch_analysis)
 
     def get_dataset_selection(self):
+        # DATE
+        self.dataset_date_from = self.ui.trainFromDateEdit.date().toString()
+        self.dataset_date_until = self.ui.trainUntilDateEdit.date().toString()
+
+        self.dataset_date_from = pd.to_datetime(self.dataset_date_from).date()
+        self.dataset_date_until = pd.to_datetime(self.dataset_date_until).date()
+
+        t = self.dataset_date_until - self.dataset_date_from
+        t = int(t.days) + 1
+
         # CRYPTO
         for checkBox in self.ui.cryptoCheckBox.findChildren(QCheckBox):
             if checkBox.isChecked() == True:
@@ -90,6 +100,17 @@ class AppFunctions(MainWindow):
 
         if (not self.dataset_crypto) or (temp_source is None):
             print('Incomplete Selection.')
+            self.error_txt = "Please COMPLETE your Dataset Selection."
+            self.empty_ds()
+
+        elif self.dataset_date_from > self.dataset_date_until:
+            print('Invalid Timeframe.')
+            self.error_txt = "Invalid Timeframe. Try Again."
+            self.empty_ds()
+
+        elif t < 14:
+            print('Invalid Timeframe.')
+            self.error_txt = "Please input Timeframe with at least 14 days range."
             self.empty_ds()
         
         else:
@@ -108,13 +129,6 @@ class AppFunctions(MainWindow):
 
             self.ui.btn_proceed.setEnabled(False)
             self.disable('proceed')
-
-            # DATE
-            self.dataset_date_from = self.ui.trainFromDateEdit.date().toString()
-            self.dataset_date_from = pd.to_datetime(self.dataset_date_from).date()
-
-            self.dataset_date_until = self.ui.trainUntilDateEdit.date().toString()
-            self.dataset_date_until = pd.to_datetime(self.dataset_date_until).date()
             
             if temp_source == 'Historical Data':
                 self.ui.trainTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -369,7 +383,7 @@ class GetAccuracy(QThread):
 
 
 class RetrainData(QObject):
-    finished = Signal()
+    finished = Signal(dict)
 
     def __init__(self, crypto_lst):
         super().__init__()
@@ -380,8 +394,8 @@ class RetrainData(QObject):
         p = os.popen(command_line)
         if p:
             output=p.read()
-            # dct = self.get_data()
-            self.finished.emit()
+            dct = self.get_data()
+            self.finished.emit(dct)
 
     def get_data(self):
         dct = {}
@@ -394,88 +408,106 @@ class RetrainData(QObject):
         for crypto in self.crypto_lst:
             if crypto == 'Bitcoin (BTC)':
                 df = pd.read_csv('csv/BTC_Predictions.csv')
-                df2 = df.drop([df.columns[0], df['prediction']], axis=1)
+                df2 = df.drop(df.columns[0], axis=1)
                 df2.columns = ['Date', 'Price']
-                btc_lst.append(df2)
-                
-                df2['Date'] = pd.to_datetime(df2['Date'])
-                df2['Price'] = pd.to_numeric(df2['Price'])
-                df2['Price'] = df2['Price'].round(4)
+                df = df2
+                df['Date'] = pd.to_datetime(df['Date'])
+                df['Price'] = pd.to_numeric(df['Price'])
+                df['Price'] = df['Price'].round(4)
+                # print(df)
+
+                df_date = []
+                df_price = []
 
                 # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
-                df_date = df2['Date']
-                df_price = df2['Price']
-                df2['Date'] = pd.to_datetime(df2['Date']).dt.date
+                df_date = df['Date']
+                df_price = df['Price']
+                df['Date'] = pd.to_datetime(df['Date']).dt.date
+                # print(df_date, df_price)
 
                 x = []
                 y = []
 
-                for i in range(len(df2)):
+                for i in range(len(df)):
+                    print(i)
                     x.append(datetime.timestamp(df_date[i]))
                     y.append(df_price[i])
 
-                btc_lst.append([x, y])
+                btc_lst = [df, [x, y]]
+                # print(btc_lst)
             
             if crypto == 'Ethereum (ETH)':
                 df = pd.read_csv('csv/ETH_Predictions.csv')
-                print('df: ',df)
                 df2 = df.drop(df.columns[0], axis=1)
-                df = df2.drop(df2['prediction'], axis=1)
-                df2 = df
-                print('df2: ',df2)
                 df2.columns = ['Date', 'Price']
-                eth_lst.append(df2)
+                df = df2
+                df['Date'] = pd.to_datetime(df['Date'])
+                df['Price'] = pd.to_numeric(df['Price'])
+                df['Price'] = df['Price'].round(4)
+                # print(df)
 
-                df2['Date'] = pd.to_datetime(df2['Date'])
-                df2['Price'] = pd.to_numeric(df2['Price'])
-                df2['Price'] = df2['Price'].round(4)
+                df_date = []
+                df_price = []
 
                 # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
-                df_date = df2['Date']
-                df_price = df2['Price']
-                df2['Date'] = pd.to_datetime(df2['Date']).dt.date
+                df_date = df['Date']
+                df_price = df['Price']
+                df['Date'] = pd.to_datetime(df['Date']).dt.date
+                # print(df_date, df_price)
 
                 x = []
                 y = []
 
-                for i in range(len(df2)):
+                for i in range(len(df)):
+                    print(i)
                     x.append(datetime.timestamp(df_date[i]))
                     y.append(df_price[i])
 
-                eth_lst.append([x, y])
+                eth_lst = [df, [x, y]]
+                # print(eth_lst)
             
             
             if crypto == 'Dogecoin (DOGE)':
                 df = pd.read_csv('csv/DOGE_Predictions.csv')
-                df2 = df.drop([df.columns[0], df['prediction']], axis=1)
+                df2 = df.drop(df.columns[0], axis=1)
                 df2.columns = ['Date', 'Price']
-                doge_lst.append(df2)
+                df = df2
+                df['Date'] = pd.to_datetime(df['Date'])
+                df['Price'] = pd.to_numeric(df['Price'])
+                df['Price'] = df['Price'].round(4)
+                # print(df)
 
-                df2['Date'] = pd.to_datetime(df2['Date'])
-                df2['Price'] = pd.to_numeric(df2['Price'])
-                df2['Price'] = df2['Price'].round(4)
+                df_date = []
+                df_price = []
 
                 # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
-                df_date = df2['Date']
-                df_price = df2['Price']
-                df2['Date'] = pd.to_datetime(df2['Date']).dt.date
+                df_date = df['Date']
+                df_price = df['Price']
+                df['Date'] = pd.to_datetime(df['Date']).dt.date
+                # print(df_date, df_price)
 
                 x = []
                 y = []
 
-                for i in range(len(df2)):
+                for i in range(len(df)):
+                    print(i)
                     x.append(datetime.timestamp(df_date[i]))
                     y.append(df_price[i])
 
-                doge_lst.append([x, y])
+                doge_lst = [df, [x, y]]
+                # print(doge_lst)
 
-        if btc_lst.empty == False:
+
+        if btc_lst:
             dct['btc'] = btc_lst
+            # print(dct)
         
-        if eth_lst.empty == False:
+        if eth_lst:
             dct['eth'] = eth_lst
+            # print(dct)
 
-        if doge_lst.empty == False:
+        if doge_lst:
             dct['doge'] = doge_lst
+            # print(dct)
 
         return dct

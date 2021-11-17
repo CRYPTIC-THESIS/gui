@@ -144,6 +144,7 @@ class MainWindow(QMainWindow):
         self.dataset_date_until = None
         self.dataset_crypto = list()
         self.dataset_source = list()
+        self.retrained = False
 
         # QTableWidget Stretch
         widgets.predictedTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -276,7 +277,7 @@ class MainWindow(QMainWindow):
                 
             # SHOW DEPLOY PAGE
             if btnName == "btn_deploy":
-                if widgets.testContent.currentWidget() == widgets.dataAnalysisPage:
+                if (widgets.testContent.currentWidget() == widgets.dataAnalysisPage) and (self.retrained == False):
                     self.deploy_retrain()
                 else:
                     widgets.stackedWidget.setCurrentWidget(widgets.deploy)
@@ -288,13 +289,15 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////
     # SLOTS
     def deploy_retrain(self):
+        self.retrained = True
         self.desc = '<strong>RETRAINING</strong> DATA'
         AppFunctions.loading(self)
         self.hide()
         AppFunctions.start_retrain_data(self)
     
-    def catch_deploy_pred(self):
+    def catch_deploy_pred(self, dct):
         self.r_thread.quit()
+        self.r_thread.wait()
         
         widgets.stackedWidget.setCurrentWidget(widgets.deploy)
 
@@ -311,7 +314,7 @@ class MainWindow(QMainWindow):
         AppFunctions.popup(self, 2)
         self.Popup.ui.ok.clicked.connect(lambda: self.Popup.close())
         self.Popup.ui.cancel.clicked.connect(lambda: AppFunctions.cancel_selection(self))
-        self.Popup.ui.error_message.setText("Please COMPLETE your Dataset Selection.")
+        self.Popup.ui.error_message.setText(self.error_txt)
         self.Popup.ui.ok.setText('OK')
         self.Popup.ui.cancel.setText('CANCEL')
 
@@ -505,6 +508,7 @@ class MainWindow(QMainWindow):
     def complete(self):
         print('Complete!')
         self.d_thread.quit()
+        self.d_thread.wait()
 
         self.Dialog.ui.loadingBar.setRange(0, 1)
         self.Dialog.ui.loadingBar.setValue(1)
@@ -573,6 +577,7 @@ class MainWindow(QMainWindow):
 
     def get_data(self):
         self.db_thread.quit()
+        self.db_thread.wait()
         AppFunctions.dash_pred(self)
         AppFunctions.dash_histo(self)
 
@@ -586,6 +591,7 @@ class MainWindow(QMainWindow):
 
     def catch_output(self, output):
         self.p_thread.quit()
+        self.p_thread.wait()
         
         if self.process == 'train':
             widgets.trainTerminal.clear()
