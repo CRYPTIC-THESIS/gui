@@ -328,6 +328,7 @@ class ImplementModel(QObject):
 
 class GetAccuracy(QThread):
     pass_acc_data = Signal(pd.DataFrame)
+    # finished = Signal()
 
     def __init__(self, crypto):
         super().__init__()
@@ -362,5 +363,5 @@ class GetAccuracy(QThread):
         # print('error_: ', error_)
         # print('class_: ', class_)
         # print('df: ', df)
-
+        
         self.pass_acc_data.emit(df)

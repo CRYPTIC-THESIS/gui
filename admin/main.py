@@ -280,26 +280,6 @@ class MainWindow(QMainWindow):
 
     # ///////////////////////////////////////////
     # SLOTS
-    def check_form(self):
-        empty = True
-        while empty:
-            crypto = False
-            source = False
-            
-            # CRYPTO
-            for checkBox in self.ui.cryptoCheckBox.findChildren(QCheckBox):
-                if checkBox.isChecked() == True:
-                    crypto = True
-            
-            # SOURCE
-            for checkBox in self.ui.sourceCheckBox.findChildren(QRadioButton):
-                if checkBox.isChecked() == True:
-                    source = True
-            
-            if crypto and source:
-                empty = False
-        widgets.btn_proceed.clicked.connect(lambda: AppFunctions.get_dataset_selection(self))
-
     def empty_ds(self):
         AppFunctions.popup(self, 2)
         self.Popup.ui.ok.clicked.connect(lambda: self.Popup.close())
