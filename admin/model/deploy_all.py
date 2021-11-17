@@ -17,7 +17,7 @@ for crypto in to_deploy:
 
 file_name = 'model/obj/deployed.pkl'
 open_file = open(file_name, "wb")
-pl.dump(deployed, open_file)
+pl.dump(to_deploy, open_file)
 open_file.close()
 
 
