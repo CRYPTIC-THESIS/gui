@@ -299,6 +299,7 @@ def scrape_google_data(currDate): #currDate in YYYY-MM-DD format
     
 #scrape_google_data('2021-11-02') #sample run
 
+# new_realtime()
 
 # RUN FOREVER
 while True:

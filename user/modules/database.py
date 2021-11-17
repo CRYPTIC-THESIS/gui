@@ -37,6 +37,8 @@ class AccessDatabase(QThread):
                 df['date'] = pd.to_datetime(df['date'])
                 df = df.loc[(df['date'] >= past) & (df['date'] <= today)] 
             elif i >= 3 and i <= 5:
+                # df2 = df.rename({'open': 'closing_', 'closing': 'open_'}, axis=1, inplace=True)
+                # df = df2.rename({'closing_': 'closing', 'open_': 'open'}, axis=1, inplace=True)
                 csv = df.iloc[[-1]]
                 csv.to_csv(cn[i-3])
             else:

@@ -102,16 +102,19 @@ class AppFunctions(MainWindow):
             print('Incomplete Selection.')
             self.error_txt = "Please COMPLETE your Dataset Selection."
             self.empty_ds()
+            self.dataset_crypto.clear()
 
         elif self.dataset_date_from > self.dataset_date_until:
             print('Invalid Timeframe.')
             self.error_txt = "Invalid Timeframe. Try Again."
             self.empty_ds()
+            self.dataset_crypto.clear()
 
         elif t < 14:
             print('Invalid Timeframe.')
             self.error_txt = "Please input Timeframe with at least 14 days range."
             self.empty_ds()
+            self.dataset_crypto.clear()
         
         else:
             self.ui.testTimeFrameList.clear()
@@ -213,15 +216,20 @@ class GetHistoData(QThread):
         self.df_btc = pd.read_csv('csv/db_btc.csv')
         self.df_eth = pd.read_csv('csv/db_eth.csv')
         self.df_doge = pd.read_csv('csv/db_doge.csv')
+        
 
         if self.crypto == 'btn_all':
             lst = [self.df_btc, self.df_eth, self.df_doge]
+            curr = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]
         if self.crypto == 'btn_btc':
             lst = [self.df_btc]
+            curr = [pd.read_csv('csv/curr_btc.csv')]
         if self.crypto == 'btn_eth':
             lst = [self.df_eth]
+            curr = [pd.read_csv('csv/curr_eth.csv')]
         if self.crypto == 'btn_doge':
             lst = [self.df_doge]
+            curr = [pd.read_csv('csv/curr_doge.csv')]
 
         numeric = ['High', 'Low', 'Open', 'Closing']
         new_lst = list()
@@ -229,7 +237,7 @@ class GetHistoData(QThread):
         # today = pd.to_datetime(today)
         past_d = self.today - timedelta(days=self.h_days)
         
-        for df in lst:
+        for i, df in enumerate(lst):
             df2 = df.drop(df.columns[0], axis=1)
             df = df2
             df.columns = ['Date', 'High', 'Low', 'Open', 'Closing']
@@ -252,6 +260,9 @@ class GetHistoData(QThread):
             for item in df_price:
                 y.append(item)
 
+            x.append(curr[i]['timestamp'].iat[-1])
+            y.append(curr[i]['open'].iat[-1])
+
             new_lst.append([df, [x, y]])
         self.pass_histo_data.emit(new_lst)
 
@@ -272,19 +283,23 @@ class GetPredData(QThread):
 
         if self.crypto == 'btn_all':
             lst = [self.df_btc, self.df_eth, self.df_doge]
+            # curr = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]
         if self.crypto == 'btn_btc':
             lst = [self.df_btc]
+            # curr = [pd.read_csv('csv/curr_btc.csv')]
         if self.crypto == 'btn_eth':
             lst = [self.df_eth]
+            # curr = [pd.read_csv('csv/curr_eth.csv')]
         if self.crypto == 'btn_doge':
             lst = [self.df_doge]
+            # curr = [pd.read_csv('csv/curr_doge.csv')]
 
         # numeric = ['High', 'Low', 'Closing']
         new_lst = list()
 
         # future_d = self.today + timedelta(days=self.p_days)
 
-        for df in lst:
+        for i, df in enumerate(lst):
             df2 = df.drop(df.columns[0], axis=1)
             df = df2
             df['Date'] = pd.to_datetime(df['Date'])
@@ -301,6 +316,9 @@ class GetPredData(QThread):
 
             x = []
             y = []
+
+            # x.append(curr[i]['timestamp'].iat[-1])
+            # y.append(curr[i]['open'].iat[-1])
 
             for i in range(self.p_days):
                 x.append(datetime.timestamp(df_date[i]))
@@ -403,7 +421,7 @@ class RetrainData(QObject):
         eth_lst = list()
         doge_lst = list()
 
-        print(self.crypto_lst)
+        # print(self.crypto_lst)
 
         for crypto in self.crypto_lst:
             if crypto == 'Bitcoin (BTC)':
@@ -429,7 +447,6 @@ class RetrainData(QObject):
                 y = []
 
                 for i in range(len(df)):
-                    print(i)
                     x.append(datetime.timestamp(df_date[i]))
                     y.append(df_price[i])
 
@@ -459,7 +476,6 @@ class RetrainData(QObject):
                 y = []
 
                 for i in range(len(df)):
-                    print(i)
                     x.append(datetime.timestamp(df_date[i]))
                     y.append(df_price[i])
 
@@ -490,7 +506,6 @@ class RetrainData(QObject):
                 y = []
 
                 for i in range(len(df)):
-                    print(i)
                     x.append(datetime.timestamp(df_date[i]))
                     y.append(df_price[i])
 
