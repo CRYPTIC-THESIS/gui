@@ -272,7 +272,10 @@ class MainWindow(QMainWindow):
                 
             # SHOW DEPLOY PAGE
             if btnName == "btn_deploy":
-                widgets.stackedWidget.setCurrentWidget(widgets.deploy)
+                if widgets.testContent.currentWidget() == widgets.dataAnalysisPage:
+                    self.deploy_retrain()
+                else:
+                    widgets.stackedWidget.setCurrentWidget(widgets.deploy)
             
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
@@ -280,6 +283,26 @@ class MainWindow(QMainWindow):
 
     # ///////////////////////////////////////////
     # SLOTS
+    def deploy_retrain(self):
+        self.desc = '<strong>RETRAINING</strong> DATA'
+        AppFunctions.loading(self)
+        self.hide()
+        AppFunctions.start_retrain_data(self)
+    
+    def catch_deploy_pred(self):
+        self.r_thread.quit()
+        
+        widgets.stackedWidget.setCurrentWidget(widgets.deploy)
+
+        # DISPLAY PRED & TABLE
+
+        self.Dialog.ui.loadingBar.setRange(0, 1)
+        self.Dialog.ui.loadingBar.setValue(1)
+        self.Dialog.ui.subtitle.setText("Done!")
+
+        QTimer.singleShot(1300, self.Dialog.close)
+        QTimer.singleShot(1200, self.show)
+
     def empty_ds(self):
         AppFunctions.popup(self, 2)
         self.Popup.ui.ok.clicked.connect(lambda: self.Popup.close())

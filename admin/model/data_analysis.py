@@ -23,8 +23,8 @@ def mape(actual, pred):
 
 
 #For MAE - RMSE - R-Squared - MAPE
-def error_analysis(btc_df, eth_df, doge_df):
-    crypto_df = [btc_df,eth_df,doge_df]
+def error_analysis(crypto_df, crypto_name):
+    # crypto_df = [btc_df,eth_df,doge_df]
     error_analysis_df = pd.DataFrame(columns = ['MAE','RMSE','R-Squared','Mape'])
     for df in crypto_df:
         #print(df)
@@ -36,7 +36,7 @@ def error_analysis(btc_df, eth_df, doge_df):
         mape_res = mape(actualPrice, predictedPrice)
         pd_data = pd.Series([mae_res , rmse_res, r2_res , mape_res], index=error_analysis_df.columns)
         error_analysis_df = error_analysis_df.append(pd_data,ignore_index=True)
-    crypto_name = ['BTC','ETH','DOGE']
+    # crypto_name = ['BTC','ETH','DOGE']
     tbl_idx = pd.Index(crypto_name)
     error_analysis_df = error_analysis_df.set_index(tbl_idx)
     return error_analysis_df
@@ -61,8 +61,8 @@ def corr_analysis(crypto_df,crypto):
 def classification_analysis(crypto_df,crypto):
     #print(crypto_df)
     classification_analysis_df = pd.DataFrame(columns = ['Precision','Recall','F1-Score','Accuracy'])
-    actualPrice = crypto_df['actual']
-    predictedPrice = crypto_df['predicted']
+    actualPrice = crypto_df[['actual']]
+    predictedPrice = crypto_df[['predicted']]
     actualPriceDirection= [0]*(len(crypto_df)-1)
     predictedPriceDirection= [0]*(len(crypto_df)-1)
     currPrice = 0

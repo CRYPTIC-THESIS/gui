@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import sys 
+sys.path.append('..')
 from admin import dbconnect as db
 import pickle as pl
 

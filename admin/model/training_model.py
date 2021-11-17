@@ -46,6 +46,8 @@ for i in range(len(crypto)):
     df['24_high'] = data['High']
     df['24_low'] = data['Low']
 
+    da.corr_analysis(df, crypto[i])
+
     if(mod_type == 'full'):
         df['google'] = data['GoogleTrends']
         df['twitter'] = data['Twitter']
