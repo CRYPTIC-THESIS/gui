@@ -261,7 +261,7 @@ class GetHistoData(QThread):
                 y.append(item)
 
             x.append(curr[i]['timestamp'].iat[-1])
-            y.append(curr[i]['open'].iat[-1])
+            y.append(curr[i]['closing'].iat[-1])
 
             new_lst.append([df, [x, y]])
         self.pass_histo_data.emit(new_lst)
@@ -318,7 +318,7 @@ class GetPredData(QThread):
             y = []
 
             # x.append(curr[i]['timestamp'].iat[-1])
-            # y.append(curr[i]['open'].iat[-1])
+            # y.append(curr[i]['closing'].iat[-1])
 
             for i in range(self.p_days):
                 x.append(datetime.timestamp(df_date[i]))
