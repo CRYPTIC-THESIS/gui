@@ -249,11 +249,13 @@ class MainWindow(QMainWindow):
         btnName = btn.objectName()
 
         if btnName == "btn_getData":
-            AppFunctions.cancel_selection(self)
-            widgets.stackedWidget.setCurrentWidget(widgets.train)
-            widgets.trainContent.setCurrentWidget(widgets.getDataPage)
-            UIFunctions.resetStyle(self, "btn_train")
-            widgets.btn_train.setStyleSheet(UIFunctions.selectMenu(widgets.btn_train.styleSheet()))
+            self.window = MainWindow()
+            self.window.ui.stackedWidget.setCurrentWidget(self.window.ui.train)
+            self.window.ui.trainContent.setCurrentWidget(self.window.ui.getDataPage)
+            UIFunctions.resetStyle(self.window, "btn_train")
+            self.window.ui.btn_train.setStyleSheet(UIFunctions.selectMenu(self.window.ui.btn_train.styleSheet()))
+            self.window.show()
+            self.close()
 
         else:
             # SHOW DASHBOARD PAGE
@@ -313,7 +315,6 @@ class MainWindow(QMainWindow):
         self.window.ui.btn_deploy.setStyleSheet(UIFunctions.selectMenu(self.window.ui.btn_deploy.styleSheet()))
         self.window.show()
         self.close()
-
 
     def get_selected_date(self):
         date = widgets.dateEdit.date()
@@ -474,9 +475,12 @@ class MainWindow(QMainWindow):
 
         AppFunctions.loading(self)
         self.hide()
+        self.p_thread = QThread()
         self.p_worker = ImplementModel(self.process)
-        self.p_worker.start()
+        self.p_worker.moveToThread(self.p_thread)
         self.p_worker.process_complete.connect(self.catch_output)
+        self.p_thread.started.connect(self.p_worker.run_terminal)
+        self.p_thread.start()
 
     
     def deploy(self):
@@ -548,16 +552,15 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////
     # CATCH THREAD SIGNALS
     def access_db(self):
+        self.db_thread = QThread()
         self.db_worker = AccessDatabase(self.selected_date)
-        self.db_worker.start()
-        # run = partial(self.db_worker.access_db, self.selected_date)
-        # QTimer.singleShot(0, run)
+        self.db_worker.moveToThread(self.db_thread)
         self.db_worker.import_data_complete.connect(self.get_data)
+        self.db_thread.started.connect(self.db_worker.access_now)
+        self.db_thread.start()
 
     def get_data(self):
-        self.db_worker.quit()
-        # del self.db_worker
-
+        self.db_thread.quit()
         AppFunctions.dash_pred(self)
         AppFunctions.dash_histo(self)
 
@@ -570,6 +573,8 @@ class MainWindow(QMainWindow):
         self.ds_worker.pass_dataset.connect(self.catch_dataset)
 
     def catch_output(self, output):
+        self.p_thread.quit()
+        
         if self.process == 'train':
             widgets.trainTerminal.clear()
             widgets.trainTerminal.insertPlainText(output)
@@ -587,8 +592,8 @@ class MainWindow(QMainWindow):
         self.show()
         self.Dialog.close()        
 
-        self.p_worker.quit()
-        del self.p_worker
+        # self.p_worker.stop()
+        del self.p_worker, self.p_thread
         
     def catch_dataset(self, my_df):
         widgets.trainTable.setColumnCount(len(my_df.columns))
