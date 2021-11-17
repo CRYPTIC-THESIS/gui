@@ -34,7 +34,7 @@ for i in range(len(crypto)):
     Y = np.array(data['Date'])
     
     data = np.array(dataset)
-    preds = pd.DataFrame(columns = ['date','prediction'])
+    preds = pd.DataFrame(columns = ['date','pred'])
     if(crypto[i]=='BTC'):
         print('Retraining BTC Model Before Deployment')
         date,pred = cryptic_model.retrain(10,data,crypto[i],Y[-1]) 
