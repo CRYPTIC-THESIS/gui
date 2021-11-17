@@ -71,12 +71,16 @@ class GetHistoData(QThread):
     def run(self):
         if self.crypto == 'btn_home':
             self.lst = [self.df_btc, self.df_eth, self.df_doge]
+            self.curr = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]
         if self.crypto == 'btn_btc':
             self.lst = [self.df_btc]
+            self.curr = [pd.read_csv('csv/curr_btc.csv')]
         if self.crypto == 'btn_eth':
             self.lst = [self.df_eth]
+            self.curr = [pd.read_csv('csv/curr_eth.csv')]
         if self.crypto == 'btn_doge':
             self.lst = [self.df_doge]
+            self.curr = [pd.read_csv('csv/curr_doge.csv')]
 
         if self.h_days == 1:
             new_lst = self.realtime()
@@ -92,7 +96,7 @@ class GetHistoData(QThread):
         today = pd.to_datetime(self.today)
         past_d = today - timedelta(days=self.h_days)
         
-        for df in self.lst:
+        for i, df in enumerate(self.lst):
             df2 = df.drop(df.columns[0], axis=1)
             df = df2
             df.columns = ['Date', 'High', 'Low', 'Open', 'Closing']
@@ -116,6 +120,9 @@ class GetHistoData(QThread):
             for item in df_price:
                 y.append(item)
 
+            x.append(self.curr[i]['timestamp'].iat[-1])
+            y.append(self.curr[i]['open'].iat[-1])
+
             new_lst.append([df, [x, y]])
         return new_lst
 
@@ -130,7 +137,7 @@ class GetHistoData(QThread):
             df[numeric] = df[numeric].apply(pd.to_numeric, errors='coerce', axis=1)
 
             df_time = df['Timestamp']
-            df_price = df[self.h_price]
+            df_price = df['Open']
 
             x = []
             y = []

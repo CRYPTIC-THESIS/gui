@@ -302,6 +302,8 @@ class MainWindow(QMainWindow):
         widgets.stackedWidget.setCurrentWidget(widgets.deploy)
 
         # DISPLAY PRED & TABLE
+        self.dct = dct
+        self.print()
 
         self.Dialog.ui.loadingBar.setRange(0, 1)
         self.Dialog.ui.loadingBar.setValue(1)
@@ -309,6 +311,60 @@ class MainWindow(QMainWindow):
 
         QTimer.singleShot(1300, self.Dialog.close)
         QTimer.singleShot(1200, self.show)
+
+    def get_deploy_crypto(self, value):
+        self.deploy_crypto = str(value)
+
+        self.display_deploy_crypto()
+
+    def display_deploy_crypto(self):
+        widgets.deployGraph.clear()
+        widgets.deployTable.clear()
+
+        if widgets.deployCryptoCombo.count() > 0:
+
+            if self.deploy_crypto.startswith('Bitcoin') == True:
+                my_dict = self.dct.get('btc')
+                pen=mkPen('#F9AA4B', width=2.5)
+
+            if self.deploy_crypto.startswith('Ethereum') == True:
+                my_dict = self.dct.get('eth')
+                pen=mkPen('#2082FA', width=2.5)
+            
+            if self.deploy_crypto.startswith('Dogecoin') == True:
+                my_dict = self.dct.get('doge')
+                pen=mkPen('#6374C3', width=2.5)
+
+
+            df = my_dict[0]
+            xy = my_dict[1]
+
+            widgets.deployGraph.plot(xy[0], xy[1], pen=pen)
+            widgets.deployTable.setColumnCount(len(df.columns))
+            widgets.deployTable.setHorizontalHeaderLabels(df.columns)
+            widgets.deployTable.setRowCount(len(df.index))
+
+            for i in range(len(df.index)):
+                for j in range(len(df.columns)):
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    widgets.deployTable.setItem(i, j, item)
+            
+            
+            widgets.deployTable.resizeColumnsToContents()
+            widgets.deployTable.show()
+            widgets.deployTable.resizeRowsToContents()
+
+            # print(xy)
+
+    def print(self):
+        # print(self.dct)
+
+        widgets.deployCryptoCombo.currentTextChanged.connect(self.get_deploy_crypto)
+        self.deploy_crypto = str(widgets.deployCryptoCombo.currentText())
+        # print(self.deploy_crypto)
+        self.display_deploy_crypto()
+        
 
     def empty_ds(self):
         AppFunctions.popup(self, 2)
@@ -662,9 +718,9 @@ class MainWindow(QMainWindow):
             widgets.ethCurrPriceLabel.clear()
             widgets.dogeCurrPriceLabel.clear()
 
-            # widgets.btcCurrPriceLabel.setText('$'+str(y))
-            # widgets.ethCurrPriceLabel.setText('$'+str(y2))
-            # widgets.dogeCurrPriceLabel.setText('$'+str(y3))
+            widgets.btcCurrPriceLabel.setText('$'+str(y[i]))
+            widgets.ethCurrPriceLabel.setText('$'+str(y2[i]))
+            widgets.dogeCurrPriceLabel.setText('$'+str(y3[i]))
 
         else:
             if self.selected_crypto == 'btn_btc':

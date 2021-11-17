@@ -8,6 +8,18 @@ class AccessDatabase(QObject):
         self.today = today
     
     def access_now(self):
+
+        rt_btc = get_data_table('Realtime_BTC')
+        rt_eth = get_data_table('Realtime_ETH')
+        rt_doge = get_data_table('Realtime_DOGE')
+        lst = [rt_btc, rt_eth, rt_doge]
+        fn = ['csv/curr_btc.csv', 'csv/curr_eth.csv', 'csv/curr_doge.csv',]
+
+        for i, df in enumerate(lst):
+            # df2 = df.rename({'open': 'closing_', 'closing': 'open_'}, axis=1, inplace=True)
+            # df = df2.rename({'closing_': 'closing', 'open_': 'open'}, axis=1, inplace=True)
+            df = df.iloc[[-1]]
+            df.to_csv(fn[i])
         
         db_btc = get_data_table('Bitcoin_Data')
         db_eth = get_data_table('Ethereum_Data')
@@ -23,7 +35,7 @@ class AccessDatabase(QObject):
             lst = [db_btc, db_eth, db_doge]
         
         fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
-              'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv']
+              'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv',]
         past = self.today - timedelta(days=365)
 
         for i, df in enumerate(lst):
@@ -37,7 +49,6 @@ class AccessDatabase(QObject):
                 df.columns = ['Price', 'Date']
                 df = df.reindex(columns=['Date', 'Price'])
             df.to_csv(fn[i])
-
         # print(today)
         # print(past)
 

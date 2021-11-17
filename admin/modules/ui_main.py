@@ -1120,7 +1120,7 @@ class Ui_MainWindow(object):
         self.horizontalSlider = QSlider(self.sliderFrame)
         self.horizontalSlider.setObjectName(u"horizontalSlider")
         self.horizontalSlider.setMinimumSize(QSize(170, 0))
-        self.horizontalSlider.setMinimum(1)
+        self.horizontalSlider.setMinimum(2)
         self.horizontalSlider.setMaximum(14)
         self.horizontalSlider.setSliderPosition(7)
         self.horizontalSlider.setOrientation(Qt.Horizontal)
@@ -3267,26 +3267,26 @@ class Ui_MainWindow(object):
         self.horizontalLayout_42.setSpacing(15)
         self.horizontalLayout_42.setObjectName(u"horizontalLayout_42")
         self.horizontalLayout_42.setContentsMargins(0, 0, 0, 0)
-        self.label_28 = QLabel(self.deploySliderFrame)
-        self.label_28.setObjectName(u"label_28")
+        # self.label_28 = QLabel(self.deploySliderFrame)
+        # self.label_28.setObjectName(u"label_28")
 
-        self.horizontalLayout_42.addWidget(self.label_28, 0, Qt.AlignVCenter)
+        # self.horizontalLayout_42.addWidget(self.label_28, 0, Qt.AlignVCenter)
 
-        self.deploySlider = QSlider(self.deploySliderFrame)
-        self.deploySlider.setObjectName(u"deploySlider")
-        self.deploySlider.setMinimumSize(QSize(185, 0))
-        self.deploySlider.setMinimum(1)
-        self.deploySlider.setMaximum(14)
-        self.deploySlider.setOrientation(Qt.Horizontal)
-        self.deploySlider.setTickPosition(QSlider.NoTicks)
-        self.deploySlider.setTickInterval(0)
+        # self.deploySlider = QSlider(self.deploySliderFrame)
+        # self.deploySlider.setObjectName(u"deploySlider")
+        # self.deploySlider.setMinimumSize(QSize(185, 0))
+        # self.deploySlider.setMinimum(1)
+        # self.deploySlider.setMaximum(14)
+        # self.deploySlider.setOrientation(Qt.Horizontal)
+        # self.deploySlider.setTickPosition(QSlider.NoTicks)
+        # self.deploySlider.setTickInterval(0)
 
-        self.horizontalLayout_42.addWidget(self.deploySlider)
+        # self.horizontalLayout_42.addWidget(self.deploySlider)
 
-        self.deployDaysValue = QLabel(self.deploySliderFrame)
-        self.deployDaysValue.setObjectName(u"deployDaysValue")
+        # self.deployDaysValue = QLabel(self.deploySliderFrame)
+        # self.deployDaysValue.setObjectName(u"deployDaysValue")
 
-        self.horizontalLayout_42.addWidget(self.deployDaysValue, 0, Qt.AlignVCenter)
+        # self.horizontalLayout_42.addWidget(self.deployDaysValue, 0, Qt.AlignVCenter)
 
 
         self.horizontalLayout_43.addWidget(self.deploySliderFrame, 0, Qt.AlignRight)
@@ -3317,10 +3317,19 @@ class Ui_MainWindow(object):
         self.deployGraphFrame.setStyleSheet(u"border-radius: 0; background: transparent;")
         self.deployGraphFrame.setFrameShape(QFrame.NoFrame)
         self.deployGraphFrame.setFrameShadow(QFrame.Raised)
+
+        self.deployGraph = PlotWidget(self.deployGraphFrame, axisItems={'bottom': DateAxisItem(orientation='bottom')})
+        # brush = QBrush(QColor(44, 49, 58, 1))
+        # brush.setStyle(Qt.NoBrush)
+        self.deployGraph.setBackgroundBrush(brush)
+        self.deployGraph.addLegend()
+
         self.verticalLayout_84 = QVBoxLayout(self.deployGraphFrame)
         self.verticalLayout_84.setSpacing(0)
         self.verticalLayout_84.setObjectName(u"verticalLayout_84")
         self.verticalLayout_84.setContentsMargins(0, 0, 0, 0)
+
+        self.verticalLayout_84.addWidget(self.deployGraph)
 
         self.verticalLayout_83.addWidget(self.deployGraphFrame)
 
@@ -3361,7 +3370,7 @@ class Ui_MainWindow(object):
         self.deployTable.setFrameShape(QFrame.NoFrame)
         self.deployTable.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
         self.deployTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.deployTable.horizontalHeader().setVisible(False)
+        self.deployTable.horizontalHeader().setVisible(True)
         self.deployTable.horizontalHeader().setCascadingSectionResizes(False)
         self.deployTable.horizontalHeader().setDefaultSectionSize(153)
         self.deployTable.horizontalHeader().setStretchLastSection(True)
@@ -3409,7 +3418,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.horizontalSlider.valueChanged.connect(self.daysValue.setNum)
-        self.deploySlider.valueChanged.connect(self.deployDaysValue.setNum)
+        # self.deploySlider.valueChanged.connect(self.deployDaysValue.setNum)
 
         self.stackedWidget.setCurrentIndex(3)
         self.trainContent.setCurrentIndex(0)
@@ -3506,59 +3515,9 @@ class Ui_MainWindow(object):
         self.label_25.setText(QCoreApplication.translate("MainWindow", u"CRYPTOCURRENCY:", None))
         # self.label_27.setText(QCoreApplication.translate("MainWindow", u"PRICES:", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"PREDICTED PRICES", None))
-        self.label_28.setText(QCoreApplication.translate("MainWindow", u"DAYS:", None))
-        self.deployDaysValue.setText(QCoreApplication.translate("MainWindow", u"1", None))
+        # self.label_28.setText(QCoreApplication.translate("MainWindow", u"DAYS:", None))
+        # self.deployDaysValue.setText(QCoreApplication.translate("MainWindow", u"1", None))
         self.deployGraphDateLabel.setText("")
 
         self.btn_reset.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
     # retranslateUi
-
-
-        # grph = sn.heatmap(corrMatrix, annot=True)
-        # fig = grph.get_figure()
-        # fig.savefig('images/corr.png', dpi=96)
-
-        # self.corrAnalysisGraphFrame.setStyleSheet(u"background-image: url(:/images/images/corr.png); background-repeat: no-repeat; background-position: center;")
-        # correlogram = ViewBox()
-        # correlogram.invertY(True)
-        # imageItem = ImageItem(image=corrMatrix)
-        # correlogram.addItem(imageItem)
-        # plotItem = PlotItem(viewbox=correlogram)
-
-        # ticks = [ (idx+0.5, label) for idx, label in enumerate( corrColumns ) ]
-        # for side in ['left', 'top']:
-        #     ax = plotItem.getAxis(side)
-        #     ax.show()
-        #     ax.setZValue(0.1)
-        #     ax.setTicks( (ticks, []) )
-        #     if side == 'left': ax.setWidth(50)
-        #     if side == 'top' : ax.setHeight(20)
-        # for side in ['right', 'bottom']:
-        #     ax = plotItem.getAxis(side)
-        #     ax.show()
-        #     ax.setZValue(0.1)
-        #     ax.setTicks( (ticks, []) )
-        #     ax.setStyle(showValues=False)
-        #     if side == 'bottom': ax.setHeight(10)
-
-        # plotItem.setXRange(0, corrMatrix.shape[0], padding=0 )
-        # plotItem.setYRange(0, corrMatrix.shape[1], padding=0 )
-
-        # colorMap = colormap.get("cet-d1")
-        # bar = ColorBarItem( values=(-1,1), colorMap=colorMap)
-        # bar.setImageItem(imageItem, insert_in=plotItem)
-        
-        # # self.corrAnalysisGraph.plotItem(plotItem)
-
-        # self.corrAnalysisGraph = PlotWidget(self.corrAnalysisGraphFrame, plotItem=plotItem)
-        # brush = QBrush(QColor(44, 49, 58, 1))
-        # brush.setStyle(Qt.NoBrush)
-        # self.corrAnalysisGraph.setBackgroundBrush(brush)
-
-        # self.verticalLayout_corr = QVBoxLayout(self.corrAnalysisGraphFrame)
-        # self.verticalLayout_corr.setSpacing(0)
-        # self.verticalLayout_corr.setObjectName(u"verticalLayout_corr")
-        # self.verticalLayout_corr.setContentsMargins(0, 0, 0, 0)
-
-        # self.verticalLayout_corr.addWidget(self.corrAnalysisGraph)
-        # self.corrAnalysisGraph.show()
