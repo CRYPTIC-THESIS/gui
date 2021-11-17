@@ -115,13 +115,3 @@ def classification_analysis(crypto_df,crypto):
     pd_data = pd.Series([prec_sco , rec_sco, f1_sco , acc_sco], index=classification_analysis_df.columns)
     classification_analysis_df = classification_analysis_df.append(pd_data,ignore_index=True)
     return classification_analysis_df
-        
-
-# BTC_data = pd.read_csv("csv/BTC_Sample.csv")
-# ETH_data = pd.read_csv("csv/ETH_Sample.csv")
-# DOGE_data = pd.read_csv("csv/DOGE_Sample.csv")
-
-# print(error_analysis(BTC_data,ETH_data,DOGE_data))
-# print(corr_analysis(BTC_data))
-# print(classification_analysis(BTC_data))
-

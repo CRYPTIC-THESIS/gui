@@ -1,3 +1,13 @@
+# ------------------------------------------------------------------------------------------- #
+#    CRYPTIC: AN IMPROVED CNN-LSTM CRYPTOCURRENCY PRICE FORECASTING USING INTERNET TRENDS
+# 
+# Authors:
+# Arconado, Kristine N.             Dalay, Jeremy Tristen A.
+# Berse, Nikko R.                   Faustino, Kyle C.
+# 
+# BSCS 4-2 AY 2021-2022
+# ------------------------------------------------------------------------------------------- #
+
 import sys, os
 import time
 import pyrebase, requests, json
@@ -212,10 +222,6 @@ class MainWindow(QMainWindow):
         widgets.btn_histo_high.clicked.connect(self.get_price)
         widgets.btn_histo_low.clicked.connect(self.get_price)
 
-        # widgets.btn_pred_closing.clicked.connect(self.get_price)
-        # widgets.btn_pred_high.clicked.connect(self.get_price)
-        # widgets.btn_pred_low.clicked.connect(self.get_price)
-
         # widgets.btn_0.clicked.connect(self.get_histo_day)
         widgets.btn_1.clicked.connect(self.get_histo_day)
         widgets.btn_2.clicked.connect(self.get_histo_day)
@@ -230,14 +236,12 @@ class MainWindow(QMainWindow):
         widgets.btn_startTraining.clicked.connect(self.show_terminal)
 
         # TEST
-        # widgets.btn_startTesting.clicked.connect(self.show_terminal)
         self.disable('test')
         widgets.btn_getData.clicked.connect(self.buttonClick)
         widgets.btn_viewDataAnalysis.clicked.connect(self.show_data_analysis)
 
         # DEPLOY
         self.disable('deploy')
-        # widgets.btn_deployDeploy.clicked.connect(self.deploy)
         widgets.btn_reset.clicked.connect(self.reset_all)
 
     
@@ -620,11 +624,9 @@ class MainWindow(QMainWindow):
         widgets.trainTable.resizeRowsToContents()
         
         self.ds_worker.quit()
-        # del self.ds_worker
         widgets.btn_startTraining.show()
 
     def catch_histo_data(self, histo_data):
-        # print('catch_histo_data: ', histo_data)
         widgets.histoGraph.clear()
         btc = list()
         eth = list()
@@ -680,7 +682,6 @@ class MainWindow(QMainWindow):
         # del self.h_worker
     
     def catch_pred_data(self, pred_data):
-        # print('pred_data: \n', pred_data)
         widgets.predGraph.clear()
         widgets.predictedTable.clear()
         btc = list()
@@ -707,7 +708,6 @@ class MainWindow(QMainWindow):
             self.pplot(x, y2, 'ETHEREUM', pen=mkPen('#2082FA', width=2.5))
             self.pplot(x, y3, 'DOGECOIN', pen=mkPen('#6374C3', width=2.5))
 
-            # x = datetime.fromtimestamp(int(x)).strftime('%Y-%m-%d')
             dates = list()
             for date in x:
                 dates.append(datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d'))
@@ -800,7 +800,6 @@ class MainWindow(QMainWindow):
         
         # widgets.dataAnalysisTable.resizeColumnsToContents()
         widgets.dataAnalysisTable.show()
-        # if len(self.dataset_source) > 0:
         widgets.dataAnalysisTable.resizeRowsToContents()
 
     
@@ -808,7 +807,6 @@ class MainWindow(QMainWindow):
     # LOGOUT
     def logout(self):
         self.window = Login()
-        # self.windows.append(window)
         self.window.show()
         self.close()
 

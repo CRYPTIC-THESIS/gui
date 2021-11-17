@@ -124,9 +124,7 @@ class AppFunctions(MainWindow):
                 self.dataset_source = ['CoinDesk Historical Data', 'Twitter', 'Reddit', 'GoogleTrends']
             # print(self.dataset_source)
 
-            # self.train_dataset_table()
             self.get_dataset()
-            # self.ui.btn_startTraining.show()
 
             self.ui.testTimeFrameList.addItems([str(self.dataset_date_from), str(self.dataset_date_until)])
             self.ui.testCryptoList.addItems(self.dataset_crypto)
@@ -223,7 +221,6 @@ class GetHistoData(QThread):
             df.columns = ['Date', 'High', 'Low', 'Open', 'Closing']
             df['Date'] = pd.to_datetime(df['Date'])
             df[numeric] = df[numeric].apply(pd.to_numeric, errors='coerce', axis=1)
-            # print(df.head())
 
             df_date = []
             df_price = []
@@ -251,7 +248,6 @@ class GetPredData(QThread):
     def __init__(self, crypto, p_days, today):
         super().__init__()
         self.crypto = crypto
-        # self.p_price = p_price
         self.p_days = p_days
         self.today = today
 
@@ -280,7 +276,6 @@ class GetPredData(QThread):
             df['Date'] = pd.to_datetime(df['Date'])
             df['Price'] = pd.to_numeric(df['Price'])
             df['Price'] = df['Price'].round(4)
-            # print(df.head())
 
             df_date = []
             df_price = []
@@ -335,7 +330,6 @@ class ImplementModel(QObject):
 
 class GetAccuracy(QThread):
     pass_acc_data = Signal(pd.DataFrame)
-    # finished = Signal()
 
     def __init__(self, crypto):
         super().__init__()
@@ -345,7 +339,7 @@ class GetAccuracy(QThread):
         df = pd.DataFrame()
 
         error_ = pd.read_csv('csv/All_Error_Analysis.csv', index_col=[0])
-        # print(error_)
+        
         if self.crypto.startswith('Bitcoin') == True:
             error_ = error_.loc[['BTC']]
             class_ = pd.read_csv('csv/BTC_classification_analysis.csv', index_col=[0])
