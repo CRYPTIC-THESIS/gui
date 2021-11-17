@@ -9,8 +9,8 @@ cg = CoinGeckoAPI()
 
 # REALTIME
 def get_cur():
-    d_ = datetime.utcnow()
-    t = datetime.utcnow() - timedelta(days = 1)
+    d_ = datetime.strptime('2021-10-18 07:00:00', '%Y-%m-%d %H:%M:%S')
+    t = d_ - timedelta(days = 1)
     u_d = calendar.timegm(d_.utctimetuple())
     u_t = calendar.timegm(t.utctimetuple())
 
@@ -60,14 +60,14 @@ def get_cur():
     doge_l = min(doge)
     doge = [u_d, doge_o, doge_h, doge_l, doge_c]
 
-    # print(btc, eth, doge)
+    print(btc, eth, doge)
 
     columns = ['Timestamp', 'Open', 'High', 'Low', 'Closing']
     btc = pd.DataFrame(columns=columns).append(pd.Series(btc, index=columns), ignore_index=True)
     eth = pd.DataFrame(columns=columns).append(pd.Series(eth, index=columns), ignore_index=True)
     doge = pd.DataFrame(columns=columns).append(pd.Series(doge, index=columns), ignore_index=True)
 
-    # print(btc, eth, doge)
+    print(btc, eth, doge)
 
     return btc, eth, doge
 
@@ -82,9 +82,9 @@ def update_realtime_data():
 def new_realtime():
     
     btc, eth, doge = get_cur()
-    insert_realtime_data('Realtime_BTC', btc)
-    insert_realtime_data('Realtime_ETH', eth)
-    insert_realtime_data('Realtime_DOGE', doge)
+    # insert_realtime_data('Realtime_BTC', btc)
+    # insert_realtime_data('Realtime_ETH', eth)
+    # insert_realtime_data('Realtime_DOGE', doge)
 
 def update_crypto_data():
     # Convert timestamp
@@ -299,38 +299,38 @@ def scrape_google_data(currDate): #currDate in YYYY-MM-DD format
     
 #scrape_google_data('2021-11-02') #sample run
 
-# new_realtime()
+new_realtime()
 
 # RUN FOREVER
-while True:
-    sleep = 10
+# while True:
+#     sleep = 10
     
-    time = datetime.now().strftime("%H:%M")
+#     time = datetime.now().strftime("%H:%M")
 
-    today = datetime.now().strftime("%Y-%m-%d")
-    past = pd.to_datetime(today) - timedelta(days=1)
-    past = past.strftime("%Y-%m-%d")
+#     today = datetime.now().strftime("%Y-%m-%d")
+#     past = pd.to_datetime(today) - timedelta(days=1)
+#     past = past.strftime("%Y-%m-%d")
 
-    forward = (datetime.strptime(time, "%H:%M") + timedelta(minutes=10)).strftime("%H:%M")
-    temp = datetime.strptime('23:55', "%H:%M") - datetime.strptime(time, "%H:%M")
-    temp = int(t.strftime("%M", t.gmtime(temp.total_seconds())))
+#     forward = (datetime.strptime(time, "%H:%M") + timedelta(minutes=10)).strftime("%H:%M")
+#     temp = datetime.strptime('23:55', "%H:%M") - datetime.strptime(time, "%H:%M")
+#     temp = int(t.strftime("%M", t.gmtime(temp.total_seconds())))
     
-    try:
-        print(time)
-        if time >= '23:55':
-            update_crypto_data()
-            new_realtime()
-        else:
-            update_realtime_data()
+#     try:
+#         print(time)
+#         if time >= '23:55':
+#             update_crypto_data()
+#             new_realtime()
+#         else:
+#             update_realtime_data()
 
-            if forward.startswith('00') and time.startswith('23') and temp < 15:
-                sleep = temp
-    except Exception as e:
-        print(e)
-        sleep = 1
+#             if forward.startswith('00') and time.startswith('23') and temp < 15:
+#                 sleep = temp
+#     except Exception as e:
+#         print(e)
+#         sleep = 1
     
-    # if time >= '23:55':
-    #     scrape_daily_tweets(past, today)
-    #     scrape_google_data(today)
+#     # if time >= '23:55':
+#     #     scrape_daily_tweets(past, today)
+#     #     scrape_google_data(today)
 
-    t.sleep(60*sleep)
+#     t.sleep(60*sleep)
