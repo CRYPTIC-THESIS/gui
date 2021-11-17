@@ -488,13 +488,16 @@ class MainWindow(QMainWindow):
         self.desc = '<strong>DEPLOYING</strong> PREDICTED DATA'
         AppFunctions.loading(self)
         self.hide()
+        self.d_thread = QThread()
         self.d_worker = ImplementModel(self.process)
-        self.d_worker.start()
+        self.d_worker.moveToThread(self.d_thread)
         self.d_worker.deploy_complete.connect(self.complete)
+        self.d_thread.started.connect(self.d_worker.run_terminal)
+        self.d_thread.start()
 
     def complete(self):
         print('Complete!')
-        self.d_worker.quit()
+        self.d_thread.quit()
 
         self.Dialog.ui.loadingBar.setRange(0, 1)
         self.Dialog.ui.loadingBar.setValue(1)
@@ -502,6 +505,8 @@ class MainWindow(QMainWindow):
 
         QTimer.singleShot(1300, self.Dialog.close)
         QTimer.singleShot(1200, self.show)
+
+        del self.d_worker, self.d_thread
 
     
     # ///////////////////////////////////////////
