@@ -299,9 +299,7 @@ class LSTM:
 
         v = np.dot(self.params["Wv"], h) + self.params["bv"]
 
-        out,ca_dr = self.dropout(v, 0.9)
-        out,ca_re = self.relu(out)
- 
+        out,ca_re = self.relu(v)
         N, D = out.shape
         gamma = np.random.randn(D)
         beta = np.random.randn(D)
@@ -311,13 +309,12 @@ class LSTM:
         dout1 = np.random.randn(N, D)
         bn_param = {'mode': 'train'}
         bn_param1 = {'mode': 'train'}
-        
         out,ca_bn = self.batchnorm(out, gamma, beta, bn_param)
-
-        out,ca_dr1 = self.dropout(out, 0.9)
+        out,ca_dr = self.dropout(out, 0.3)
         out,ca_re1 = self.relu(out)
-
         out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
+        out,ca_dr1 = self.dropout(out, 0.3)
+        
         y_hat = self.softmax(out)
         
         return y_hat, v, h, o, c, c_bar, i, f, z
