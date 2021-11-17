@@ -62,11 +62,18 @@ class AppFunctions(MainWindow):
         self.pg_worker.start()
         self.pg_worker.pass_pred_data.connect(self.catch_pred_data)
 
+    def start_retrain_data(self):
+        self.r_thread = QThread()
+        self.r_worker = RetrainData(self.dataset_crypto)
+        self.r_worker.moveToThread(self.r_thread)
+        self.r_worker.finished.connect(self.catch_deploy_pred)
+        self.r_thread.started.connect(self.r_worker.retrain_in_bg)
+        self.r_thread.start()
+
     def get_accuracy(self):
         self.a_worker = GetAccuracy(self.analyze_crypto)
         self.a_worker.start()
         self.a_worker.pass_acc_data.connect(self.catch_analysis)
-
 
     def get_dataset_selection(self):
         # CRYPTO
@@ -306,7 +313,7 @@ class ImplementModel(QObject):
         print(self.process)
 
         if self.process == 'deploy':
-            command_line = 'python model/deploy.py'
+            command_line = 'python model/deploy_all.py'
             p = os.popen(command_line)
             if p:
                 # print('Done')
@@ -328,6 +335,7 @@ class ImplementModel(QObject):
 
 class GetAccuracy(QThread):
     pass_acc_data = Signal(pd.DataFrame)
+    # finished = Signal()
 
     def __init__(self, crypto):
         super().__init__()
@@ -362,5 +370,118 @@ class GetAccuracy(QThread):
         # print('error_: ', error_)
         # print('class_: ', class_)
         # print('df: ', df)
-
+        
         self.pass_acc_data.emit(df)
+
+
+class RetrainData(QObject):
+    finished = Signal()
+
+    def __init__(self, crypto_lst):
+        super().__init__()
+        self.crypto_lst = crypto_lst
+
+    def retrain_in_bg(self):
+        command_line = 'python model/deploy.py'
+        p = os.popen(command_line)
+        if p:
+            output=p.read()
+            # dct = self.get_data()
+            self.finished.emit()
+
+    def get_data(self):
+        dct = {}
+        btc_lst = list()
+        eth_lst = list()
+        doge_lst = list()
+
+        print(self.crypto_lst)
+
+        for crypto in self.crypto_lst:
+            if crypto == 'Bitcoin (BTC)':
+                df = pd.read_csv('csv/BTC_Predictions.csv')
+                df2 = df.drop([df.columns[0], df['prediction']], axis=1)
+                df2.columns = ['Date', 'Price']
+                btc_lst.append(df2)
+                
+                df2['Date'] = pd.to_datetime(df2['Date'])
+                df2['Price'] = pd.to_numeric(df2['Price'])
+                df2['Price'] = df2['Price'].round(4)
+
+                # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
+                df_date = df2['Date']
+                df_price = df2['Price']
+                df2['Date'] = pd.to_datetime(df2['Date']).dt.date
+
+                x = []
+                y = []
+
+                for i in range(len(df2)):
+                    x.append(datetime.timestamp(df_date[i]))
+                    y.append(df_price[i])
+
+                btc_lst.append([x, y])
+            
+            if crypto == 'Ethereum (ETH)':
+                df = pd.read_csv('csv/ETH_Predictions.csv')
+                print('df: ',df)
+                df2 = df.drop(df.columns[0], axis=1)
+                df = df2.drop(df2['prediction'], axis=1)
+                df2 = df
+                print('df2: ',df2)
+                df2.columns = ['Date', 'Price']
+                eth_lst.append(df2)
+
+                df2['Date'] = pd.to_datetime(df2['Date'])
+                df2['Price'] = pd.to_numeric(df2['Price'])
+                df2['Price'] = df2['Price'].round(4)
+
+                # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
+                df_date = df2['Date']
+                df_price = df2['Price']
+                df2['Date'] = pd.to_datetime(df2['Date']).dt.date
+
+                x = []
+                y = []
+
+                for i in range(len(df2)):
+                    x.append(datetime.timestamp(df_date[i]))
+                    y.append(df_price[i])
+
+                eth_lst.append([x, y])
+            
+            
+            if crypto == 'Dogecoin (DOGE)':
+                df = pd.read_csv('csv/DOGE_Predictions.csv')
+                df2 = df.drop([df.columns[0], df['prediction']], axis=1)
+                df2.columns = ['Date', 'Price']
+                doge_lst.append(df2)
+
+                df2['Date'] = pd.to_datetime(df2['Date'])
+                df2['Price'] = pd.to_numeric(df2['Price'])
+                df2['Price'] = df2['Price'].round(4)
+
+                # df_ = df.loc[(df['Date'] >= future_d) & (df['Date'] <= self.today)]
+                df_date = df2['Date']
+                df_price = df2['Price']
+                df2['Date'] = pd.to_datetime(df2['Date']).dt.date
+
+                x = []
+                y = []
+
+                for i in range(len(df2)):
+                    x.append(datetime.timestamp(df_date[i]))
+                    y.append(df_price[i])
+
+                doge_lst.append([x, y])
+
+        if btc_lst.empty == False:
+            dct['btc'] = btc_lst
+        
+        if eth_lst.empty == False:
+            dct['eth'] = eth_lst
+
+        if doge_lst.empty == False:
+            dct['doge'] = doge_lst
+
+        return dct

@@ -17,6 +17,7 @@ crypto = np.array(dataset_all['Cryptocurrency'])
 crypto = np.unique(crypto)
 losses = pd.DataFrame()
 deployed = []
+
 for i in range(len(crypto)):
     data = dataset_all.loc[dataset_all['Cryptocurrency'] == crypto[i]]
     dataset = pd.DataFrame()
