@@ -309,7 +309,7 @@ class ImplementModel(QObject):
             command_line = 'python model/deploy.py'
             p = os.popen(command_line)
             if p:
-                print('Done')
+                # print('Done')
                 print(p.read())
                 self.deploy_complete.emit()
         else:
