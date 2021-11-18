@@ -17,9 +17,12 @@ class AppFunctions(MainWindow):
         if self.selected_crypto == 'btn_doge':
             lst = [self.selected_crypto, self.doge_histo_price, self.doge_histo_days, self.today]
 
+        self.h_thread = QThread()
         self.h_worker = GetHistoData(lst)
-        self.h_worker.start()
+        self.h_worker.moveToThread(self.h_thread)
         self.h_worker.pass_histo_data.connect(self.catch_histo_data)
+        self.h_thread.started.connect(self.h_worker.start_run)
+        self.h_thread.start()
 
     def dash_pred(self):
         # print('prediction')
@@ -49,7 +52,7 @@ class GetPrices(QThread):
         self.import_complete.emit(dct)
 
 
-class GetHistoData(QThread):
+class GetHistoData(QObject):
     pass_histo_data = Signal(list)
 
     def __init__(self, lst_):  # crypto, h_price, h_days, today
@@ -68,7 +71,7 @@ class GetHistoData(QThread):
             self.df_eth = pd.read_csv('csv/db_eth.csv')
             self.df_doge = pd.read_csv('csv/db_doge.csv')
 
-    def run(self):
+    def start_run(self):
         if self.crypto == 'btn_home':
             self.lst = [self.df_btc, self.df_eth, self.df_doge]
             self.curr = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]

@@ -694,6 +694,10 @@ class MainWindow(QMainWindow):
         eth = list()
         doge = list()
 
+        # if pd.to_datetime(self.selected_date).date() == datetime.now().date():
+        #     print(self.selected_date)
+        #     print(datetime.now().date())
+
         if self.selected_crypto == 'btn_all':
             for i, data in enumerate(histo_data):
                 if i == 0:
