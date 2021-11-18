@@ -93,4 +93,3 @@ file_name = 'model/obj/trained.pkl'
 open_file = open(file_name, "wb")
 pickle.dump(trained, open_file)
 open_file.close()
-
