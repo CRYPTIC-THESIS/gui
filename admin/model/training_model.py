@@ -73,6 +73,11 @@ for i in range(len(crypto)):
         trained.append('BTC')
     elif(crypto[i]=='ETH'):
         data = split_data(dataset,crypto[i])
+        l = data[-1:]
+        c = l[0][3]
+        d = c*0.01
+        a = c+d
+        b = c-d
         eth_loss = cryptic_model.train(100,data,a,b,crypto[i],mod_type)
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!\n\n')
