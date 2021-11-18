@@ -235,6 +235,7 @@ class GetHistoData(QThread):
         new_lst = list()
 
         # today = pd.to_datetime(today)
+        now = datetime.now()
         past_d = self.today - timedelta(days=self.h_days)
         
         for i, df in enumerate(lst):
@@ -260,8 +261,9 @@ class GetHistoData(QThread):
             for item in df_price:
                 y.append(item)
 
-            x.append(curr[i]['timestamp'].iat[-1])
-            y.append(curr[i]['closing'].iat[-1])
+            if self.today.date() == now.date():
+                x.append(curr[i]['timestamp'].iat[-1])
+                y.append(curr[i]['closing'].iat[-1])
 
             new_lst.append([df, [x, y]])
         self.pass_histo_data.emit(new_lst)
