@@ -7,7 +7,7 @@ class Conv:
     
     def __init__(self, num_filters):
         self.num_filters = num_filters
-        self.filters = np.random.randn(num_filters, 1, 3)/3
+        self.filters = np.random.randn(num_filters, 1, 3)
             
     def iterate_regions(self, image):
         #generates all possible 3*3 image regions using valid padding
