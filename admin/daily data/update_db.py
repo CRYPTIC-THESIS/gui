@@ -42,7 +42,7 @@ def get_cur():
     btc_c = btc[-1]
     btc_h = max(btc)
     btc_l = min(btc)
-    btc = [u_d, btc_o, btc_h, btc_l, btc_c]
+    btc_f = [u_d, btc_o, btc_h, btc_l, btc_c]
 
     
     eth = [val[1] for val in eth]
@@ -50,7 +50,7 @@ def get_cur():
     eth_c = eth[-1]
     eth_h = max(eth)
     eth_l = min(eth)
-    eth = [u_d, eth_o, eth_h, eth_l, eth_c]
+    eth_f = [u_d, eth_o, eth_h, eth_l, eth_c]
 
     
     doge = [val[1] for val in doge]
@@ -58,7 +58,7 @@ def get_cur():
     doge_c = doge[-1]
     doge_h = max(doge)
     doge_l = min(doge)
-    doge = [u_d, doge_o, doge_h, doge_l, doge_c]
+    doge_f = [u_d, doge_o, doge_h, doge_l, doge_c]
 
     print(btc, eth, doge)
 
@@ -69,7 +69,7 @@ def get_cur():
 
     print(btc, eth, doge)
 
-    return btc, eth, doge
+    return btc, eth, doge, btc_f, eth_f, doge_f
 
 def update_realtime_data():
     
