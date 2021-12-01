@@ -1489,9 +1489,7 @@ font: 15px &quot;Segoe UI BOLD&quot;;</string>
                             </property>
                             <property name="styleSheet">
                              <string notr="true">font: 30px &quot;Segoe UI BOLD&quot;;
-color: white;
-background: #2AB7CA;
-color: #21252B;</string>
+background: #2AB7CA;</string>
                             </property>
                             <property name="text">
                              <string/>
@@ -2864,6 +2862,12 @@ border-top-left-radius: 10px;</string>
                     </property>
                     <item>
                      <widget class="QFrame" name="frame_11">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>41</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>16777215</width>
@@ -2881,19 +2885,23 @@ border-top-left-radius: 10px;</string>
                         <number>0</number>
                        </property>
                        <property name="leftMargin">
-                        <number>15</number>
+                        <number>0</number>
                        </property>
                        <property name="topMargin">
                         <number>0</number>
                        </property>
                        <property name="rightMargin">
-                        <number>15</number>
+                        <number>0</number>
                        </property>
                        <property name="bottomMargin">
                         <number>0</number>
                        </property>
                        <item alignment="Qt::AlignVCenter">
                         <widget class="QFrame" name="frame_29">
+                         <property name="styleSheet">
+                          <string notr="true">background: #2AB7CA;
+border-radius:10px;</string>
+                         </property>
                          <property name="frameShape">
                           <enum>QFrame::NoFrame</enum>
                          </property>
@@ -2920,8 +2928,8 @@ border-top-left-radius: 10px;</string>
                            <widget class="QLabel" name="cryptocurrency">
                             <property name="minimumSize">
                              <size>
-                              <width>368</width>
-                              <height>33</height>
+                              <width>0</width>
+                              <height>41</height>
                              </size>
                             </property>
                             <property name="styleSheet">
@@ -2935,7 +2943,7 @@ color: white;</string>
                              <string/>
                             </property>
                             <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             <set>Qt::AlignCenter</set>
                             </property>
                            </widget>
                           </item>
