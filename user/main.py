@@ -116,13 +116,14 @@ class MainWindow(QMainWindow):
         # widgets.btn_histo_high.setEnabled(False)
         # widgets.btn_histo_low.setEnabled(False)
 
+        self.lblHidden = None
+        self.ctr = None
+
         # VALUES
         self.selected_crypto = 'btn_home'
         self.home_histo_price = 'Closing'
         # self.home_pred_days = int(widgets.home_daysValue.text())
         self.home_histo_days = 3
-        
-        
 
         # self.btc_pred_price = 'btc'
         self.btc_histo_price = 'Closing'
@@ -136,6 +137,8 @@ class MainWindow(QMainWindow):
         self.doge_histo_price = 'Closing'
         self.doge_histo_days = 3
 
+        # FUZZY SUGGESTION
+        self.suggestion()
         
         self.get_pred_day()
         self.get_df()
@@ -178,6 +181,68 @@ class MainWindow(QMainWindow):
         AppFunctions.display_prices(self)
         # AppFunctions.dash_pred(self)
         AppFunctions.dash_histo(self)
+
+
+    # FUZZY SUGGESTION
+    def suggestion(self):
+        self.timer = QTimer()
+        self.labels = ['BTC: BUY NOW!', 'ETH: SELL NOW!', 'DOGE: HOLD',]
+        self.lblcolors = ['#F9AA4B;', '#2082FA;', '#8C88BF;']
+        
+        if self.selected_crypto == 'btn_home':
+            self.timer.stop()
+            self.lblHidden = True
+            self.ctr = 0
+            self.timer.timeout.connect(self.flashLbl_all)
+            self.timer.start(500)
+
+        else:
+            self.timer.stop()
+
+            # if self.ctr != 3:
+            #     widgets.home_dateToday.styleSheet().replace('color: '+self.lblcolors[self.ctr], "")
+
+            if self.selected_crypto == 'btn_btc':
+                self.ctr = 0
+            
+            if self.selected_crypto == 'btn_eth':
+                self.ctr = 1
+            
+            if self.selected_crypto == 'btn_doge':
+                self.ctr = 2
+                
+            widgets.cryptocurrency.setText(self.labels[self.ctr])
+            widgets.cryptocurrency.setStyleSheet(widgets.cryptocurrency.styleSheet() + 'color: '+self.lblcolors[self.ctr])
+            widgets.cryptocurrency.show()
+
+            self.lblHidden = True
+            self.timer.timeout.connect(self.flashLbl)
+            self.timer.start(800)
+
+    def flashLbl_all(self):
+        if self.ctr == 3:
+            self.ctr = 0
+        widgets.home_dateToday.setText(self.labels[self.ctr])
+        widgets.home_dateToday.setStyleSheet(widgets.home_dateToday.styleSheet() + 'color: '+self.lblcolors[self.ctr])
+        
+        if self.lblHidden == False:
+            widgets.home_dateToday.hide()
+            self.lblHidden = True
+        else:
+            widgets.home_dateToday.show()
+            self.lblHidden = False
+            widgets.home_dateToday.styleSheet().replace('color: '+self.lblcolors[self.ctr], "")
+            self.ctr = self.ctr + 1
+
+    def flashLbl(self):
+        if self.lblHidden == False:
+            widgets.cryptocurrency.setStyleSheet(widgets.cryptocurrency.styleSheet() + 'color: #2AB7CA;')
+            self.lblHidden = True
+        else:
+            widgets.cryptocurrency.styleSheet().replace('color: #2AB7CA;', '')
+            widgets.cryptocurrency.setStyleSheet(widgets.cryptocurrency.styleSheet() + 'color: '+self.lblcolors[self.ctr])
+            self.lblHidden = False
+
 
     def buttonClick(self):
         # GET BUTTON CLICKED
@@ -241,6 +306,9 @@ class MainWindow(QMainWindow):
         btn.setStyleSheet(UIFunctions.selectCrypto(btn.styleSheet()))
         self.selected_crypto = btnName
         self.get_pred_day()
+
+        # FUZZY SUGGESTION
+        self.suggestion()
 
         # self.default_values()
         # AppFunctions.get_df(self)

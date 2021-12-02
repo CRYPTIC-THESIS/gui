@@ -782,6 +782,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.frame_2 = QFrame(self.frame)
         self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setMinimumSize(QSize(0, 41))
+        self.frame_2.setStyleSheet(u"background: #21252B;\n")
         self.frame_2.setFrameShape(QFrame.NoFrame)
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_17 = QHBoxLayout(self.frame_2)
@@ -792,8 +794,6 @@ class Ui_MainWindow(object):
         self.home_dateToday.setObjectName(u"home_dateToday")
         self.home_dateToday.setMinimumSize(QSize(275, 41))
         self.home_dateToday.setStyleSheet(u"font: 30px \"Segoe UI\"; font-weight: bold;\n"
-"color: white;\n"
-"background: #21252B;\n"
 "color: #2AB7CA;")
         self.home_dateToday.setAlignment(Qt.AlignCenter)
 
@@ -1471,7 +1471,7 @@ class Ui_MainWindow(object):
         self.cryptocurrency.setStyleSheet(u"font: 30px \"Segoe UI\"; font-weight: bold;\n"
 "color: white;")
         self.cryptocurrency.setFrameShadow(QFrame.Plain)
-        self.cryptocurrency.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.cryptocurrency.setAlignment(Qt.AlignLeading|Qt.AlignCenter|Qt.AlignVCenter)
 
         self.verticalLayout_16.addWidget(self.cryptocurrency, 0, Qt.AlignVCenter)
 
