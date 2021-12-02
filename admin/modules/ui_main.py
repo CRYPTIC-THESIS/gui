@@ -1174,6 +1174,31 @@ class Ui_MainWindow(object):
         self.verticalLayout_13.setSpacing(13)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.verticalLayout_13.setContentsMargins(15, 13, 15, 13)
+        
+        self.suggestionFrame = QFrame(self.historyFrame)
+        self.suggestionFrame.setObjectName(u"suggestionFrame")
+        self.suggestionFrame.setMinimumSize(QSize(0, 50))
+        self.suggestionFrame.setStyleSheet(u"background: #21252B;\n"
+"/* border: 1px solid white; */\n"
+"border-radius: 5px;")
+        self.suggestionFrame.setFrameShape(QFrame.NoFrame)
+        self.suggestionFrame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_50 = QHBoxLayout(self.suggestionFrame)
+        self.horizontalLayout_50.setSpacing(0)
+        self.horizontalLayout_50.setObjectName(u"horizontalLayout_50")
+        self.horizontalLayout_50.setContentsMargins(0, 0, 0, 0)
+        self.suggestionLabel = QLabel(self.suggestionFrame)
+        self.suggestionLabel.setObjectName(u"suggestionLabel")
+        self.suggestionLabel.setMaximumSize(QSize(16777215, 30))
+        self.suggestionLabel.setStyleSheet(u"font: 30px \"Segoe UI\"; font-weight: bold;\n"
+"color: #21252B;")
+        self.suggestionLabel.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_50.addWidget(self.suggestionLabel)
+
+
+        self.verticalLayout_13.addWidget(self.suggestionFrame)
+        
         self.currPriceFrame = QFrame(self.historyFrame)
         self.currPriceFrame.setObjectName(u"currPriceFrame")
         self.currPriceFrame.setFrameShape(QFrame.NoFrame)
@@ -1201,7 +1226,7 @@ class Ui_MainWindow(object):
 
         self.currPriceCards = QFrame(self.currPriceFrame)
         self.currPriceCards.setObjectName(u"currPriceCards")
-        self.currPriceCards.setMinimumSize(QSize(0, 124))
+        self.currPriceCards.setMinimumSize(QSize(0, 115))
         self.currPriceCards.setStyleSheet(u"")
         self.currPriceCards.setFrameShape(QFrame.NoFrame)
         self.currPriceCards.setFrameShadow(QFrame.Raised)
@@ -1525,7 +1550,7 @@ class Ui_MainWindow(object):
 
         self.histoGraphFrame = QFrame(self.daysButtonsFrame)
         self.histoGraphFrame.setObjectName(u"histoGraphFrame")
-        self.histoGraphFrame.setMinimumSize(QSize(423, 269))
+        self.histoGraphFrame.setMinimumSize(QSize(423, 215))
         self.histoGraphFrame.setFrameShape(QFrame.NoFrame)
         self.histoGraphFrame.setFrameShadow(QFrame.Raised)
         

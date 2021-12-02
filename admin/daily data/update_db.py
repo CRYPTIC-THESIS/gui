@@ -9,7 +9,7 @@ cg = CoinGeckoAPI()
 
 # REALTIME
 def get_cur():
-    d_ = datetime.strptime('2021-10-18 07:00:00', '%Y-%m-%d %H:%M:%S')
+    d_ = datetime.utcnow()
     t = d_ - timedelta(days = 1)
     u_d = calendar.timegm(d_.utctimetuple())
     u_t = calendar.timegm(t.utctimetuple())
@@ -63,13 +63,13 @@ def get_cur():
     print(btc, eth, doge)
 
     columns = ['Timestamp', 'Open', 'High', 'Low', 'Closing']
-    btc = pd.DataFrame(columns=columns).append(pd.Series(btc, index=columns), ignore_index=True)
-    eth = pd.DataFrame(columns=columns).append(pd.Series(eth, index=columns), ignore_index=True)
-    doge = pd.DataFrame(columns=columns).append(pd.Series(doge, index=columns), ignore_index=True)
+    btc = pd.DataFrame(columns=columns).append(pd.Series(btc_f, index=columns), ignore_index=True)
+    eth = pd.DataFrame(columns=columns).append(pd.Series(eth_f, index=columns), ignore_index=True)
+    doge = pd.DataFrame(columns=columns).append(pd.Series(doge_f, index=columns), ignore_index=True)
 
     print(btc, eth, doge)
 
-    return btc, eth, doge, btc_f, eth_f, doge_f
+    return btc, eth, doge, # btc_f, eth_f, doge_f
 
 def update_realtime_data():
     
@@ -82,9 +82,9 @@ def update_realtime_data():
 def new_realtime():
     
     btc, eth, doge = get_cur()
-    # insert_realtime_data('Realtime_BTC', btc)
-    # insert_realtime_data('Realtime_ETH', eth)
-    # insert_realtime_data('Realtime_DOGE', doge)
+    insert_realtime_data('Realtime_BTC', btc)
+    insert_realtime_data('Realtime_ETH', eth)
+    insert_realtime_data('Realtime_DOGE', doge)
 
 def update_crypto_data():
     # Convert timestamp

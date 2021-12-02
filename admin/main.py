@@ -197,6 +197,9 @@ class MainWindow(QMainWindow):
         self.selected_histo_price = 'Closing'
         self.selected_histo_day = 30
 
+        # FUZZY LOGIC SUGGESTION
+        self.suggestion()
+
         self.get_pred_day()
         self.access_db()
 
@@ -288,6 +291,65 @@ class MainWindow(QMainWindow):
 
     # ///////////////////////////////////////////
     # SLOTS
+    def suggestion(self):
+        self.timer = QTimer()
+        
+        if self.selected_crypto == 'btn_all':
+            self.timer.stop()
+            self.lblHidden = True
+            self.labels = ['BTC: BUY NOW!', 'ETH: SELL NOW!', 'DOGE: HOLD',]
+            self.lblcolors = ['#F9AA4B;', '#2082FA;', '#8C88BF;']
+            self.ctr = 0
+            self.timer.timeout.connect(self.flashLbl_all)
+            self.timer.start(500)
+
+        else:
+            self.timer.stop()
+
+            if self.ctr != 3:
+                widgets.suggestionLabel.styleSheet().replace('color: '+self.lblcolors[self.ctr], "")
+
+            if self.selected_crypto == 'btn_btc':
+                self.ctr = 0
+            
+            if self.selected_crypto == 'btn_eth':
+                self.ctr = 1
+            
+            if self.selected_crypto == 'btn_doge':
+                self.ctr = 2
+                
+            widgets.suggestionLabel.setText(self.labels[self.ctr])
+            widgets.suggestionLabel.setStyleSheet(widgets.suggestionLabel.styleSheet() + 'color: '+self.lblcolors[self.ctr])
+            widgets.suggestionLabel.show()
+
+            self.lblHidden = True
+            self.timer.timeout.connect(self.flashLbl)
+            self.timer.start(800)
+
+    def flashLbl_all(self):
+        if self.ctr == 3:
+            self.ctr = 0
+        widgets.suggestionLabel.setText(self.labels[self.ctr])
+        widgets.suggestionLabel.setStyleSheet(widgets.suggestionLabel.styleSheet() + 'color: '+self.lblcolors[self.ctr])
+        
+        if self.lblHidden == False:
+            widgets.suggestionLabel.hide()
+            self.lblHidden = True
+        else:
+            widgets.suggestionLabel.show()
+            self.lblHidden = False
+            widgets.suggestionLabel.styleSheet().replace('color: '+self.lblcolors[self.ctr], "")
+            self.ctr = self.ctr + 1
+
+    def flashLbl(self):
+        if self.lblHidden == False:
+            widgets.suggestionLabel.setStyleSheet(widgets.suggestionLabel.styleSheet() + 'color: #2AB7CA;')
+            self.lblHidden = True
+        else:
+            widgets.suggestionLabel.styleSheet().replace('color: #2AB7CA;', '')
+            widgets.suggestionLabel.setStyleSheet(widgets.suggestionLabel.styleSheet() + 'color: '+self.lblcolors[self.ctr])
+            self.lblHidden = False
+
     def deploy_retrain(self):
         self.retrained = True
         self.desc = '<strong>RETRAINING</strong> DATA'
@@ -351,7 +413,7 @@ class MainWindow(QMainWindow):
                     widgets.deployTable.setItem(i, j, item)
             
             
-            widgets.deployTable.resizeColumnsToContents()
+            # widgets.deployTable.resizeColumnsToContents()
             widgets.deployTable.show()
             widgets.deployTable.resizeRowsToContents()
 
@@ -422,6 +484,9 @@ class MainWindow(QMainWindow):
         UIFunctions.resetCryptoStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectCrypto(btn.styleSheet()))
         self.selected_crypto = btnName
+
+        # FUZZY LOGIC SUGGESTION
+        self.suggestion()
         
         self.get_data()
 
