@@ -294,7 +294,7 @@ new_realtime()
 #         sleep = 1
     
 #     # if time >= '23:55':
-#     #     scrape_daily_tweets(past, today)
+#     #     scrape_daily_tweets()
 #     #     scrape_google_data(today)
 
 #     t.sleep(60*sleep)
