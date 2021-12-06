@@ -126,68 +126,72 @@ def scrape_daily_tweets():
     d = last_date + timedelta(days=1)
     dateSince = datetime.strftime(d, "%Y-%m-%d")    # ! Last Date seen at the last row of the Database ! #
     dateUntil = date.today()                        # ! Current date ! #
-    # Initialize Total the Data dataframe
-    total_data = pd.DataFrame({'Date':[dateSince],'bitcoin':[0],'ethereum':[0],'dogecoin':[0]})
 
-    cryptoData = pd.DataFrame({'searchTerm':['#bitcoin OR #btc','#ethereum OR #eth','#dogecoin OR #doge'],'cryptoName':['bitcoin','ethereum','dogecoin']})
     #dateSince = "2021-11-01" # ! ===TEST DATES=== ! #
     #dateUntil = "2021-11-03" # ! ===TEST DATES=== ! #
 
-    #Get Twitter Data
-    for index, col in cryptoData.iterrows():
-        #Set Snscrape parameters
-        twitterScraperParams = str(str(col["searchTerm"]) + ' + since:' + str(dateSince) + ' until:' + str(dateUntil) +  ' -filter:links -filter:replies')
-        #Create an empty dataframe
-        columns = ['id','date','username','tweet']
-        crypto_df = pd.DataFrame(columns=columns)
+    if (dateSince==dateUntil):
+        print("Please scrape tomorrow!")
+    else:
+        cryptoData = pd.DataFrame({'searchTerm':['#bitcoin OR #btc','#ethereum OR #eth','#dogecoin OR #doge'],'cryptoName':['bitcoin','ethereum','dogecoin']})
+        # Initialize Total the Data dataframe
+        total_data = pd.DataFrame({'Date':[dateSince],'bitcoin':[0],'ethereum':[0],'dogecoin':[0]})
 
-        #===Scrape needed Data===
-        print ("[!] " + str(col["cryptoName"]) + " Scraping Start !!")
-        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(twitterScraperParams).get_items()):
-                if i > maxTweets:
-                    break  
-                new_row = {'id':tweet.id, 'date':str(tweet.date), 'username':tweet.user.username, 'tweet':tweet.content}
-                crypto_df = crypto_df.append(new_row,ignore_index=True)
+        #Get Twitter Data
+        for index, col in cryptoData.iterrows():
+            #Set Snscrape parameters
+            twitterScraperParams = str(str(col["searchTerm"]) + ' + since:' + str(dateSince) + ' until:' + str(dateUntil) +  ' -filter:links -filter:replies')
+            #Create an empty dataframe
+            columns = ['id','date','username','tweet']
+            crypto_df = pd.DataFrame(columns=columns)
 
-        #Print crypto dataframe
-        print ("Raw data dimensions: " + str(crypto_df.shape))
-        #print(crypto_df)
+            #===Scrape needed Data===
+            print ("[!] " + str(col["cryptoName"]) + " Scraping Start !!")
+            for i,tweet in enumerate(sntwitter.TwitterSearchScraper(twitterScraperParams).get_items()):
+                    if i > maxTweets:
+                        break  
+                    new_row = {'id':tweet.id, 'date':str(tweet.date), 'username':tweet.user.username, 'tweet':tweet.content}
+                    crypto_df = crypto_df.append(new_row,ignore_index=True)
 
-        #===Remove Duplicate Data===
-        #Split date column
-        crypto_df[['date', 'time']] = crypto_df["date"].str.split(" ", 1, expand=True)
-        #New dataframe
-        newdata_cols = ['date', 'time' , 'username', 'tweet']
-        newdata = pd.DataFrame(crypto_df[['date', 'time', 'username', 'tweet']].values, columns = newdata_cols)
-        #Reverse Data Order
-        newdata = newdata[::-1].reset_index(drop = True)
-        #Drop Duplicate Username on the same day
-        newdata.drop_duplicates(subset=['date','username'], keep='first', inplace=True)
-        newdata.reset_index(drop=True, inplace=True)
+            #Print crypto dataframe
+            print ("Raw data dimensions: " + str(crypto_df.shape))
+            #print(crypto_df)
 
-        #Print filtered crypto dataframe
-        print ("Filtered data dimensions: " + str(newdata.shape))
-        #print(newdata)
+            #===Remove Duplicate Data===
+            #Split date column
+            crypto_df[['date', 'time']] = crypto_df["date"].str.split(" ", 1, expand=True)
+            #New dataframe
+            newdata_cols = ['date', 'time' , 'username', 'tweet']
+            newdata = pd.DataFrame(crypto_df[['date', 'time', 'username', 'tweet']].values, columns = newdata_cols)
+            #Reverse Data Order
+            newdata = newdata[::-1].reset_index(drop = True)
+            #Drop Duplicate Username on the same day
+            newdata.drop_duplicates(subset=['date','username'], keep='first', inplace=True)
+            newdata.reset_index(drop=True, inplace=True)
 
-        #Total the given data
-        i=0
-        for dates in newdata["date"]:
-            if (dates!=(total_data.loc[i,"Date"])):
-                i = i + 1
-                total_data.loc[i,"Date"]=dates
-                total_data.loc[i,str(col["cryptoName"])] = 0
-                total_data.loc[i,str(col["cryptoName"])]= total_data.loc[i,str(col["cryptoName"])] + 1
-            else:
-                total_data.loc[i,str(col["cryptoName"])]= total_data.loc[i,str(col["cryptoName"])] + 1
+            #Print filtered crypto dataframe
+            print ("Filtered data dimensions: " + str(newdata.shape))
+            #print(newdata)
 
-        print("[!] Total Data !!!")
-        print(total_data)
+            #Total the given data
+            i=0
+            for dates in newdata["date"]:
+                if (dates!=(total_data.loc[i,"Date"])):
+                    i = i + 1
+                    total_data.loc[i,"Date"]=dates
+                    total_data.loc[i,str(col["cryptoName"])] = 0
+                    total_data.loc[i,str(col["cryptoName"])]= total_data.loc[i,str(col["cryptoName"])] + 1
+                else:
+                    total_data.loc[i,str(col["cryptoName"])]= total_data.loc[i,str(col["cryptoName"])] + 1
 
-    update_trend('Twitter_Data',total_data)
-    #Remove dataframes
-    a, b, c = crypto_df, newdata, total_data
-    lst = [a,b,c]
-    del lst
+            print("[!] Total Data !!!")
+            print(total_data)
+
+        update_trend('Twitter_Data',total_data)
+        #Remove dataframes
+        a, b, c = crypto_df, newdata, total_data
+        lst = [a,b,c]
+        del lst
 
 # GOOGLE TRENDS
 from pytrends.request import TrendReq
