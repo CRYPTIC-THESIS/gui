@@ -16,4 +16,9 @@ dr['price'] = df['Close']
 dr.ta.rsi(close='price', length=14, append=True)
 # View the result
 print(dr)
-
+do = pd.DataFrame()
+do = df
+do.drop('Volume', axis=1, inplace=True)
+#SO
+df.ta.stoch(high='High', low='Low', k=14, d=3, append=True)
+print(do)
