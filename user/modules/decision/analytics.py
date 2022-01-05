@@ -22,3 +22,4 @@ do.drop('Volume', axis=1, inplace=True)
 #SO
 df.ta.stoch(high='High', low='Low', k=14, d=3, append=True)
 print(do)
+
