@@ -16,3 +16,4 @@ dr['price'] = df['Close']
 dr.ta.rsi(close='price', length=14, append=True)
 # View the result
 print(dr)
+
