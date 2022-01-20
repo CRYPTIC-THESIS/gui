@@ -71,7 +71,7 @@ for i in range(len(crypto)):
         d = c*0.01
         a = c+d
         b = c-d
-        btc_loss= cryptic_model.train(100,data,a,b,crypto[i],mod_type)
+        btc_loss= cryptic_model.train(300,data,a,b,crypto[i],mod_type)
         losses['btc_loss'] = btc_loss
         print('BTC Model Trained!!!\n\n')
         trained.append('BTC')
@@ -81,7 +81,7 @@ for i in range(len(crypto)):
         d = c*0.01
         a = c+d
         b = c-d
-        eth_loss = cryptic_model.train(100,data,a,b,crypto[i],mod_type)
+        eth_loss = cryptic_model.train(300,data,a,b,crypto[i],mod_type)
         losses['eth_loss'] = eth_loss
         print('ETH Model Trained!!!\n\n')
         trained.append('ETH')
@@ -92,7 +92,7 @@ for i in range(len(crypto)):
         d = c*0.01
         a = c+d
         b = c-d
-        doge_loss = cryptic_model.train(100,data,a,b,crypto[i],mod_type)
+        doge_loss = cryptic_model.train(300,data,a,b,crypto[i],mod_type)
         losses['doge_loss'] = doge_loss
         print('DOGE Model Trained!!!\n\n')
         trained.append('DOGE')

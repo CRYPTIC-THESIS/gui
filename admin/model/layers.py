@@ -92,7 +92,7 @@ class MaxPool:
         return d_l_d_input
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=100, seq_len=1, lr=0.001, beta1=0.9, beta2=0.999):
+    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=150, seq_len=3, lr=0.05, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
         """
@@ -269,9 +269,10 @@ class LSTM:
         pred = np.zeros(sample_size)
         
         for t in range(sample_size):
-            y_hat, _, h, _, c, _, _, _, _ = self.forward_step(x, h, c)
+            y_hat, _, h, _, c, _, _, _, _ = self.forward_out(x, h, c)
 
             # get a random index within the probability distribution of y_hat(ravel())
+            
             idx = np.random.choice(range(self.seq_size), p=y_hat.ravel())
             #idx = np.argmax(y_hat)
             x = np.zeros((self.seq_size, 1))
@@ -281,6 +282,41 @@ class LSTM:
             val = self.idx_to_vals[idx]
             pred[t] = val
         return pred
+
+    def forward_out(self, x, h_prev, c_prev):
+        """
+        Implements the forward propagation for one time step
+        """
+
+        z = np.row_stack((h_prev, x))
+
+        f = self.sigmoid(np.dot(self.params["Wf"], z) + self.params["bf"])
+        i = self.sigmoid(np.dot(self.params["Wi"], z) + self.params["bi"])
+        c_bar = np.tanh(np.dot(self.params["Wc"], z) + self.params["bc"])
+
+        c = f * c_prev + i * c_bar
+        o = self.sigmoid(np.dot(self.params["Wo"], z) + self.params["bo"])
+        h = o * np.tanh(c)
+
+        v = np.dot(self.params["Wv"], h) + self.params["bv"]
+        out,ca_re = self.relu(v)
+        N, D = out.shape
+        gamma = np.random.randn(D)
+        beta = np.random.randn(D)
+        dout = np.random.randn(N, D)
+        gamma1 = np.random.randn(D)
+        beta1 = np.random.randn(D)
+        dout1 = np.random.randn(N, D)
+        bn_param = {'mode': 'train'}
+        bn_param1 = {'mode': 'train'}
+        out,ca_bn = self.batchnorm(out, gamma, beta, bn_param)
+        out,ca_dr = self.dropout(out, 0.5)
+        out,ca_re1 = self.relu(out)
+        out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
+        out,ca_dr1 = self.dropout(out, 0.3)
+        y_hat = self.softmax(out)
+        
+        return y_hat, v, h, o, c, c_bar, i, f, z
 
     def forward_step(self, x, h_prev, c_prev):
         """
@@ -298,24 +334,8 @@ class LSTM:
         h = o * np.tanh(c)
 
         v = np.dot(self.params["Wv"], h) + self.params["bv"]
-
-        out,ca_re = self.relu(v)
-        N, D = out.shape
-        gamma = np.random.randn(D)
-        beta = np.random.randn(D)
-        dout = np.random.randn(N, D)
-        gamma1 = np.random.randn(D)
-        beta1 = np.random.randn(D)
-        dout1 = np.random.randn(N, D)
-        bn_param = {'mode': 'train'}
-        bn_param1 = {'mode': 'train'}
-        out,ca_bn = self.batchnorm(out, gamma, beta, bn_param)
-        out,ca_dr = self.dropout(out, 0.3)
-        out,ca_re1 = self.relu(out)
-        out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
-        out,ca_dr1 = self.dropout(out, 0.3)
         
-        y_hat = self.softmax(out)
+        y_hat = self.softmax(v)
         
         return y_hat, v, h, o, c, c_bar, i, f, z
 

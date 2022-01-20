@@ -37,14 +37,14 @@ for i in range(len(crypto)):
     preds = pd.DataFrame(columns = ['date','pred'])
     if(crypto[i]=='BTC'):
         print('Retraining BTC Model Before Deployment')
-        date,pred = cryptic_model.retrain(10,data,crypto[i],Y[-1]) 
+        date,pred = cryptic_model.retrain(30,data,crypto[i],Y[-1]) 
         preds['date'] = pd.Series(date)  
         preds['pred'] = pd.Series(pred)
         preds.to_csv('csv/BTC_Predictions.csv')
         deployed.append('BTC')
     elif(crypto[i]=='ETH'):
         print('Retraining ETH Model Before Deployment')
-        date,pred = cryptic_model.retrain(10,data,crypto[i],Y[-1])        
+        date,pred = cryptic_model.retrain(30,data,crypto[i],Y[-1])        
         preds['date'] = pd.Series(date)  
         preds['pred'] = pd.Series(pred)
         preds.to_csv('csv/ETH_Predictions.csv')
@@ -52,7 +52,7 @@ for i in range(len(crypto)):
 
     elif(crypto[i]=='DOGE'):
         print('Retraining Doge Model Before Deployment')
-        date,pred = cryptic_model.retrain(10,data,crypto[i],Y[-1])
+        date,pred = cryptic_model.retrain(30,data,crypto[i],Y[-1])
         preds['date'] = pd.Series(date)  
         preds['pred'] = pd.Series(pred)
         preds.to_csv('csv/DOGE_Predictions.csv')
