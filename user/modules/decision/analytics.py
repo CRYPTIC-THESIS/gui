@@ -84,4 +84,5 @@ def get_decision(crypto):
     else:
         des = so_v
 
+
     return des
