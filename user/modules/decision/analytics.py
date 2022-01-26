@@ -2,9 +2,10 @@ import pandas_ta as ta
 import yfinance as yf
 import pandas as pd
 
-def get_decision(s_date, e_date):
+def get_decision(crypto):
+
     #Get Data
-    df = yf.Ticker('BTC-USD').history(period='1y')[['Close', 'Open', 'High', 'Volume', 'Low']]
+    df = yf.Ticker(crypto+'-USD').history(period='1y')[['Close', 'Open', 'High', 'Volume', 'Low']]
     # MACD
     da = df
     da.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
