@@ -30,7 +30,7 @@ class cryptic():
     def format_LSTM(self,data):
         
         vals = set(data)
-        vals_size = len(vals)
+        vals_size = len(data)
 
         vals_to_idx = {w: i for i,w in enumerate(vals)} #{'vals':1,.....}
         idx_to_vals = {i: w for i,w in enumerate(vals)} 
