@@ -1,4 +1,5 @@
 from main import *
+from . analytics import *
 
 class AppFunctions(MainWindow):
 
@@ -32,6 +33,17 @@ class AppFunctions(MainWindow):
         self.pg_worker.start()
         self.pg_worker.pass_pred_data.connect(self.catch_pred_data)
 
+
+class GetDecisionSupport(QThread):
+    decision_complete = Signal()
+
+    def run(self):
+        dec_support = [ 'BTC: '+ get_decision('BTC'), 
+                        'ETH: '+ get_decision('ETH'), 
+                        'DOGE: '+ get_decision('DOGE')]
+
+        pd.DataFrame([dec_support]).to_csv('csv/decsupport.csv')
+        self.decision_complete.emit()
 
 class GetPrices(QThread):
     import_complete = Signal(dict)

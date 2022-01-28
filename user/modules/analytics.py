@@ -25,7 +25,7 @@ def get_decision(crypto):
 
     dc = do[['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9', 'STOCHk_14_3_3', 'STOCHd_14_3_3']].tail(1).squeeze()
 
-    print(dc)
+    ## print(dc)
 
     macd = dc[0]
     macdh = dc[1]
@@ -39,25 +39,25 @@ def get_decision(crypto):
     if(rsi<100):
         if(rsi<70):
             if(rsi<30):
-                rsi_v = "BUY"
+                rsi_v = "BUY NOW!"
             else: rsi_v = "HOLD"
-        else: rsi_v = "SELL"
+        else: rsi_v = "SELL NOW!"
     else: rsi_v = "WRONG VALUE"
 
     #MACD
     if(macd < macds):
-        macd_v = "BUY"
+        macd_v = "BUY NOW!"
     elif(macd == macds):
         macd_v = "HOLD"
     else:
-        macd_v = "SELL"
+        macd_v = "SELL NOW!"
 
     #SO   
     if(sok<100):
         if(sok<80):
             if(sok<20):
                 if (sok > sod):
-                    so_v = "BUY"
+                    so_v = "BUY NOW!"
                 else:
                     so_v = "PREPARE TO BUY"
             else: so_v = "HOLD"
@@ -65,7 +65,7 @@ def get_decision(crypto):
             if (sok > sod):
                 so_v = "PREPARE TO SELL"
             else:
-                so_v = "SELL"
+                so_v = "SELL NOW!"
     else:
         so_v = "WRONG VALUE"
 

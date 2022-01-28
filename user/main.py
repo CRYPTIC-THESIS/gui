@@ -38,11 +38,17 @@ class SplashScreen(QMainWindow):
         self.shadow.setColor(QColor(0, 0, 0, 60))
         self.ui.frame.setGraphicsEffect(self.shadow)
 
+        print('Connecting to database...')
         self.access_db()
     
     def access_db(self):
         self.worker = AccessDatabase()
         self.worker.start()
+
+        self.worker2 = GetDecisionSupport()
+        self.worker2.start()
+        self.worker2.decision_complete.connect(self.worker2.terminate)
+
         self.worker.import_data_complete.connect(self.catch_db_data)
         self.worker.update_progress.connect(self.evt_update_progress)
 
@@ -61,8 +67,6 @@ class SplashScreen(QMainWindow):
     def catch_db_data(self):
         print('Successfully imported db data.')
         self.show()
-        # print(db_data)
-        # self.close()
 
 
 widgets = None
@@ -76,8 +80,6 @@ class MainWindow(QMainWindow):
 
         # SET UI FUNCTIONS
         UIFunctions.uiDefinitions(self)
-        # AppFunctions.appDefinitions(self)
-        # print(self.selected_crypto)
 
         # SET DATE
         self.today = datetime.today().strftime('%B %d, %Y')
@@ -116,13 +118,18 @@ class MainWindow(QMainWindow):
         # widgets.btn_histo_high.setEnabled(False)
         # widgets.btn_histo_low.setEnabled(False)
 
+        # VALUES
         self.lblHidden = None
         self.ctr = None
 
-        # VALUES
+        df = pd.read_csv('csv/decsupport.csv')
+        self.labels = list()
+        for i in range(1, 4):
+            self.labels.append(str(df.iloc[0][i]))
+        ## print('self.labels: ', self.labels)
+        
         self.selected_crypto = 'btn_home'
         self.home_histo_price = 'Closing'
-        # self.home_pred_days = int(widgets.home_daysValue.text())
         self.home_histo_days = 3
 
         # self.btc_pred_price = 'btc'
@@ -137,7 +144,7 @@ class MainWindow(QMainWindow):
         self.doge_histo_price = 'Closing'
         self.doge_histo_days = 3
 
-        # FUZZY SUGGESTION
+        # SUGGESTION
         self.suggestion()
         
         self.get_pred_day()
@@ -183,10 +190,9 @@ class MainWindow(QMainWindow):
         AppFunctions.dash_histo(self)
 
 
-    # FUZZY SUGGESTION
+    # SUGGESTION
     def suggestion(self):
         self.timer = QTimer()
-        self.labels = ['BTC: BUY NOW!', 'ETH: SELL NOW!', 'DOGE: HOLD',]
         self.lblcolors = ['#F9AA4B;', '#2082FA;', '#8C88BF;']
         
         if self.selected_crypto == 'btn_home':
@@ -307,7 +313,7 @@ class MainWindow(QMainWindow):
         self.selected_crypto = btnName
         self.get_pred_day()
 
-        # FUZZY SUGGESTION
+        # SUGGESTION
         self.suggestion()
 
         # self.default_values()

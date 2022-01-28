@@ -18,3 +18,6 @@ from . ui_functions import *
 
 # App Functions
 from . app_functions import *
+
+# Decision Support
+from . analytics import *
