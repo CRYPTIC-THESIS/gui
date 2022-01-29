@@ -51,6 +51,11 @@ class Login(QMainWindow):
         self.ui.btn_signup.clicked.connect(self.signupfunction)
         self.ui.btn_toLogin.clicked.connect(lambda : self.ui.content.setCurrentWidget(self.ui.loginPage))
 
+        # Start Decision Support
+        self.worker2 = GetDecisionSupport()
+        self.worker2.start()
+        self.worker2.decision_complete.connect(self.worker2.terminate)
+
 
     def loginfunction(self):
         self.ui.username_signup.clear()
@@ -198,6 +203,11 @@ class MainWindow(QMainWindow):
         self.selected_histo_day = 30
 
         # FUZZY LOGIC SUGGESTION
+        df = pd.read_csv('csv/decsupport.csv')
+        self.labels = list()
+        for i in range(1, 4):
+            self.labels.append(str(df.iloc[0][i]))
+        
         self.suggestion()
 
         self.get_pred_day()
@@ -297,7 +307,7 @@ class MainWindow(QMainWindow):
         if self.selected_crypto == 'btn_all':
             self.timer.stop()
             self.lblHidden = True
-            self.labels = ['BTC: BUY NOW!', 'ETH: SELL NOW!', 'DOGE: HOLD',]
+            # self.labels = ['BTC: BUY NOW!', 'ETH: SELL NOW!', 'DOGE: HOLD',]
             self.lblcolors = ['#F9AA4B;', '#2082FA;', '#8C88BF;']
             self.ctr = 0
             self.timer.timeout.connect(self.flashLbl_all)
