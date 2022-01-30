@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 import layers as layer
 import pickle as pl
+import json
 import matplotlib.pyplot as plt
 import sys
 from datetime import datetime
@@ -30,7 +31,7 @@ class cryptic():
     def format_LSTM(self,data):
         
         vals = set(data)
-        vals_size = len(data)
+        vals_size = len(vals)
 
         vals_to_idx = {w: i for i,w in enumerate(vals)} #{'vals':1,.....}
         idx_to_vals = {i: w for i,w in enumerate(vals)} 
@@ -112,6 +113,10 @@ class cryptic():
 
             J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
             progress(epoch+1, epochs+1, status='Wow! New knowledge Obtained')
+        
+        s = lstm.sample(h, c, lstm.seq_size)
+
+        np.savetxt('model/obj/pred_'+crypto+'.csv',s)
         
         progress(epochs+1, epochs+1, status='I feel smarter already')
 
@@ -233,7 +238,7 @@ class cryptic():
         pool = layer.MaxPool()
         file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
         p_lstm = pl.load(file)
-
+        progress(0.5, len(data)+1, status='Trained Model Loaded')
         out = con.forward(data)
         out = pool.forward(out)
         out = con1.forward(out)
@@ -285,6 +290,74 @@ class cryptic():
         pred = s[-14:]
 
         return date,pred
+    
+    def test_b(self,epochs,data,crypto):
+        progress(0, len(data), status='Loading Trained Model')
+        
+        file = open('model/obj/'+crypto+'_con.obj', 'rb') 
+        con = pl.load(file)
+        file = open('model/obj/'+crypto+'_con1.obj', 'rb') 
+        con1 = pl.load(file)
+        pool = layer.MaxPool()
+        file = open('model/obj/'+crypto+'_lstm.obj', 'rb') 
+        p_lstm = pl.load(file)
+
+        out = con.forward(data)
+        out = pool.forward(out)
+        out = con1.forward(out)
+        out = pool.forward(out)
+        out = out.flatten()
+
+        pr = pd.read_csv('model/obj/pred_'+crypto+'.csv')
+        pr = pr.iat[-1,-1]
+        pred = []
+        pred.append(pr)
+        actual = []
+        val = [pr,out[0]]
+        progress(0.9, len(data)+1, status='Model Initialized')
+
+        vi = len(p_lstm.vals_to_idx)
+        iv = len(p_lstm.idx_to_vals)
+
+        i=0
+        x=0
+        for i in range(len(out)):
+            if(out[i] in p_lstm.vals_to_idx):
+                x+=1
+                #print('existing:',p_lstm.vals_to_idx[out[i-1]])
+            else:
+                p_lstm.vals_to_idx[out[i]] = vi+i-x
+                p_lstm.idx_to_vals[iv+i-x] = out[i]
+                i+=1
+        
+        for a in range(len(out)):
+            
+            progress(a+1, len(data)+1, status='Testing')
+            actual.append(out[a])
+            
+            vals_size = len(p_lstm.vals_to_idx)
+            lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
+            J = []  # to store losses
+            verbose = False
+
+            for epoch in range(epochs):
+                try:
+                    J,h,c = self.LSTM_pass(lstm,epoch,verbose,val,J)
+                except Exception as e:
+                    print(e)
+
+            val.append(out[a])
+            s = lstm.sample(h, c, lstm.seq_size)
+            pred.append(s[-1])
+            
+
+        df = pd.DataFrame(list(zip(actual, pred[:-1])),columns=['actual','predicted'])
+
+
+        progress(len(data)+1, len(data)+1, status='Done Testing')
+        print('Actual : ',actual)
+        print('Predicted: ',pred)
+        return df
 
 
 

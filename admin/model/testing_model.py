@@ -17,6 +17,7 @@ for crypto in trained_list:
     print("\n\nTesting "+str(crypto)+" model...")
     try:
         data  = np.genfromtxt('csv/'+str(crypto)+"_test_set.csv", delimiter=',')
+
         model = nn.cryptic()
         df_data = model.test(data,crypto)
         
