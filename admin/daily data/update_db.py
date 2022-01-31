@@ -1,6 +1,6 @@
 from pycoingecko import CoinGeckoAPI
 from datetime import datetime, timedelta, date
-import time as t
+import datetime as dt
 import calendar
 import pandas as pd
 
@@ -117,10 +117,9 @@ def update_crypto_data():
 # TWITTER VOLUME DATA
 import snscrape.modules.twitter as sntwitter
 
-#Input is the Date Yesterday and current Date in YYYY-MM-DD string format
 def scrape_daily_tweets():
     maxTweets = 10000000                            # ! Maxtweets to scrape ! #
-    data = db.get_data_table('Twitter_Data')
+    data = get_data_table('Twitter_Data')
     d = data['date'].iloc[-1]
     last_date = datetime.strptime(d, "%Y-%m-%d")
     d = last_date + timedelta(days=1)
@@ -154,7 +153,7 @@ def scrape_daily_tweets():
                     crypto_df = crypto_df.append(new_row,ignore_index=True)
 
             #Print crypto dataframe
-            print ("Raw data dimensions: " + str(crypto_df.shape))
+            #print ("Raw data dimensions: " + str(crypto_df.shape))
             #print(crypto_df)
 
             #===Remove Duplicate Data===
@@ -170,7 +169,7 @@ def scrape_daily_tweets():
             newdata.reset_index(drop=True, inplace=True)
 
             #Print filtered crypto dataframe
-            print ("Filtered data dimensions: " + str(newdata.shape))
+            #print ("Filtered data dimensions: " + str(newdata.shape))
             #print(newdata)
 
             #Total the given data
@@ -184,88 +183,95 @@ def scrape_daily_tweets():
                 else:
                     total_data.loc[i,str(col["cryptoName"])]= total_data.loc[i,str(col["cryptoName"])] + 1
 
-            print("[!] Total Data !!!")
-            print(total_data)
+            #print("[!] Total Data !!!")
+            #print(total_data)
 
-        update_trend('Twitter_Data',total_data)
-        #Remove dataframes
-        a, b, c = crypto_df, newdata, total_data
-        lst = [a,b,c]
+        #Remove unused dataframes
+        lst = [crypto_df,newdata]
+        del crypto_df,newdata
         del lst
 
-# GOOGLE TRENDS
+        return total_data #return final dataframe
+        #update_trend('Twitter_Data',total_data)
+        
+
+# GOOGLE TRENDS VOLUME DATA
 from pytrends.request import TrendReq
 
-def scrape_google_data(currDate): #currDate in YYYY-MM-DD format
+def scrape_google_data():
     dfGoogle = get_data_table('Google_Data')
     lastDate = dfGoogle.loc[(len(dfGoogle)-1),'date']
-    lastDate = datetime.datetime.strptime(lastDate,'%Y-%m-%d')
-    NextDay_Date = lastDate + datetime.timedelta(days=8)
-    endOfTheWeekDate = NextDay_Date.strftime ('%Y-%m-%d')
+    lastDate = dt.datetime.strptime(lastDate,'%Y-%m-%d')
+    #print(lastDate) #print the lastDate from the db
 
-    #currDate = '2021-10-30' #for testing
+    print('[!] Google Trends Data Scraping Starts')
+    dateToday = date.today()
+    #print(dateToday)
+    #lastDate = "2022-01-02"  # ! ===TEST DATES=== ! #
+    #dateToday = "2022-01-01" # ! ===TEST DATES=== ! #
 
-    if (currDate==endOfTheWeekDate):
-        print('[!] Google Trends Data Scraping Starts')
+    dateRange = '2019-12-25 ' + str(dateToday)  
 
-        dateToday = currDate
-        dateRange = '2019-12-25 ' + dateToday
+    pytrends = TrendReq(hl='en-Worldwide',tz=360)
+    keyword = ['Bitcoin','btc']
+    pytrends.build_payload(kw_list=keyword, cat=0, timeframe=dateRange, geo='',gprop='')
+    btcTrends = pytrends.interest_over_time()
 
-        pytrends = TrendReq(hl='en-Worldwide',tz=360)
-        keyword = ['Bitcoin','btc']
-        pytrends.build_payload(kw_list=keyword, cat=0, timeframe=dateRange, geo='',gprop='')
-        btcTrends = pytrends.interest_over_time()
+    pytrends = TrendReq(hl='en-Worldwide',tz=360)
+    keyword = ['Ethereum','eth']
+    pytrends.build_payload(kw_list=keyword, cat=0, timeframe=dateRange, geo='',gprop='')
+    ethTrends = pytrends.interest_over_time()
 
-        pytrends = TrendReq(hl='en-Worldwide',tz=360)
-        keyword = ['Ethereum','eth']
-        pytrends.build_payload(kw_list=keyword, cat=0, timeframe=dateRange, geo='',gprop='')
-        ethTrends = pytrends.interest_over_time()
+    pytrends = TrendReq(hl='en-Worldwide',tz=360)
+    keyword = ['Dogecoin','doge']
+    pytrends.build_payload(kw_list=keyword, cat=0, timeframe=dateRange, geo='',gprop='')
+    dogTrends = pytrends.interest_over_time()
 
-        pytrends = TrendReq(hl='en-Worldwide',tz=360)
-        keyword = ['Dogecoin','doge']
-        pytrends.build_payload(kw_list=keyword, cat=0, timeframe=dateRange, geo='',gprop='')
-        dogTrends = pytrends.interest_over_time()
+    dfBtc = pd.DataFrame(btcTrends.drop(labels=['isPartial'],axis='columns'))
+    dfEth = pd.DataFrame(ethTrends.drop(labels=['isPartial'],axis='columns'))
+    dfDog = pd.DataFrame(dogTrends.drop(labels=['isPartial'],axis='columns'))
 
-        dfBtc = pd.DataFrame(btcTrends.drop(labels=['isPartial'],axis='columns'))
-        dfEth = pd.DataFrame(ethTrends.drop(labels=['isPartial'],axis='columns'))
-        dfDog = pd.DataFrame(dogTrends.drop(labels=['isPartial'],axis='columns'))
+    dfBtc = pd.DataFrame(dfBtc.sum(axis=1),columns=['bitcoin'])
+    dfBtc.reset_index(inplace=True)
+    dfEth = pd.DataFrame(dfEth.sum(axis=1),columns=['ethereum'])
+    dfEth.reset_index(inplace=True)
+    dfDog = pd.DataFrame(dfDog.sum(axis=1),columns=['dogecoin'])
+    dfDog.reset_index(inplace=True)
 
-        dfBtc = pd.DataFrame(dfBtc.sum(axis=1),columns=['bitcoin'])
-        dfBtc.reset_index(inplace=True)
-        dfEth = pd.DataFrame(dfEth.sum(axis=1),columns=['ethereum'])
-        dfEth.reset_index(inplace=True)
-        dfDog = pd.DataFrame(dfDog.sum(axis=1),columns=['dogecoin'])
-        dfDog.reset_index(inplace=True)
+    btcEth = dfBtc.join(dfEth.set_index('date'), on="date")
+    dogBtcEth = dfDog.join(btcEth.set_index('date'), on="date")
+    total_data = pd.DataFrame({'Date':[''],'bitcoin':[0],'ethereum':[0],'dogecoin':[0]})
 
-        btcEth = dfBtc.join(dfEth.set_index('date'), on="date")
-        dogBtcEth = dfDog.join(btcEth.set_index('date'), on="date")
-
-        total_data = pd.DataFrame({'Date':[''],'bitcoin':[0],'ethereum':[0],'dogecoin':[0]})
-
-        i=0
-        for index, row in dogBtcEth.iterrows():
-            NextDay_Date_Formatted = row['date'].strftime('%Y-%m-%d')
+    i=0
+    for index, row in dogBtcEth.iterrows():
+        NextDay_Date_Formatted = row['date'].strftime('%Y-%m-%d')
+        total_data.loc[i,'Date'] = NextDay_Date_Formatted
+        total_data.loc[i,'bitcoin']  = row['bitcoin']
+        total_data.loc[i,'ethereum'] = row['ethereum']
+        total_data.loc[i,'dogecoin'] = row['dogecoin']
+        for j in range (7):
+            i = i + 1
+            NextDay_Date = row['date'] + dt.timedelta(days=j+1)
+            NextDay_Date_Formatted = NextDay_Date.strftime ('%Y-%m-%d')
             total_data.loc[i,'Date'] = NextDay_Date_Formatted
             total_data.loc[i,'bitcoin']  = row['bitcoin']
             total_data.loc[i,'ethereum'] = row['ethereum']
             total_data.loc[i,'dogecoin'] = row['dogecoin']
-            for j in range (7):
-                i = i + 1
-                NextDay_Date = row['date'] + datetime.timedelta(days=j+1)
-                NextDay_Date_Formatted = NextDay_Date.strftime ('%Y-%m-%d')
-                total_data.loc[i,'Date'] = NextDay_Date_Formatted
-                total_data.loc[i,'bitcoin']  = row['bitcoin']
-                total_data.loc[i,'ethereum'] = row['ethereum']
-                total_data.loc[i,'dogecoin'] = row['dogecoin']
 
-        total_data = total_data.iloc[:-1 , :]
-        total_data = total_data.tail(7)
-        print(total_data)
-        update_trend('Google_Data',total_data)
-    else:
-        print('Scrape Google trends data on ' + str(endOfTheWeekDate))
+    total_data = total_data.iloc[:-1 , :]
+    total_data = total_data.loc[(total_data['Date']>str(lastDate))]
+    total_data.reset_index(inplace=True,drop=True)
+    #print(total_data)
+    #db.update_trend('Google_Data',total_data) #update to db
+
+    #Remove unused dataframes
+    lst = [dfBtc, dfEth, dfDog, btcEth, dogBtcEth]
+    del dfBtc, dfEth, dfDog, btcEth, dogBtcEth
+    del lst
+
+    return total_data #return final dataframe
     
-#scrape_google_data('2021-11-02') #sample run
+#scrape_google_data() #sample run
 
 new_realtime()
 
