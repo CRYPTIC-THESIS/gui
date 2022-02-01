@@ -1598,11 +1598,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setSpacing(10)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.horizontalLayout_14.setContentsMargins(10, 0, 0, 0)
-        # self.btn_0 = QPushButton(self.daysButtons)
-        # self.btn_0.setObjectName(u"btn_0")
-        # self.btn_0.setStyleSheet(u"")
+        self.btn_0 = QPushButton(self.daysButtons)
+        self.btn_0.setObjectName(u"btn_0")
+        self.btn_0.setStyleSheet(u"")
 
-        # self.horizontalLayout_14.addWidget(self.btn_0)
+        self.horizontalLayout_14.addWidget(self.btn_0)
 
         self.btn_1 = QPushButton(self.daysButtons)
         self.btn_1.setObjectName(u"btn_1")
@@ -1889,7 +1889,7 @@ class Ui_MainWindow(object):
 "border-radius: 7px;")
 
         self.trainFromDateEdit.setMinimumDate(QDate(2020, 1, 1))
-        self.trainFromDateEdit.setMaximumDate(QDate(2021, 10, 31))
+        self.trainFromDateEdit.setMaximumDate(QDate.currentDate())
         self.trainFromDateEdit.setDate(QDate(2020, 1, 1))
 
         self.horizontalLayout_24.addWidget(self.trainFromDateEdit)
@@ -1918,8 +1918,8 @@ class Ui_MainWindow(object):
 "border-radius: 7px;")
 
         self.trainUntilDateEdit.setMinimumDate(QDate(2020, 1, 1))
-        self.trainUntilDateEdit.setMaximumDate(QDate(2021, 10, 31))
-        self.trainUntilDateEdit.setDate(QDate(2021, 10, 31))
+        self.trainUntilDateEdit.setMaximumDate(QDate.currentDate())
+        self.trainUntilDateEdit.setDate(QDate.currentDate())
 
         self.horizontalLayout_25.addWidget(self.trainUntilDateEdit)
 
@@ -3493,7 +3493,7 @@ class Ui_MainWindow(object):
         self.btn_histo_closing.setText(QCoreApplication.translate("MainWindow", u"CLOSING", None))
         self.btn_histo_high.setText(QCoreApplication.translate("MainWindow", u"HIGH", None))
         self.btn_histo_low.setText(QCoreApplication.translate("MainWindow", u"LOW", None))
-        # self.btn_0.setText(QCoreApplication.translate("MainWindow", u"1D", None))
+        self.btn_0.setText(QCoreApplication.translate("MainWindow", u"1D", None))
         self.btn_1.setText(QCoreApplication.translate("MainWindow", u"3D", None))
         self.btn_2.setText(QCoreApplication.translate("MainWindow", u"1W", None))
         self.btn_3.setText(QCoreApplication.translate("MainWindow", u"1M", None))

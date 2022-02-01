@@ -51,11 +51,9 @@ class Login(QMainWindow):
         self.ui.btn_signup.clicked.connect(self.signupfunction)
         self.ui.btn_toLogin.clicked.connect(lambda : self.ui.content.setCurrentWidget(self.ui.loginPage))
 
-        # Start Decision Support
-        self.worker2 = GetDecisionSupport()
-        self.worker2.start()
-        self.worker2.decision_complete.connect(self.worker2.terminate)
-
+        # Access Database
+        print('Connecting to database...')
+        self.access_db()
 
     def loginfunction(self):
         self.ui.username_signup.clear()
@@ -113,6 +111,27 @@ class Login(QMainWindow):
             self.Popup.ui.cancel.clicked.connect(lambda: self.Popup.close())
             self.Popup.ui.error_message.setText(str(error)+". Try Again?")
             self.Popup.ui.cancel.setText('OK')
+
+    
+    def access_db(self):
+        self.db_thread = QThread()
+        self.db_worker = AccessDatabase(datetime.now().strftime('%Y-%m-%d'))
+        self.db_worker.moveToThread(self.db_thread)
+
+        # Start Decision Support
+        self.worker2 = GetDecisionSupport()
+        self.worker2.start()
+        self.worker2.decision_complete.connect(self.worker2.terminate)
+
+        self.db_worker.import_data_complete.connect(self.get_started)
+        self.db_thread.started.connect(self.db_worker.access_now)
+        self.db_thread.start()
+
+    def get_started(self):
+        print('Successfully connected.')
+        self.db_thread.quit()
+        self.db_thread.wait()
+        self.show()
     
 
     def mousePressEvent(self, event):
@@ -150,6 +169,7 @@ class MainWindow(QMainWindow):
         self.dataset_crypto = list()
         self.dataset_source = list()
         self.retrained = False
+        self.flag = 0
 
         # QTableWidget Stretch
         widgets.predictedTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -182,7 +202,7 @@ class MainWindow(QMainWindow):
         # widgets.btn_pred_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_pred_closing.styleSheet()))
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
 
-        widgets.btn_3.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_3.styleSheet()))
+        widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
 
         # TRAIN PAGE
         widgets.trainContent.setCurrentWidget(widgets.getDataPage)
@@ -199,8 +219,8 @@ class MainWindow(QMainWindow):
         # VALUES
         self.selected_crypto = 'btn_all'
         self.selected_predicted_price = 'Price'
-        self.selected_histo_price = 'Closing'
-        self.selected_histo_day = 30
+        self.selected_histo_price = 'Close'
+        self.selected_histo_day = '24h'
 
         # FUZZY LOGIC SUGGESTION
         df = pd.read_csv('csv/decsupport.csv')
@@ -211,7 +231,8 @@ class MainWindow(QMainWindow):
         self.suggestion()
 
         self.get_pred_day()
-        self.access_db()
+        self.get_data()
+        # self.access_db()
 
 
     # ///////////////////////////////////////////
@@ -236,13 +257,13 @@ class MainWindow(QMainWindow):
         widgets.btn_histo_high.clicked.connect(self.get_price)
         widgets.btn_histo_low.clicked.connect(self.get_price)
 
-        # widgets.btn_0.clicked.connect(self.get_histo_day)
+        widgets.btn_0.clicked.connect(self.get_histo_day)
         widgets.btn_1.clicked.connect(self.get_histo_day)
         widgets.btn_2.clicked.connect(self.get_histo_day)
         widgets.btn_3.clicked.connect(self.get_histo_day)
         widgets.btn_4.clicked.connect(self.get_histo_day)
 
-        widgets.horizontalSlider.valueChanged.connect(self.get_pred_day)
+        widgets.horizontalSlider.valueChanged.connect(self.predSliderMoved)
 
         # TRAIN
         widgets.btn_proceed.clicked.connect(lambda: AppFunctions.get_dataset_selection(self))
@@ -455,10 +476,29 @@ class MainWindow(QMainWindow):
         self.close()
 
     def get_selected_date(self):
+        self.flag = 1
+
         date = widgets.dateEdit.date()
         widgets.selected_dateLabel.setText(date.toString('MMMM d, yyyy'))
         self.selected_date = date.toString()
         self.selected_date = pd.to_datetime(self.selected_date)
+
+        if self.selected_date.strftime('%Y-%m-%d') != datetime.now().strftime('%Y-%m-%d'):
+            widgets.histoGraph.clear()
+            self.selected_histo_day = 3
+
+            UIFunctions.resetHistoDayStyle(self, 'btn_1')
+            widgets.btn_1.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_1.styleSheet()))
+            widgets.btn_0.setEnabled(False)
+        
+        else:
+            widgets.histoGraph.clear()
+            self.selected_histo_day = '24h'
+
+            UIFunctions.resetHistoDayStyle(self, 'btn_0')
+            widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
+            widgets.btn_0.setEnabled(True)
+
 
         self.access_db()
 
@@ -507,7 +547,7 @@ class MainWindow(QMainWindow):
 
         if btnName.startswith('btn_histo'):
             if btnName == 'btn_histo_closing':
-                self.selected_histo_price = 'Closing'
+                self.selected_histo_price = 'Close'
             
             if btnName == 'btn_histo_high':
                 self.selected_histo_price = 'High'
@@ -519,7 +559,7 @@ class MainWindow(QMainWindow):
 
         if btnName.startswith('btn_pred'):
             if btnName == 'btn_pred_closing':
-                self.selected_predicted_price = 'Closing'
+                self.selected_predicted_price = 'Close'
             
             if btnName == 'btn_pred_high':
                 self.selected_predicted_price = 'High'
@@ -537,8 +577,8 @@ class MainWindow(QMainWindow):
         btn = self.sender()
         btnName = btn.objectName()
 
-        # if btnName == 'btn_0':
-        #     self.selected_histo_day = 1
+        if btnName == 'btn_0':
+            self.selected_histo_day = '24h'
 
         if btnName == 'btn_1':
             self.selected_histo_day = 3
@@ -550,7 +590,7 @@ class MainWindow(QMainWindow):
             self.selected_histo_day = 30
 
         if btnName == 'btn_4':
-            self.selected_histo_day = 365
+            self.selected_histo_day = '1y'
 
         UIFunctions.resetHistoDayStyle(self, btnName)
         btn.setStyleSheet(UIFunctions.selectHistoDay(btn.styleSheet()))
@@ -558,18 +598,15 @@ class MainWindow(QMainWindow):
         # self.access_db()
         AppFunctions.dash_histo(self)
 
+    def predSliderMoved(self):
+        self.get_pred_day()
+        AppFunctions.dash_pred(self)
+
     def get_pred_day(self):
         self.ui.daysValue.setNum
         self.selected_predicted_day = int(self.ui.daysValue.text())
 
         self.pred_day_date = self.selected_date + timedelta(days=self.selected_predicted_day)
-
-        # str_sel_date = self.selected_date.strftime('%b %d, %Y')
-        # str_pred_date = self.pred_day_date.strftime('%b %d, %Y')
-
-        # self.ui.predictedRangeLabel.setText(str_sel_date+' - '+str_pred_date)
-
-        AppFunctions.dash_pred(self)
 
     def disable(self, arg):
         if arg == 'proceed':
@@ -707,8 +744,11 @@ class MainWindow(QMainWindow):
         self.db_thread.start()
 
     def get_data(self):
-        self.db_thread.quit()
-        self.db_thread.wait()
+
+        if self.flag == 1:
+            self.db_thread.quit()
+            self.db_thread.wait()
+        
         AppFunctions.dash_pred(self)
         AppFunctions.dash_histo(self)
 
@@ -769,6 +809,8 @@ class MainWindow(QMainWindow):
         eth = list()
         doge = list()
 
+        # print('histodata', histo_data)
+
         # if pd.to_datetime(self.selected_date).date() == datetime.now().date():
         #     print(self.selected_date)
         #     print(datetime.now().date())
@@ -797,9 +839,9 @@ class MainWindow(QMainWindow):
             widgets.ethCurrPriceLabel.clear()
             widgets.dogeCurrPriceLabel.clear()
 
-            widgets.btcCurrPriceLabel.setText('$'+str(y[i]))
-            widgets.ethCurrPriceLabel.setText('$'+str(y2[i]))
-            widgets.dogeCurrPriceLabel.setText('$'+str(y3[i]))
+            widgets.btcCurrPriceLabel.setText('$'+str(btc[0]['Close'].iat[-1].round(4)))
+            widgets.ethCurrPriceLabel.setText('$'+str(eth[0]['Close'].iat[-1].round(4)))
+            widgets.dogeCurrPriceLabel.setText('$'+str(doge[0]['Close'].iat[-1].round(4)))
 
         else:
             if self.selected_crypto == 'btn_btc':
@@ -963,5 +1005,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     # app.setWindowIcon(QIcon("icon.ico"))
     window = Login()
-    window.show()
+    # window.show()
     sys.exit(app.exec())

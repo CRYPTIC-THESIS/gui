@@ -25,7 +25,7 @@ for i in range(len(crypto)):
     dataset['Open'] = data['Open']
     dataset['High'] = data['High']
     dataset['Low'] = data['Low']
-    dataset['Close'] = data['Closing']
+    dataset['Close'] = data['Close']
     if(mod_type == 'full'):
         dataset['Twitter'] = data['Twitter']
         dataset['Reddit'] = data['Reddit']

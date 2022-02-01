@@ -1,4 +1,5 @@
 from main import *
+from . histo_data import *
 
 class AccessDatabase(QThread):
     update_progress = Signal(int)
@@ -6,13 +7,13 @@ class AccessDatabase(QThread):
     
     def run(self):
 
-        db_btc = get_data_table('Bitcoin_Data')
-        db_eth = get_data_table('Ethereum_Data')
-        db_doge = get_data_table('Dogecoin_Data')
+        db_btc = get_histo_dash('1y', 'BTC')
+        db_eth = get_histo_dash('1y', 'ETH')
+        db_doge = get_histo_dash('1y', 'DOGE')
 
-        rt_btc = get_data_table('Realtime_BTC')
-        rt_eth = get_data_table('Realtime_ETH')
-        rt_doge = get_data_table('Realtime_DOGE')
+        rt_btc = get_current('BTC')
+        rt_eth = get_current('ETH')
+        rt_doge = get_current('DOGE')
 
         try:
             p_btc = get_pred_table('BTC_predict')
@@ -26,22 +27,9 @@ class AccessDatabase(QThread):
         fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
               'csv/rt_btc.csv', 'csv/rt_eth.csv', 'csv/rt_doge.csv',
               'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv']
-        cn = ['csv/curr_btc.csv', 'csv/curr_eth.csv', 'csv/curr_doge.csv',]
-
-        today = datetime.today().strftime('%Y-%m-%d')
-        today = pd.to_datetime(today)
-        past = today - timedelta(days=365)
 
         for i, df in enumerate(lst):
-            if i <= 2:
-                df['date'] = pd.to_datetime(df['date'])
-                df = df.loc[(df['date'] >= past) & (df['date'] <= today)] 
-            elif i >= 3 and i <= 5:
-                # df2 = df.rename({'open': 'closing_', 'closing': 'open_'}, axis=1, inplace=True)
-                # df = df2.rename({'closing_': 'closing', 'open_': 'open'}, axis=1, inplace=True)
-                csv = df.iloc[[-1]]
-                csv.to_csv(cn[i-3])
-            else:
+            if i > 5:
                 df['Date'] = df.index
                 df['Date'] = pd.to_datetime(df['Date']).dt.date
                 df.reset_index(drop=True, inplace=True)
@@ -49,9 +37,6 @@ class AccessDatabase(QThread):
                 df['Price'] = df['Price'].round(4)
                 df = df.reindex(columns=['Date', 'Price'])
             df.to_csv(fn[i])
-
-        # print(today)
-        # print(past)
 
         self.import_data_complete.emit()
 
