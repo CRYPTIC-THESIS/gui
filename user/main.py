@@ -105,13 +105,13 @@ class MainWindow(QMainWindow):
         # widgets.btn_homePredClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homePredClosing.styleSheet()))
         
         widgets.btn_homeHistoClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homeHistoClosing.styleSheet()))
-        widgets.btn_home3d.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_home3d.styleSheet()))
+        widgets.btn_home1d.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_home1d.styleSheet()))
 
         # widgets.btn_homeHistoHigh.setEnabled(False)
         # widgets.btn_homeHistoLow.setEnabled(False)
 
         # BTC, ETH, DOGE
-        widgets.btn_1.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_1.styleSheet()))
+        widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
         # widgets.btn_predPriceClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_predPriceClosing.styleSheet()))
 
@@ -129,20 +129,20 @@ class MainWindow(QMainWindow):
         ## print('self.labels: ', self.labels)
         
         self.selected_crypto = 'btn_home'
-        self.home_histo_price = 'Closing'
-        self.home_histo_days = 3
+        self.home_histo_price = 'Close'
+        self.home_histo_days = '24h'
 
         # self.btc_pred_price = 'btc'
-        self.btc_histo_price = 'Closing'
-        self.btc_histo_days = 3
+        self.btc_histo_price = 'Close'
+        self.btc_histo_days = '24h'
 
         # self.eth_pred_price = 'eth'
-        self.eth_histo_price = 'Closing'
-        self.eth_histo_days = 3
+        self.eth_histo_price = 'Close'
+        self.eth_histo_days = '24h'
 
         # self.doge_pred_price = 'doge'
-        self.doge_histo_price = 'Closing'
-        self.doge_histo_days = 3
+        self.doge_histo_price = 'Close'
+        self.doge_histo_days = '24h'
 
         # SUGGESTION
         self.suggestion()
@@ -162,7 +162,7 @@ class MainWindow(QMainWindow):
         widgets.btn_homeHistoHigh.clicked.connect(self.get_price)
         widgets.btn_homeHistoLow.clicked.connect(self.get_price)
 
-        # widgets.btn_home1d.clicked.connect(self.get_histo_day)
+        widgets.btn_home1d.clicked.connect(self.get_histo_day)
         widgets.btn_home3d.clicked.connect(self.get_histo_day)
         widgets.btn_home1w.clicked.connect(self.get_histo_day)
         widgets.btn_home1m.clicked.connect(self.get_histo_day)
@@ -175,7 +175,7 @@ class MainWindow(QMainWindow):
         widgets.btn_histo_high.clicked.connect(self.get_price)
         widgets.btn_histo_low.clicked.connect(self.get_price)
 
-        # widgets.btn_0.clicked.connect(self.get_histo_day)
+        widgets.btn_0.clicked.connect(self.get_histo_day)
         widgets.btn_1.clicked.connect(self.get_histo_day)
         widgets.btn_2.clicked.connect(self.get_histo_day)
         widgets.btn_3.clicked.connect(self.get_histo_day)
@@ -265,21 +265,21 @@ class MainWindow(QMainWindow):
             widgets.home_predGraph.clear()
 
             # self.btc_pred_price = 'btc'
-            self.btc_histo_price = 'Closing'
-            self.btc_histo_days = 3
+            self.btc_histo_price = 'Close'
+            self.btc_histo_days = '24h'
 
             # self.eth_pred_price = 'eth'
-            self.eth_histo_price = 'Closing'
-            self.eth_histo_days = 3
+            self.eth_histo_price = 'Close'
+            self.eth_histo_days = '24h'
 
             # self.doge_pred_price = 'doge'
-            self.doge_histo_price = 'Closing'
-            self.doge_histo_days = 3
+            self.doge_histo_price = 'Close'
+            self.doge_histo_days = '24h'
 
             UIFunctions.resetPriceStyle(self, 'btn_histo_closing')
-            UIFunctions.resetHistoDayStyle(self, 'btn_1')
+            UIFunctions.resetHistoDayStyle(self, 'btn_0')
 
-            widgets.btn_1.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_1.styleSheet()))
+            widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
             widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
 
             # widgets.btn_histo_high.setEnabled(False)
@@ -329,13 +329,13 @@ class MainWindow(QMainWindow):
         # if btnName.startswith('btn_histo') or btnName.startswith('btn_home'):
         if btnName == 'btn_histo_closing' or btnName == 'btn_homeHistoClosing':
             if self.selected_crypto == 'btn_home':
-                self.home_histo_price = 'Closing'
+                self.home_histo_price = 'Close'
             if self.selected_crypto == 'btn_btc':
-                self.btc_histo_price = 'Closing'
+                self.btc_histo_price = 'Close'
             if self.selected_crypto == 'btn_eth':
-                self.eth_histo_price = 'Closing'
+                self.eth_histo_price = 'Close'
             if self.selected_crypto == 'btn_doge':
-                self.doge_histo_price = 'Closing'
+                self.doge_histo_price = 'Close'
         
         if btnName == 'btn_histo_high' or btnName == 'btn_homeHistoHigh':
             if self.selected_crypto == 'btn_home':
@@ -368,20 +368,20 @@ class MainWindow(QMainWindow):
         btn = self.sender()
         btnName = btn.objectName()
 
-        # if btnName == 'btn_0' or btnName == 'btn_home1d':
-        #     if self.selected_crypto == 'btn_home':
-        #         self.home_histo_days = 1
-        #         widgets.btn_homeHistoHigh.setEnabled(False)
-        #         widgets.btn_homeHistoLow.setEnabled(False)
-        #     else:
-        #         if self.selected_crypto == 'btn_btc':
-        #             self.btc_histo_days = 1
-        #         if self.selected_crypto == 'btn_eth':
-        #             self.eth_histo_days = 1
-        #         if self.selected_crypto == 'btn_doge':
-        #             self.doge_histo_days = 1
-        #         widgets.btn_histo_high.setEnabled(False)
-        #         widgets.btn_histo_low.setEnabled(False)
+        if btnName == 'btn_0' or btnName == 'btn_home1d':
+            if self.selected_crypto == 'btn_home':
+                self.home_histo_days = '24h'
+                widgets.btn_homeHistoHigh.setEnabled(True)
+                widgets.btn_homeHistoLow.setEnabled(True)
+            else:
+                if self.selected_crypto == 'btn_btc':
+                    self.btc_histo_days = '24h'
+                if self.selected_crypto == 'btn_eth':
+                    self.eth_histo_days = '24h'
+                if self.selected_crypto == 'btn_doge':
+                    self.doge_histo_days = '24h'
+                widgets.btn_histo_high.setEnabled(True)
+                widgets.btn_histo_low.setEnabled(True)
             
         if btnName == 'btn_1' or btnName == 'btn_home3d':
             if self.selected_crypto == 'btn_home':
@@ -433,16 +433,16 @@ class MainWindow(QMainWindow):
 
         if btnName == 'btn_4' or btnName == 'btn_home1y':
             if self.selected_crypto == 'btn_home':
-                self.home_histo_days = 365
+                self.home_histo_days = '1y'
                 widgets.btn_homeHistoHigh.setEnabled(True)
                 widgets.btn_homeHistoLow.setEnabled(True)
             else:
                 if self.selected_crypto == 'btn_btc':
-                    self.btc_histo_days = 365
+                    self.btc_histo_days = '1y'
                 if self.selected_crypto == 'btn_eth':
-                    self.eth_histo_days = 365
+                    self.eth_histo_days = '1y'
                 if self.selected_crypto == 'btn_doge':
-                    self.doge_histo_days = 365
+                    self.doge_histo_days = '1y'
                 widgets.btn_histo_high.setEnabled(True)
                 widgets.btn_histo_low.setEnabled(True)
 

@@ -33,7 +33,7 @@ for i in range(len(crypto)):
     dataset['Open'] = data['Open']
     dataset['High'] = data['High']
     dataset['Low'] = data['Low']
-    dataset['Close'] = data['Closing']
+    dataset['Close'] = data['Close']
 
     if(mod_type == 'full'):
         dataset['Twitter'] = data['Twitter']
@@ -41,7 +41,7 @@ for i in range(len(crypto)):
         dataset['Google'] = data['GoogleTrends']
     
     df = pd.DataFrame(columns = ['actual','open','24_high','24_low','google','twitter','reddit'])
-    df['actual'] = data['Closing']
+    df['actual'] = data['Close']
     df['open'] = data['Open']
     df['24_high'] = data['High']
     df['24_low'] = data['Low']

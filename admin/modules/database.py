@@ -1,52 +1,45 @@
 from main import *
+from . histo_data import *
 
 class AccessDatabase(QObject):
     import_data_complete = Signal()
     
     def __init__(self, today):
         super().__init__()
-        self.today = today
+        self.today = pd.to_datetime(today).strftime('%Y-%m-%d')
     
     def access_now(self):
 
-        rt_btc = get_data_table('Realtime_BTC')
-        rt_eth = get_data_table('Realtime_ETH')
-        rt_doge = get_data_table('Realtime_DOGE')
-        lst = [rt_btc, rt_eth, rt_doge]
-        fn = ['csv/curr_btc.csv', 'csv/curr_eth.csv', 'csv/curr_doge.csv',]
+        past = (pd.to_datetime(self.today) - timedelta(days=365)).strftime('%Y-%m-%d')
 
-        for i, df in enumerate(lst):
-            # df2 = df.rename({'open': 'closing_', 'closing': 'open_'}, axis=1, inplace=True)
-            # df = df2.rename({'closing_': 'closing', 'open_': 'open'}, axis=1, inplace=True)
-            df = df.iloc[[-1]]
-            df.to_csv(fn[i])
-        
-        db_btc = get_data_table('Bitcoin_Data')
-        db_eth = get_data_table('Ethereum_Data')
-        db_doge = get_data_table('Dogecoin_Data')
+        db_btc = get_histo(past, self.today, 'BTC')
+        db_eth = get_histo(past, self.today, 'ETH')
+        db_doge = get_histo(past, self.today, 'DOGE')
+
+        rt_btc = get_current('BTC')
+        rt_eth = get_current('ETH')
+        rt_doge = get_current('DOGE')
 
         try:
             p_btc = get_pred_table('BTC_predict')
             p_eth = get_pred_table('ETH_predict')
             p_doge = get_pred_table('DOGE_predict')
 
-            lst = [db_btc, db_eth, db_doge, p_btc, p_eth, p_doge] # 
+            lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge, p_btc, p_eth, p_doge]
         except Exception:
-            lst = [db_btc, db_eth, db_doge]
+            lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge]
         
         fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
-              'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv',]
-        past = self.today - timedelta(days=365)
+              'csv/rt_btc.csv', 'csv/rt_eth.csv', 'csv/rt_doge.csv',
+              'csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv']
 
         for i, df in enumerate(lst):
-            if i <= 2:
-                df['date'] = pd.to_datetime(df['date'])
-                df = df.loc[(df['date'] >= past) & (df['date'] <= self.today)]
-            else:
+            if i > 5:
                 df['Date'] = df.index
                 df['Date'] = pd.to_datetime(df['Date']).dt.date
                 df.reset_index(drop=True, inplace=True)
                 df.columns = ['Price', 'Date']
+                df['Price'] = df['Price'].round(4)
                 df = df.reindex(columns=['Date', 'Price'])
             df.to_csv(fn[i])
         # print(today)
@@ -119,16 +112,13 @@ class ImportDataset(QThread):
             
             elif item == 'CoinDesk Historical Data':
                 if table_name[crypto] == 'btc':
-                    historical = 'Bitcoin_Data'
+                    crypto_data = get_histo(self.from_.strftime('%Y-%m-%d'), self.until_.strftime('%Y-%m-%d'), 'BTC')
                 if table_name[crypto] == 'eth':
-                    historical = 'Ethereum_Data'
+                    crypto_data = get_histo(self.from_.strftime('%Y-%m-%d'), self.until_.strftime('%Y-%m-%d'), 'ETH')
                 if table_name[crypto] == 'doge':
-                    historical = 'Dogecoin_Data'
-                crypto_data = pd.DataFrame(get_data_table(historical))
-                crypto_data['date'] = pd.to_datetime(crypto_data['date']).dt.date
-                crypto_data = crypto_data.loc[(crypto_data['date'] >= self.from_) & (crypto_data['date'] <= self.until_)]
-                crypto_data.columns=['Date', 'High', 'Low', 'Open', 'Closing']
-                # df = pd.concat([crypto_data, df], ignore_index=True)
+                    crypto_data = get_histo(self.from_.strftime('%Y-%m-%d'), self.until_.strftime('%Y-%m-%d'), 'DOGE')
+
+                crypto_data['Date'] = pd.to_datetime(crypto_data['Date']).dt.date
                 df = pd.merge(crypto_data, df, how='outer', on='Date')
 
         crypto_ = []
