@@ -1,9 +1,8 @@
-# import sys 
-# sys.path.append('..')
 import yfinance as yahooFinance
 from datetime import datetime, timedelta
 
 def get_histo(startdate,enddate,crypto):
+    
     
     startDate = datetime.strptime(startdate, '%Y-%m-%d')
     startDate+=timedelta(1)
@@ -15,10 +14,10 @@ def get_histo(startdate,enddate,crypto):
     
     # pass the parameters as the taken dates for start and end
     df = GetFacebookInformation.history(start=startDate, end=endDate)[['Close', 'Open', 'High', 'Low']]
-    df.reset_index(inplace=True)
 
     return df
-    
+
+
 def get_current(crypto):
     
     GetFacebookInformation = yahooFinance.Ticker(crypto+'-USD')
@@ -29,6 +28,7 @@ def get_current(crypto):
 
     return df
 
+
 def get_histo_dash(period, crypto):
 
     GetFacebookInformation = yahooFinance.Ticker(crypto+'-USD')
@@ -38,8 +38,5 @@ def get_histo_dash(period, crypto):
 
     return df
 
-
 #sample use
-# data = get_histo('2020-01-01', '2020-01-31','DOGE')
-# print(data)
-# data.to_csv('csv/samp_apidata.csv')
+# data = get_histo("2022-01-01","2022-01-01",'DOGE')

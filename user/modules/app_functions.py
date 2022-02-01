@@ -1,5 +1,6 @@
 from main import *
 from . analytics import *
+from . histo_data import *
 
 class AppFunctions(MainWindow):
 
@@ -49,15 +50,17 @@ class GetPrices(QThread):
     import_complete = Signal(dict)
 
     def run(self):
-        dfs = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]
+        dfs = [pd.read_csv('csv/rt_btc.csv'), 
+               pd.read_csv('csv/rt_eth.csv'), 
+               pd.read_csv('csv/rt_doge.csv')]
         dct = {}
-        cn = ['btc', 'eth', 'doge']
+        n = ['btc', 'eth', 'doge']
 
         for i, df in enumerate(dfs):
-            dct[cn[i]] = [df['closing'].iat[-1].round(4),
-                          df['open'].iat[-1].round(4),
-                          df['high'].iat[-1].round(4),
-                          df['low'].iat[-1].round(4)
+            dct[n[i]] = [df['Close'].iat[-1].round(4),
+                          df['Open'].iat[-1].round(4),
+                          df['High'].iat[-1].round(4),
+                          df['Low'].iat[-1].round(4)
                          ]
         
         # print(dct)
@@ -74,7 +77,9 @@ class GetHistoData(QObject):
         self.h_days = lst_[2]
         self.today = lst_[3]
 
-        if self.h_days == 1:
+    def start_run(self):
+
+        if self.h_days == '24h':
             self.df_btc = pd.read_csv('csv/rt_btc.csv')
             self.df_eth = pd.read_csv('csv/rt_eth.csv')
             self.df_doge = pd.read_csv('csv/rt_doge.csv')
@@ -82,86 +87,44 @@ class GetHistoData(QObject):
             self.df_btc = pd.read_csv('csv/db_btc.csv')
             self.df_eth = pd.read_csv('csv/db_eth.csv')
             self.df_doge = pd.read_csv('csv/db_doge.csv')
-
-    def start_run(self):
+        
         if self.crypto == 'btn_home':
             self.lst = [self.df_btc, self.df_eth, self.df_doge]
-            self.curr = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]
         if self.crypto == 'btn_btc':
             self.lst = [self.df_btc]
-            self.curr = [pd.read_csv('csv/curr_btc.csv')]
         if self.crypto == 'btn_eth':
             self.lst = [self.df_eth]
-            self.curr = [pd.read_csv('csv/curr_eth.csv')]
         if self.crypto == 'btn_doge':
             self.lst = [self.df_doge]
-            self.curr = [pd.read_csv('csv/curr_doge.csv')]
-
-        if self.h_days == 1:
-            new_lst = self.realtime()
-        else:
-            new_lst = self.histo()
             
-        self.pass_histo_data.emit(new_lst)
+        self.pass_histo_data.emit(self.histo())
 
     def histo(self):
-        numeric = ['High', 'Low', 'Open', 'Closing']
-        new_lst = list()
 
-        today = pd.to_datetime(self.today)
-        past_d = today - timedelta(days=self.h_days)
+        numeric = ['Close', 'Open', 'High', 'Low']
+        new_lst = list()
         
         for i, df in enumerate(self.lst):
-            df2 = df.drop(df.columns[0], axis=1)
-            df = df2
-            df.columns = ['Date', 'High', 'Low', 'Open', 'Closing']
-            df['Date'] = pd.to_datetime(df['Date'])
+            
+            if self.h_days == '24h':
+                date = pd.to_datetime(df['Datetime'])
+            
+            elif self.h_days == '1y':
+                date = pd.to_datetime(df['Date'])
+            
+            else:
+                df = df.tail(self.h_days).reset_index(drop=True)
+                df['Date'] = pd.to_datetime(df['Date'])
+                date = df['Date']
+
             df[numeric] = df[numeric].apply(pd.to_numeric, errors='coerce', axis=1)
-            # print(df.head())
-
-            df_date = []
-            df_price = []
-
-            df_ = df.loc[(df['Date'] >= past_d) & (df['Date'] <= today)]
-            df_date = df_['Date']
-            df_price = df_[self.h_price]
 
             x = []
-            y = []
+            y = df[self.h_price]
 
-            for item in df_date:
+            for item in date:
                 item = datetime.timestamp(item)
                 x.append(item)
-            for item in df_price:
-                y.append(item)
-
-            x.append(self.curr[i]['timestamp'].iat[-1])
-            y.append(self.curr[i]['open'].iat[-1])
-
-            new_lst.append([df, [x, y]])
-        return new_lst
-
-    def realtime(self):
-        numeric = ['High', 'Low', 'Open', 'Closing']
-        new_lst = list()
-
-        for df in self.lst:
-            df2 = df.drop(df.columns[0], axis=1)
-            df = df2
-            df.columns = ['Closing', 'High', 'Low', 'Open', 'Timestamp']
-            df[numeric] = df[numeric].apply(pd.to_numeric, errors='coerce', axis=1)
-
-            df_time = df['Timestamp']
-            df_price = df['Open']
-
-            x = []
-            y = []
-
-            for item in df_time:
-                item = int(item)
-                x.append(item)
-            for item in df_price:
-                y.append(item)
 
             new_lst.append([df, [x, y]])
         return new_lst
