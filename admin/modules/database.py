@@ -1,7 +1,7 @@
 from operator import imod
 from main import *
 import pandas as pd
-from EMA import ema_smoothing
+from .EMA import ema_smoothing
 
 class AccessDatabase(QObject):
     import_data_complete = Signal()
