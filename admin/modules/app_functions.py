@@ -225,61 +225,52 @@ class GetHistoData(QThread):
         self.today = today
 
     def run(self):
-        self.df_btc = pd.read_csv('csv/db_btc.csv')
-        self.df_eth = pd.read_csv('csv/db_eth.csv')
-        self.df_doge = pd.read_csv('csv/db_doge.csv')
-        
+
+        if self.h_days == '24h':
+            self.df_btc = pd.read_csv('csv/rt_btc.csv')
+            self.df_eth = pd.read_csv('csv/rt_eth.csv')
+            self.df_doge = pd.read_csv('csv/rt_doge.csv')
+        else:
+            self.df_btc = pd.read_csv('csv/db_btc.csv')
+            self.df_eth = pd.read_csv('csv/db_eth.csv')
+            self.df_doge = pd.read_csv('csv/db_doge.csv')
 
         if self.crypto == 'btn_all':
             lst = [self.df_btc, self.df_eth, self.df_doge]
-            curr = [pd.read_csv('csv/curr_btc.csv'), pd.read_csv('csv/curr_eth.csv'), pd.read_csv('csv/curr_doge.csv')]
         if self.crypto == 'btn_btc':
             lst = [self.df_btc]
-            curr = [pd.read_csv('csv/curr_btc.csv')]
         if self.crypto == 'btn_eth':
             lst = [self.df_eth]
-            curr = [pd.read_csv('csv/curr_eth.csv')]
         if self.crypto == 'btn_doge':
             lst = [self.df_doge]
-            curr = [pd.read_csv('csv/curr_doge.csv')]
 
-        numeric = ['High', 'Low', 'Open', 'Closing']
+        numeric = ['Close', 'Open', 'High', 'Low']
         new_lst = list()
-
-        # today = pd.to_datetime(today)
-        now = datetime.now()
-        past_d = self.today - timedelta(days=self.h_days)
         
         for i, df in enumerate(lst):
-            df2 = df.drop(df.columns[0], axis=1)
-            df = df2
-            df.columns = ['Date', 'High', 'Low', 'Open', 'Closing']
-            df['Date'] = pd.to_datetime(df['Date'])
+            
+            if self.h_days == '24h':
+                date = pd.to_datetime(df['Datetime'])
+            
+            elif self.h_days == '1y':
+                date = pd.to_datetime(df['Date'])
+            
+            else:
+                df = df.tail(self.h_days).reset_index(drop=True)
+                df['Date'] = pd.to_datetime(df['Date'])
+                date = df['Date']
+
             df[numeric] = df[numeric].apply(pd.to_numeric, errors='coerce', axis=1)
 
-            df_date = []
-            df_price = []
-
-            df_ = df.loc[(df['Date'] >= past_d) & (df['Date'] <= self.today)]
-            df_date = df_['Date']
-            df_price = df_[self.h_price]
-
             x = []
-            y = []
+            y = df[self.h_price]
 
-            for item in df_date:
+            for item in date:
                 item = datetime.timestamp(item)
                 x.append(item)
-            for item in df_price:
-                y.append(item)
-
-            if self.today.date() == now.date():
-                x.append(curr[i]['timestamp'].iat[-1])
-                y.append(curr[i]['closing'].iat[-1])
 
             new_lst.append([df, [x, y]])
         self.pass_histo_data.emit(new_lst)
-
 
 class GetPredData(QThread):
     pass_pred_data = Signal(list)
