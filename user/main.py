@@ -47,7 +47,7 @@ class SplashScreen(QMainWindow):
 
         self.worker2 = GetDecisionSupport()
         self.worker2.start()
-        self.worker2.decision_complete.connect(self.worker2.terminate)
+        self.worker2.decision_complete.connect(self.worker2.quit)
 
         self.worker.import_data_complete.connect(self.catch_db_data)
         self.worker.update_progress.connect(self.evt_update_progress)
@@ -200,7 +200,7 @@ class MainWindow(QMainWindow):
             self.lblHidden = True
             self.ctr = 0
             self.timer.timeout.connect(self.flashLbl_all)
-            self.timer.start(500)
+            self.timer.start(830)
 
         else:
             self.timer.stop()

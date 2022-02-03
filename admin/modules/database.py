@@ -1,4 +1,3 @@
-from operator import imod
 from main import *
 from .EMA import ema_smoothing
 from .histo_data import *
@@ -68,7 +67,7 @@ class ImportDataset(QThread):
         self.csv()
         # self.my_df.to_csv('csv/dataset.csv')
         
-        self.pass_dataset.emit(self.my_df)
+        self.pass_dataset.emit(self.my_df.round(4))
 
     def csv(self):
         csvf = self.my_df
