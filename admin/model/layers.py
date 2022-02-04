@@ -92,7 +92,7 @@ class MaxPool:
         return d_l_d_input
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=10, seq_len = 1, lr=0.001, beta1=0.9, beta2=0.999):
+    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=500, seq_len = 3, lr=0.001, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
         """
@@ -310,10 +310,10 @@ class LSTM:
         bn_param = {'mode': 'train'}
         bn_param1 = {'mode': 'train'}
         out,ca_bn = self.batchnorm(out, gamma, beta, bn_param)
-        out,ca_dr = self.dropout(out, 0.5)
+        out,ca_dr = self.dropout(out, 0.8)
         out,ca_re1 = self.relu(out)
         out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
-        out,ca_dr1 = self.dropout(out, 0.3)
+        out,ca_dr1 = self.dropout(out, 0.8)
         y_hat = self.softmax(out)
         
         return y_hat, v, h, o, c, c_bar, i, f, z
@@ -418,7 +418,7 @@ class LSTM:
                                                   c_bar[t], c[t], o[t], h[t])
         return loss, h[self.seq_len - 1], c[self.seq_len - 1]
 
-    def gradient_check(self, x, y, h_prev, c_prev, num_checks=10, delta=1e-6):
+    def gradient_check(self, x, y, h_prev, c_prev, num_checks=30, delta=1e-6):
         """
         Checks the magnitude of gradients against expected approximate values
         """
