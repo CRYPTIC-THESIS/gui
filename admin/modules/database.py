@@ -1,5 +1,6 @@
 from main import *
-from . histo_data import *
+from .EMA import ema_smoothing
+from .histo_data import *
 
 class AccessDatabase(QObject):
     import_data_complete = Signal()
@@ -66,7 +67,7 @@ class ImportDataset(QThread):
         self.csv()
         # self.my_df.to_csv('csv/dataset.csv')
         
-        self.pass_dataset.emit(self.my_df)
+        self.pass_dataset.emit(self.my_df.round(4))
 
     def csv(self):
         csvf = self.my_df
@@ -78,7 +79,7 @@ class ImportDataset(QThread):
 
         table_name = {
             'Bitcoin (BTC)': 'btc', 'Ethereum (ETH)': 'eth', 'Dogecoin (DOGE)': 'doge',
-            'Twitter': 'Twitter_Data_12Day_EMA', 'Reddit': 'Reddit_Data_12Day_EMA', 'GoogleTrends': 'Google_Data_12Day_EMA'
+            'Twitter': 'Twitter_Data', 'Reddit': 'Reddit_Data', 'GoogleTrends': 'Google_Data'
         }
         
         for item in self.ds_source:
@@ -86,6 +87,7 @@ class ImportDataset(QThread):
             if item == 'Twitter':
                 twitter = pd.DataFrame(get_data_table(table_name[item]))
                 twitter = twitter[['date', table_name[crypto]]]
+                twitter = ema_smoothing(twitter)    # EMA Smoothing                                    
                 twitter['date'] = pd.to_datetime(twitter['date']).dt.date
                 twitter = twitter.loc[(twitter['date'] >= self.from_) & (twitter['date'] <= self.until_)]
                 twitter.columns=['Date', item]
@@ -95,6 +97,7 @@ class ImportDataset(QThread):
             elif item == 'Reddit':
                 reddit = pd.DataFrame(get_data_table(table_name[item]))
                 reddit = reddit[['date', table_name[crypto]]]
+                reddit = ema_smoothing(reddit)    # EMA Smoothing 
                 reddit['date'] = pd.to_datetime(reddit['date']).dt.date
                 reddit = reddit.loc[(reddit['date'] >= self.from_) & (reddit['date'] <= self.until_)]
                 reddit.columns=['Date', item]
@@ -104,6 +107,7 @@ class ImportDataset(QThread):
             elif item == 'GoogleTrends':
                 google = pd.DataFrame(get_data_table(table_name[item]))
                 google = google[['date', table_name[crypto]]]
+                google = ema_smoothing(google)    # EMA Smoothing 
                 google['date'] = pd.to_datetime(google['date']).dt.date
                 google = google.loc[(google['date'] >= self.from_) & (google['date'] <= self.until_)]
                 google.columns=['Date', item]

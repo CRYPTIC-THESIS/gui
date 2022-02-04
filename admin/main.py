@@ -121,7 +121,7 @@ class Login(QMainWindow):
         # Start Decision Support
         self.worker2 = GetDecisionSupport()
         self.worker2.start()
-        self.worker2.decision_complete.connect(self.worker2.terminate)
+        self.worker2.decision_complete.connect(self.worker2.quit)
 
         self.db_worker.import_data_complete.connect(self.get_started)
         self.db_thread.started.connect(self.db_worker.access_now)
@@ -332,7 +332,7 @@ class MainWindow(QMainWindow):
             self.lblcolors = ['#F9AA4B;', '#2082FA;', '#8C88BF;']
             self.ctr = 0
             self.timer.timeout.connect(self.flashLbl_all)
-            self.timer.start(500)
+            self.timer.start(830)
 
         else:
             self.timer.stop()
