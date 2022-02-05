@@ -68,7 +68,7 @@ for i in range(len(crypto)):
     if(crypto[i]=='BTC'):
         data = split_data(dataset,crypto[i])
         c = data[-1][3]
-        d = c*0.001
+        d = c*0.005
         a = c+d
         b = c-d
         btc_loss= cryptic_model.train(200,data,a,b,crypto[i],mod_type)
@@ -78,7 +78,7 @@ for i in range(len(crypto)):
     elif(crypto[i]=='ETH'):
         data = split_data(dataset,crypto[i])
         c = data[-1][3]
-        d = c*0.001
+        d = c*0.005
         a = c+d
         b = c-d
         eth_loss = cryptic_model.train(200,data,a,b,crypto[i],mod_type)
@@ -89,7 +89,7 @@ for i in range(len(crypto)):
     elif(crypto[i]=='DOGE'):
         data = split_data(dataset,crypto[i])
         c = data[-1][3]
-        d = c*0.001
+        d = c*0.005
         a = c+d
         b = c-d
         doge_loss = cryptic_model.train(200,data,a,b,crypto[i],mod_type)

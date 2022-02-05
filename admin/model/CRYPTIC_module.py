@@ -313,7 +313,7 @@ class cryptic():
         pred = []
         pred.append(pr)
         actual = []
-        val = [pr,out[0]]
+        val = [out[0]]
         progress(0.9, len(data)+1, status='Model Initialized')
 
         vi = len(p_lstm.vals_to_idx)
