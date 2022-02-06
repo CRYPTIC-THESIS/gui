@@ -92,7 +92,7 @@ class MaxPool:
         return d_l_d_input
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=300, seq_len = 1, lr=1e-8, beta1=0.9, beta2=0.999):
+    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=80, seq_len = 1, lr=1e-8, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
         """
