@@ -163,7 +163,7 @@ class AppFunctions(MainWindow):
 
         # DATE
         self.ui.trainFromDateEdit.setDate(QDate(2020, 1, 1))
-        self.ui.trainUntilDateEdit.setDate(QDate(2021, 10, 31))
+        self.ui.trainUntilDateEdit.setDate(QDate.currentDate())
         self.dataset_date_from = None
         self.dataset_date_until = None
 
@@ -349,7 +349,7 @@ class ImplementModel(QObject):
             p = os.popen(command_line)
             if p:
                 # print('Done')
-                print(p.read())
+                # print(p.read())
                 self.deploy_complete.emit()
         else:
             if self.process == 'train':

@@ -40,6 +40,9 @@ class Login(QMainWindow):
         # UI FUNCTIONS DEFINITIONS
         UIFunctions.ui_logindefinitions(self)
         
+        self.ui.btn_login.setShortcut('Return')
+        self.ui.btn_signup.setShortcut('Return')
+
         self.ui.content.setCurrentWidget(self.ui.loginPage)
         self.ui.pass_login.setEchoMode(QLineEdit.Password)
         self.ui.pass_signup.setEchoMode(QLineEdit.Password)
@@ -392,6 +395,7 @@ class MainWindow(QMainWindow):
         self.r_thread.quit()
         self.r_thread.wait()
         
+        self.enable('deploy')
         widgets.stackedWidget.setCurrentWidget(widgets.deploy)
 
         # DISPLAY PRED & TABLE
@@ -646,7 +650,7 @@ class MainWindow(QMainWindow):
         
         if btnName == 'btn_startTesting':
             widgets.btn_viewDataAnalysis.show()
-            self.enable('deploy')
+            # self.enable('deploy')
             widgets.btn_deployDeploy.clicked.connect(self.deploy)
             self.process = 'test'
             self.desc = '<strong>TESTING</strong> DATA'
@@ -674,9 +678,18 @@ class MainWindow(QMainWindow):
         self.d_thread.start()
 
     def complete(self):
-        print('Complete!')
+        print('Deployment Complete!')
         self.d_thread.quit()
         self.d_thread.wait()
+
+        self.access_db()
+        widgets.btn_deployDeploy.setMinimumSize(QSize(130, 35))
+        widgets.btn_deployDeploy.setText(' DEPLOYED')
+        widgets.btn_deployDeploy.setStyleSheet(
+                                widgets.btn_deployDeploy.styleSheet() +
+                                MainSettings.PROCESS_DONE)
+        widgets.btn_deployDeploy.setIcon(QIcon(':icons\images\icons\cil-check-circle.png'))
+        widgets.btn_deployDeploy.setEnabled(False)
 
         self.Dialog.ui.loadingBar.setRange(0, 1)
         self.Dialog.ui.loadingBar.setValue(1)
@@ -725,6 +738,7 @@ class MainWindow(QMainWindow):
             widgets.conMatrixGraph.setPixmap(pixmap)
 
     def show_data_analysis(self):
+        widgets.label_13.setText('TEST   Data Analysis')
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
         widgets.btn_viewDataAnalysis.hide()
 
@@ -767,10 +781,19 @@ class MainWindow(QMainWindow):
         if self.process == 'train':
             widgets.trainTerminal.clear()
             widgets.trainTerminal.insertPlainText(output)
+            widgets.label_5.setText('TRAIN   Terminal Output')
 
         if self.process == 'test':
             widgets.testTerminal.clear()
             widgets.testTerminal.insertPlainText(output)
+
+            widgets.btn_startTesting.setMinimumSize(QSize(120, 35))
+            widgets.btn_startTesting.setText(' TESTED')
+            widgets.btn_startTesting.setStyleSheet(
+                                    widgets.btn_startTesting.styleSheet() +
+                                    MainSettings.PROCESS_DONE)
+            widgets.btn_startTesting.setIcon(QIcon(':icons\images\icons\cil-check-circle.png'))
+            widgets.btn_startTesting.setEnabled(False)
 
         self.Dialog.ui.loadingBar.setRange(0, 1)
         self.Dialog.ui.loadingBar.setValue(1)
