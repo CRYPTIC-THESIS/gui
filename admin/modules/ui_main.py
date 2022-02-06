@@ -3524,7 +3524,7 @@ class Ui_MainWindow(object):
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Source", None))
         self.btn_getData.setText(QCoreApplication.translate("MainWindow", u"GET DATA", None))
         self.btn_startTesting.setText(QCoreApplication.translate("MainWindow", u"START TESTING", None))
-        self.label_24.setText(QCoreApplication.translate("MainWindow", u"TESTING DATA...", None))
+        self.label_24.setText(QCoreApplication.translate("MainWindow", u"TERMINAL OUTPUT", None))
         self.testTerminal.setPlainText("")
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"DATA ANALYSIS", None))
         self.label_31.setText(QCoreApplication.translate("MainWindow", u"CRYPTOCURRENCY:", None))

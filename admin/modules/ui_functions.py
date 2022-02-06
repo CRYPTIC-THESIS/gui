@@ -111,7 +111,6 @@ class UIFunctions(MainWindow):
                     w.setStyleSheet(UIFunctions.deselectPrice(w.styleSheet()))
 
     def resetHistoDayStyle(self, widget):
-        print('widget: ', widget)
         for w in self.ui.daysButtons.findChildren(QPushButton):
             if w.objectName() != widget:
                 w.setStyleSheet(UIFunctions.deselectHistoDay(w.styleSheet()))
@@ -212,4 +211,12 @@ class MainSettings(MainWindow):
     *{
 	    background: rgb(33, 37, 43);
 	    color: rgb(94, 106, 130);
+    }"""
+
+    PROCESS_DONE = """
+    *{
+    color: #DDDDDD;
+    background: #008A66;
+    border-color: #008A66;
+    padding-right: 3px;
     }"""
