@@ -349,9 +349,9 @@ class cryptic():
                 p_lstm.idx_to_vals[iv+i-x] = out[i]
                 i+=1
         
-        val = out[0]
+        val = [out[0]]
         
-        for a in range(1,len(out)):
+        for a in range(len(out)):
             
             progress(a+1, len(data)+1, status='Testing')
             
