@@ -92,7 +92,7 @@ class MaxPool:
         return d_l_d_input
 
 class LSTM:
-    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=300, seq_len = 10, lr=1e-8, beta1=0.9, beta2=0.999):
+    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=300, seq_len = 1, lr=1e-8, beta1=0.9, beta2=0.999):
         """
         Implementation of simple character-level LSTM using Numpy
         """
@@ -310,10 +310,10 @@ class LSTM:
         bn_param = {'mode': 'train'}
         bn_param1 = {'mode': 'train'}
         out,ca_bn = self.batchnorm(out, gamma, beta, bn_param)
-        out,ca_dr = self.dropout(out, 0.8)
+        out,ca_dr = self.dropout(out, 0.9)
         out,ca_re1 = self.relu(out)
         out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
-        out,ca_dr1 = self.dropout(out, 0.6)
+        out,ca_dr1 = self.dropout(out, 0.9)
         y_hat = self.softmax(out)
         
         return y_hat, v, h, o, c, c_bar, i, f, z

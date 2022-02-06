@@ -36,8 +36,8 @@ for crypto in trained_list:
             doge_df = df_data
         else:
             print('Invalid Crypto')
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
         
 crypto_df = list()
 crypto_name = list()

@@ -26,6 +26,28 @@ def progress(count, total, status=''):
         percents = round(100.0 * count / float(total), 1)
         bar = '=' * filled_len + '-' * (bar_len - filled_len)
         print('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    
+def output_l(actual,pred):
+        
+        series = pd.Series(pred)
+        perc = series.pct_change()
+        predicted = []
+
+        for i in range(1,len(actual)):
+            p = perc[i]
+            a = actual[i-1]
+            if p > 0:
+                p = p + 1
+                pr = p * a
+            elif p < 0:
+                p = 1 - p
+                pr = p * a
+            else:
+                pr = a
+            predicted.append(pr)
+
+        actual = actual[1:]
+        return predicted, actual
 
 class cryptic():
     def format_LSTM(self,data):
@@ -114,10 +136,6 @@ class cryptic():
             J,h,c = self.LSTM_pass(lstm,epoch,verbose,X_trimmed,J)
             progress(epoch+1, epochs+1, status='Wow! New knowledge Obtained')
         
-        s = lstm.sample(h, c, lstm.seq_size)
-
-        np.savetxt('model/obj/pred_'+crypto+'.csv',s)
-        
         progress(epochs+1, epochs+1, status='I feel smarter already')
 
         print('Total Data Tested: ',len(out))
@@ -165,7 +183,9 @@ class cryptic():
         out = con1.forward(out)
         out = pool.forward(out)
         out = out.flatten()
-        
+
+        #actual = [row[3] for row in data]
+        actual = out[1:]
 
         vi = len(p_lstm.vals_to_idx)
         iv = len(p_lstm.idx_to_vals)
@@ -215,15 +235,16 @@ class cryptic():
                 y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
                     lstm.forward_step(x[t], h[t - 1], c[t - 1])
             s = lstm.sample(h_prev, c_prev, lstm.seq_size)
-        pred = s[-(len(out)-1):]
-        predx = [i for i in range(len(pred))]
-        outx = [i for i in range(len(out))]
+        pred = s[-(len(out)):]
+ 
+        #pred,actual = output_l(actual,pred)
         progress(len(data)+1, len(data)+1, status='Done Testing')
-        print('Actual : ',out[1:])
+        print('Actual : ',actual)
         print('Predicted: ',pred)
 
         df = pd.DataFrame(columns=['actual','predicted'])
-        df['actual'] = pd.Series(out[1:])
+
+        df['actual'] = pd.Series(actual)
         df['predicted'] = pd.Series(pred)
 
         return df
@@ -308,12 +329,9 @@ class cryptic():
         out = pool.forward(out)
         out = out.flatten()
 
-        pr = pd.read_csv('model/obj/pred_'+crypto+'.csv')
-        pr = pr.iat[-1,-1]
         pred = []
-        pred.append(pr)
-        actual = []
-        val = [out[0]]
+        #actual = [row[3] for row in data]
+
         progress(0.9, len(data)+1, status='Model Initialized')
 
         vi = len(p_lstm.vals_to_idx)
@@ -321,6 +339,7 @@ class cryptic():
 
         i=0
         x=0
+
         for i in range(len(out)):
             if(out[i] in p_lstm.vals_to_idx):
                 x+=1
@@ -330,10 +349,11 @@ class cryptic():
                 p_lstm.idx_to_vals[iv+i-x] = out[i]
                 i+=1
         
-        for a in range(len(out)):
+        val = out[0]
+        
+        for a in range(1,len(out)):
             
             progress(a+1, len(data)+1, status='Testing')
-            actual.append(out[a])
             
             vals_size = len(p_lstm.vals_to_idx)
             lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
@@ -350,12 +370,10 @@ class cryptic():
             s = lstm.sample(h, c, lstm.seq_size)
             pred.append(s[-1])
             
-
-        df = pd.DataFrame(list(zip(actual, pred[:-1])),columns=['actual','predicted'])
-
-
         progress(len(data)+1, len(data)+1, status='Done Testing')
-        print('Actual : ',actual)
+        #actual,pred = output_l(actual,pred)
+        df = pd.DataFrame(list(zip(out, pred)),columns=['actual','predicted'])
+        print('Actual : ',out)
         print('Predicted: ',pred)
         return df
 
