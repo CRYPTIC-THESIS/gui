@@ -15,6 +15,11 @@ def scrape_reddit_data(b_y,b_m,b_d,a_y,a_m,a_d):
 
         query_df = pd.DataFrame(query)
 
-        query_df.to_csv('"C:/Users/TUF GAMING A15/Documents/Thesis/DATA/reddit_'+key+'_'+str(after)+'_to_'+str(before)+'.csv', header=True, index=False, columns=list(query_df.axes[1]))
+        query_df.to_csv('C:/Users/TUF GAMING A15/Documents/Thesis/DATA/reddit_'+key+'_'+str(after)+'_to_'+str(before)+'.csv', header=True, index=False, columns=list(query_df.axes[1]))
 
         query_df = query_df.iloc[0:0]
+    for a in keyword:
+        print('Keyword:'+a) 
+        print('Before:'+ str(before))
+        print('After:'+str(after))
+        crawler(a);
