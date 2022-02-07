@@ -235,12 +235,12 @@ class cryptic():
                 y_hat[t], v[t], h[t], o[t], c[t], c_bar[t], i[t], f[t], z[t] = \
                     lstm.forward_step(x[t], h[t - 1], c[t - 1])
             s = lstm.sample(h_prev, c_prev, lstm.seq_size)
-        pred = s[-(len(out)):]
+        pred = s[-(len(actual)):]
  
         #pred,actual = output_l(actual,pred)
         progress(len(data)+1, len(data)+1, status='Done Testing')
-        print('Actual : ',actual)
-        print('Predicted: ',pred)
+        print('Actual : ',len(actual))
+        print('Predicted: ',len(pred))
 
         df = pd.DataFrame(columns=['actual','predicted'])
 
@@ -350,21 +350,22 @@ class cryptic():
                 i+=1
         
         val = [out[0]]
+        vals_size = len(p_lstm.vals_to_idx)
+        lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
         
         for a in range(len(out)):
             
             progress(a+1, len(data)+1, status='Testing')
             
-            vals_size = len(p_lstm.vals_to_idx)
-            lstm = self.init_trained(p_lstm.params,p_lstm.vals_to_idx,p_lstm.idx_to_vals,vals_size,p_lstm.epochs)
             J = []  # to store losses
             verbose = False
+
 
             for epoch in range(epochs):
                 try:
                     J,h,c = self.LSTM_pass(lstm,epoch,verbose,val,J)
                 except Exception as e:
-                    print(e)
+                    print(e) 
 
             val.append(out[a])
             s = lstm.sample(h, c, lstm.seq_size)
@@ -373,13 +374,7 @@ class cryptic():
         progress(len(data)+1, len(data)+1, status='Done Testing')
         #actual,pred = output_l(actual,pred)
         df = pd.DataFrame(list(zip(out, pred)),columns=['actual','predicted'])
-        print('Actual : ',out)
-        print('Predicted: ',pred)
+        df.to_csv(crypto+'pred_actual.csv')
+        print('Actual : ',len(out))
+        print('Predicted: ',len(pred))
         return df
-
-
-
-
-            
-
-            
