@@ -92,14 +92,9 @@ class MaxPool:
         return d_l_d_input
 
 class LSTM:
-<<<<<<< HEAD
+
     def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=60, seq_len = 1, lr=1e-8, beta1=0.9, beta2=0.999):
-=======
-    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=80, seq_len = 1, lr=1e-8, beta1=0.9, beta2=0.999):
->>>>>>> 3934ef653a595b8c3d3d48b125b54e95a69971c1
-        """
-        Implementation of simple character-level LSTM using Numpy
-        """
+
         self.layer_name = 'LSTM Block'
         self.vals_to_idx = value_to_idx  # characters to indices mapping
         self.idx_to_vals = idx_to_value  # indices to characters mapping
