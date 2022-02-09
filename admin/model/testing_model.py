@@ -20,7 +20,7 @@ for crypto in trained_list:
 
         model = nn.cryptic()
         #df_data = model.test(data,crypto)
-        df_data = model.test_b(20,data,crypto)
+        df_data = model.test_b(10,data,crypto)
         
         try:
             classi_analysis = da.classification_analysis(df_data, str(crypto))

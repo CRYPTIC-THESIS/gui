@@ -312,7 +312,7 @@ class LSTM:
         out,ca_dr = self.dropout(out, 0.8)
         out,ca_re1 = self.relu(out)
         out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
-        out,ca_dr1 = self.dropout(out, 0.5)
+        out,ca_dr1 = self.dropout(out, 0.8)
         y_hat = self.softmax(out)
         
         return y_hat, v, h, o, c, c_bar, i, f, z
