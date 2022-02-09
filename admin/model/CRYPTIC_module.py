@@ -27,14 +27,22 @@ def progress(count, total, status=''):
         bar = '=' * filled_len + '-' * (bar_len - filled_len)
         print('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
     
-def output_l(actual,pred):
+def percent_change(old, new):
+    pc = round((new - old) / abs(old) * 100, 2)
+    return pc
+    
+def output_l(actual,pred,val):
+
+        pct = []
+        for p in pred:
+            pr = percent_change(val,p)
+            pct.append(pr)
+            val = p
         
-        series = pd.Series(pred)
-        perc = series.pct_change()
         predicted = []
 
         for i in range(1,len(actual)):
-            p = perc[i]
+            p = pct[i]
             a = actual[i-1]
             if p > 0:
                 p = p + 1
