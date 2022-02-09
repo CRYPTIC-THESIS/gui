@@ -93,8 +93,8 @@ class MaxPool:
 
 class LSTM:
 
-    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=80, seq_len = 1, lr=1e-8, beta1=0.9, beta2=0.999):
-
+    def __init__(self, value_to_idx, idx_to_value, seq_size, epochs, n_h=100, seq_len = 1, lr=1e-8, beta1=0.9, beta2=0.999):
+    
         self.layer_name = 'LSTM Block'
         self.vals_to_idx = value_to_idx  # characters to indices mapping
         self.idx_to_vals = idx_to_value  # indices to characters mapping
@@ -308,12 +308,11 @@ class LSTM:
         dout1 = np.random.randn(N, D)
         bn_param = {'mode': 'train'}
         bn_param1 = {'mode': 'train'}
-        out,ca_re1 = self.relu(out)
         out,ca_bn = self.batchnorm(out, gamma, beta, bn_param)
-        out,ca_dr = self.dropout(out, 0.5)
+        out,ca_dr = self.dropout(out, 0.8)
         out,ca_re1 = self.relu(out)
         out,ca_bn1 = self.batchnorm(out, gamma1, beta1, bn_param1)
-        out,ca_dr1 = self.dropout(out, 0.3)
+        out,ca_dr1 = self.dropout(out, 0.8)
         y_hat = self.softmax(out)
         
         return y_hat, v, h, o, c, c_bar, i, f, z

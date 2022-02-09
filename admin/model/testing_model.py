@@ -19,8 +19,8 @@ for crypto in trained_list:
         data  = np.genfromtxt('csv/'+str(crypto)+"_test_set.csv", delimiter=',')
 
         model = nn.cryptic()
-        df_data = model.test(data,crypto)
-        #df_data = model.test_b(10,data,crypto)
+        #df_data = model.test(data,crypto)
+        df_data = model.test_b(10,data,crypto)
         
         try:
             classi_analysis = da.classification_analysis(df_data, str(crypto))

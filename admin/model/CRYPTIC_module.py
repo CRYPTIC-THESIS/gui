@@ -374,7 +374,7 @@ class cryptic():
         progress(len(data)+1, len(data)+1, status='Done Testing')
         #actual,pred = output_l(actual,pred)
         df = pd.DataFrame(list(zip(out, pred)),columns=['actual','predicted'])
-        df.to_csv(crypto+'pred_actual.csv')
+        df.to_csv('csv/'+crypto+'pred_actual.csv')
         print('Actual : ',len(out))
         print('Predicted: ',len(pred))
         return df
