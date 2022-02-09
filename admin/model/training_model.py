@@ -59,11 +59,11 @@ for i in range(len(crypto)):
     Y = np.array(data['Date'])
     
     dataset = np.array(dataset)
-    """l = dataset[-1:]
+    l = dataset[-1:]
     c = l[0][3]
     d = c*0.01
     a = c+d
-    b = c-d"""
+    b = c-d
     
     if(crypto[i]=='BTC'):
         data = split_data(dataset,crypto[i])
