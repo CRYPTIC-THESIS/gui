@@ -9,7 +9,7 @@ sys.path.append('..')
 from sklearn.model_selection import train_test_split
 
 def split_data(x,crypto):
-    x_train, x_test = train_test_split(x, test_size=0.30)
+    x_train, x_test = train_test_split(x, test_size=0.10)
     np.savetxt('csv/'+str(crypto)+"_train_set.csv", x_train, delimiter=",")
     np.savetxt('csv/'+str(crypto)+"_test_set.csv", x_test, delimiter=",")
     return x_train
