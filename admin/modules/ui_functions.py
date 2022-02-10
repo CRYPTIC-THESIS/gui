@@ -220,3 +220,21 @@ class MainSettings(MainWindow):
     border-color: #008A66;
     padding-right: 3px;
     }"""
+
+    RETURN = """
+    *{
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    font: 18px "Segoe UI"; font-weight: bold;
+    padding-right: 130px;
+    }"""
+
+    NEXT = """
+    *{
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    font: 18px "Segoe UI"; font-weight: bold;
+    padding-right: 28px;
+    }"""
