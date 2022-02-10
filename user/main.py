@@ -62,6 +62,7 @@ class SplashScreen(QMainWindow):
             self.worker.terminate()
             self.window = MainWindow()
             self.window.show()
+            self.window.activateWindow()
             self.close()
 
     def catch_db_data(self):
