@@ -315,7 +315,7 @@ class MainWindow(QMainWindow):
                 
             # SHOW DEPLOY PAGE
             if btnName == "btn_deploy":
-                if (widgets.testContent.currentWidget() == widgets.dataAnalysisPage) and (self.retrained == False):
+                if (widgets.btn_viewDataAnalysis.isHidden()==False) and (self.retrained == False):
                     self.deploy_retrain()
                 else:
                     widgets.stackedWidget.setCurrentWidget(widgets.deploy)
