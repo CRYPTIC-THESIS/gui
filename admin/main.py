@@ -135,6 +135,7 @@ class Login(QMainWindow):
         self.db_thread.quit()
         self.db_thread.wait()
         self.show()
+        self.activateWindow()
     
 
     def mousePressEvent(self, event):
@@ -314,7 +315,7 @@ class MainWindow(QMainWindow):
                 
             # SHOW DEPLOY PAGE
             if btnName == "btn_deploy":
-                if (widgets.testContent.currentWidget() == widgets.dataAnalysisPage) and (self.retrained == False):
+                if (widgets.btn_viewDataAnalysis.isHidden()==False) and (self.retrained == False):
                     self.deploy_retrain()
                 else:
                     widgets.stackedWidget.setCurrentWidget(widgets.deploy)
@@ -361,6 +362,7 @@ class MainWindow(QMainWindow):
             self.timer.start(800)
 
     def flashLbl_all(self):
+        widgets.suggestionLabel.clear()
         if self.ctr == 3:
             self.ctr = 0
         widgets.suggestionLabel.setText(self.labels[self.ctr])
@@ -407,7 +409,7 @@ class MainWindow(QMainWindow):
         self.Dialog.ui.subtitle.setText("Done!")
 
         QTimer.singleShot(1300, self.Dialog.close)
-        QTimer.singleShot(1200, self.show)
+        QTimer.singleShot(1200, self.setActiveWindow)
 
     def get_deploy_crypto(self, value):
         self.deploy_crypto = str(value)
@@ -641,7 +643,7 @@ class MainWindow(QMainWindow):
         btnName = btn.objectName()
 
         if btnName == 'btn_startTraining':
-            widgets.btn_startTraining.hide()
+            # widgets.btn_startTraining.hide()
             self.enable('test')
             widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
             widgets.btn_startTesting.clicked.connect(self.show_terminal)
@@ -696,9 +698,13 @@ class MainWindow(QMainWindow):
         self.Dialog.ui.subtitle.setText("Done!")
 
         QTimer.singleShot(1300, self.Dialog.close)
-        QTimer.singleShot(1200, self.show)
+        QTimer.singleShot(1200, self.setActiveWindow)
 
         del self.d_worker, self.d_thread
+    
+    def setActiveWindow(self):
+        self.show()
+        self.activateWindow()
 
     
     # ///////////////////////////////////////////
@@ -740,11 +746,56 @@ class MainWindow(QMainWindow):
     def show_data_analysis(self):
         widgets.label_13.setText('TEST   Data Analysis')
         widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
-        widgets.btn_viewDataAnalysis.hide()
+        # widgets.btn_viewDataAnalysis.hide()
+        self.new_view_btn()
 
         widgets.testCryptoCombo.currentTextChanged.connect(self.get_crypto_analyze)
         self.analyze_crypto = str(widgets.testCryptoCombo.currentText())
         self.get_analysis()
+
+
+    # ///////////////////////////////////////////
+    # Return to Training
+    def back_to_training(self):
+        widgets.trainContent.setCurrentWidget(widgets.getDataPage)
+        widgets.btn_startTraining.setIcon(QIcon(':images/images/images/next-cyan.png'))
+        widgets.btn_startTraining.setText('START TRAINING')
+        widgets.btn_startTraining.setStyleSheet(widgets.btn_startTesting.styleSheet() + MainSettings.NEXT)
+        widgets.btn_startTraining.clicked.disconnect()
+        widgets.btn_startTraining.clicked.connect(self.train_terminal)
+
+    def new_train_btn(self):
+        widgets.btn_startTraining.setIcon(QIcon(':images/images/images/back-cyan.png'))
+        widgets.btn_startTraining.setText('BACK')
+        widgets.btn_startTraining.setStyleSheet(widgets.btn_startTesting.styleSheet() + MainSettings.RETURN)
+        widgets.btn_startTraining.clicked.disconnect()
+        widgets.btn_startTraining.clicked.connect(self.back_to_training)
+
+    def train_terminal(self):
+        widgets.trainContent.setCurrentWidget(widgets.startTrainingPage)
+        self.new_train_btn()
+
+
+    # ///////////////////////////////////////////
+    # Return to Testing
+    def back_to_testing(self):
+        widgets.testContent.setCurrentWidget(widgets.testingPage)
+        widgets.btn_viewDataAnalysis.setIcon(QIcon(':images/images/images/next-cyan.png'))
+        widgets.btn_viewDataAnalysis.setText(' VIEW ANALYSIS')
+        widgets.btn_viewDataAnalysis.setStyleSheet(widgets.btn_viewDataAnalysis.styleSheet() + MainSettings.NEXT)
+        widgets.btn_viewDataAnalysis.clicked.disconnect()
+        widgets.btn_viewDataAnalysis.clicked.connect(self.view_analysis)
+
+    def new_view_btn(self):
+        widgets.btn_viewDataAnalysis.setIcon(QIcon(':images/images/images/back-cyan.png'))
+        widgets.btn_viewDataAnalysis.setText('BACK')
+        widgets.btn_viewDataAnalysis.setStyleSheet(widgets.btn_viewDataAnalysis.styleSheet() + MainSettings.RETURN)
+        widgets.btn_viewDataAnalysis.clicked.disconnect()
+        widgets.btn_viewDataAnalysis.clicked.connect(self.back_to_testing)
+
+    def view_analysis(self):
+        widgets.testContent.setCurrentWidget(widgets.dataAnalysisPage)
+        self.new_view_btn()
 
 
     # ///////////////////////////////////////////
@@ -782,6 +833,7 @@ class MainWindow(QMainWindow):
             widgets.trainTerminal.clear()
             widgets.trainTerminal.insertPlainText(output)
             widgets.label_5.setText('TRAIN   Terminal Output')
+            self.new_train_btn()
 
         if self.process == 'test':
             widgets.testTerminal.clear()
@@ -801,7 +853,7 @@ class MainWindow(QMainWindow):
 
         # QTimer.singleShot(1300, self.Dialog.close)
         # QTimer.singleShot(1200, self.show)
-        self.show()
+        self.setActiveWindow()
         self.Dialog.close()        
 
         # self.p_worker.stop()

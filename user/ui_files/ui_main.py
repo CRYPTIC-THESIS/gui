@@ -18,12 +18,11 @@ from PySide2.QtWidgets import *
 from pyqtgraph import PlotWidget
 
 import resources_rc
-import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if MainWindow.objectName():
-            MainWindow.setObjectName(u"MainWindow")
+            MainWindow.setObjectName(u"Cryptic APP")
         MainWindow.resize(1300, 740)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -754,6 +753,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
         self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
         self.home_tableWidget = QTableWidget(self.home_predTableFrame)
+        self.home_tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)
         self.home_tableWidget.setObjectName(u"home_tableWidget")
         self.home_tableWidget.setFrameShape(QFrame.NoFrame)
         self.home_tableWidget.verticalHeader().setHighlightSections(False)
@@ -2033,6 +2033,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
         self.verticalLayout_21.setContentsMargins(0, 0, 0, 0)
         self.cryptoPredTable = QTableWidget(self.cryptoPredTableFrame)
+        self.cryptoPredTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.cryptoPredTable.setObjectName(u"cryptoPredTable")
         self.cryptoPredTable.setFrameShape(QFrame.NoFrame)
         self.cryptoPredTable.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)

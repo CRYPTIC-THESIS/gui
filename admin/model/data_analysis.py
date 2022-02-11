@@ -25,17 +25,15 @@ def mape(actual, pred):
 #For MAE - RMSE - R-Squared - MAPE
 def error_analysis(crypto_df, crypto_name):
     # crypto_df = [btc_df,eth_df,doge_df]
-    error_analysis_df = pd.DataFrame(columns = ['MAE','RMSE','R-Squared','Mape'])
+    error_analysis_df = pd.DataFrame(columns = ['MAE','RMSE','Mape'])
     for df in crypto_df:
         #print(df)
         actualPrice = df['actual']
         predictedPrice = df['predicted']
         mae_res = mae(actualPrice, predictedPrice)
         rmse_res = sqrt(mse(actualPrice, predictedPrice))
-        r2_res = r2(actualPrice, predictedPrice)
         mape_res = mape(actualPrice, predictedPrice)
-        #pd_data = pd.Series([mae_res , rmse_res, r2_res , mape_res], index=error_analysis_df.columns)
-        pd_data = pd.DataFrame({'MAE':mae_res, 'RMSE':rmse_res, 'R-Squared':r2_res, 'Mape':mape_res}, index=[0])
+        pd_data = pd.DataFrame({'MAE':mae_res, 'RMSE':rmse_res,'Mape':mape_res}, index=[0])
         error_analysis_df = pd.concat([error_analysis_df,pd_data],ignore_index=True,axis=0)
     # crypto_name = ['BTC','ETH','DOGE']
     tbl_idx = pd.Index(crypto_name)

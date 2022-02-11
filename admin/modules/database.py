@@ -27,8 +27,9 @@ class AccessDatabase(QObject):
             p_doge = get_pred_table('DOGE_predict')
 
             lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge, p_btc, p_eth, p_doge]
-        except Exception:
+        except Exception as e:
             lst = [db_btc, db_eth, db_doge, rt_btc, rt_eth, rt_doge]
+            # print("Error: ", e)
         
         fn = ['csv/db_btc.csv', 'csv/db_eth.csv', 'csv/db_doge.csv',
               'csv/rt_btc.csv', 'csv/rt_eth.csv', 'csv/rt_doge.csv',
