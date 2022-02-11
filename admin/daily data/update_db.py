@@ -149,8 +149,8 @@ def scrape_daily_tweets():
             for i,tweet in enumerate(sntwitter.TwitterSearchScraper(twitterScraperParams).get_items()):
                     if i > maxTweets:
                         break  
-                    new_row = {'id':tweet.id, 'date':str(tweet.date), 'username':tweet.user.username, 'tweet':tweet.content}
-                    crypto_df = crypto_df.append(new_row,ignore_index=True)
+                    new_row = pd.DataFrame({'id':tweet.id, 'date':str(tweet.date), 'username':tweet.user.username, 'tweet':tweet.content}, index=[0])
+                    crypto_df = pd.concat([crypto_df,new_row],ignore_index=True,axis=0)
 
             #Print crypto dataframe
             #print ("Raw data dimensions: " + str(crypto_df.shape))
@@ -201,16 +201,15 @@ from pytrends.request import TrendReq
 def scrape_google_data():
     dfGoogle = get_data_table('Google_Data')
     lastDate = dfGoogle.loc[(len(dfGoogle)-1),'date']
-    lastDate = dt.datetime.strptime(lastDate,'%Y-%m-%d')
-    #print(lastDate) #print the lastDate from the db
 
     print('[!] Google Trends Data Scraping Starts')
     dateToday = date.today()
-    #print(dateToday)
-    #lastDate = "2022-01-02"  # ! ===TEST DATES=== ! #
-    #dateToday = "2022-01-01" # ! ===TEST DATES=== ! #
+
+    #lastDate = "2021-07-01"                                #===TEST DATES===
+    #dateToday = "2021-11-01"                               #===TEST DATES===
 
     dateRange = '2019-12-25 ' + str(dateToday)  
+    #dateToday = dt.datetime.strptime(dateToday,'%Y-%m-%d') #===SET FOR TESTING===
 
     pytrends = TrendReq(hl='en-Worldwide',tz=360)
     keyword = ['Bitcoin','btc']
@@ -257,7 +256,9 @@ def scrape_google_data():
             total_data.loc[i,'bitcoin']  = row['bitcoin']
             total_data.loc[i,'ethereum'] = row['ethereum']
             total_data.loc[i,'dogecoin'] = row['dogecoin']
-
+   
+    lastDate = dt.datetime.strptime(lastDate,'%Y-%m-%d')
+    dateToday = pd.to_datetime(dateToday,format='%Y-%m-%d') #COMMENT IF TESTING
     total_data = total_data.iloc[:-1 , :]
     total_data = total_data.loc[(total_data['Date']>str(lastDate))]
     total_data.reset_index(inplace=True,drop=True)

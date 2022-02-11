@@ -34,8 +34,9 @@ def error_analysis(crypto_df, crypto_name):
         rmse_res = sqrt(mse(actualPrice, predictedPrice))
         r2_res = r2(actualPrice, predictedPrice)
         mape_res = mape(actualPrice, predictedPrice)
-        pd_data = pd.Series([mae_res , rmse_res, r2_res , mape_res], index=error_analysis_df.columns)
-        error_analysis_df = error_analysis_df.append(pd_data,ignore_index=True)
+        #pd_data = pd.Series([mae_res , rmse_res, r2_res , mape_res], index=error_analysis_df.columns)
+        pd_data = pd.DataFrame({'MAE':mae_res, 'RMSE':rmse_res, 'R-Squared':r2_res, 'Mape':mape_res}, index=[0])
+        error_analysis_df = pd.concat([error_analysis_df,pd_data],ignore_index=True,axis=0)
     # crypto_name = ['BTC','ETH','DOGE']
     tbl_idx = pd.Index(crypto_name)
     error_analysis_df = error_analysis_df.set_index(tbl_idx)
@@ -112,6 +113,6 @@ def classification_analysis(crypto_df,crypto):
     plt.savefig('images/'+crypto+'_conf.png', dpi=150, bbox_inches='tight')
     plt.close()
     
-    pd_data = pd.Series([prec_sco , rec_sco, f1_sco , acc_sco], index=classification_analysis_df.columns)
-    classification_analysis_df = classification_analysis_df.append(pd_data,ignore_index=True)
+    pd_data = pd.DataFrame({'Precision':prec_sco, 'Recall':rec_sco, 'F1-Score':f1_sco, 'Accuracy':acc_sco}, index=[0])
+    classification_analysis_df = pd.concat([classification_analysis_df,pd_data],ignore_index=True,axis=0)
     return classification_analysis_df
