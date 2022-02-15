@@ -1,3 +1,4 @@
+from time import sleep
 from main import *
 from . analytics import *
 
@@ -349,7 +350,24 @@ class ImplementModel(QObject):
             p = os.popen(command_line)
             if p:
                 # print('Done')
-                # print(p.read())
+                temp = p.read()
+
+                p_btc = get_pred_table('BTC_predict')
+                p_eth = get_pred_table('ETH_predict')
+                p_doge = get_pred_table('DOGE_predict')
+
+                lst = [p_btc, p_eth, p_doge]
+                fn = ['csv/p_btc.csv', 'csv/p_eth.csv', 'csv/p_doge.csv']
+
+                for i, df in enumerate(lst):
+                    df['Date'] = df.index
+                    df['Date'] = pd.to_datetime(df['Date']).dt.date
+                    df.reset_index(drop=True, inplace=True)
+                    df.columns = ['Price', 'Date']
+                    df['Price'] = df['Price'].round(4)
+                    df = df.reindex(columns=['Date', 'Price'])
+                    df.to_csv(fn[i])
+                
                 self.deploy_complete.emit()
         else:
             if self.process == 'train':
