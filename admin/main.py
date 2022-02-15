@@ -684,7 +684,8 @@ class MainWindow(QMainWindow):
         self.d_thread.quit()
         self.d_thread.wait()
 
-        self.access_db()
+        # self.access_db()
+        AppFunctions.dash_pred(self)
         widgets.btn_deployDeploy.setMinimumSize(QSize(130, 35))
         widgets.btn_deployDeploy.setText(' DEPLOYED')
         widgets.btn_deployDeploy.setStyleSheet(

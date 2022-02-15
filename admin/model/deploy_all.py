@@ -15,7 +15,7 @@ for crypto in to_deploy:
     pred = data['pred'].values
     date = data['date'].values
     db.add_predictions(crypto+'_predict',pred,date)
-    print(crypto+' Model Deployed!!!\n\n')
+    print(crypto+' Model Deployed!!!')
 
 file_name = 'model/obj/deployed.pkl'
 open_file = open(file_name, "wb")
