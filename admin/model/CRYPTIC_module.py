@@ -29,23 +29,23 @@ def progress(count, total, status=''):
     
 def output_l(actual,pred):
         
-        series = pd.Series(pred)
-        perc = series.pct_change()
-        predicted = []
+    series = pd.Series(pred)
+    perc = series.pct_change()
+    predicted = []
 
-        for i in range(1,15):
-            p = perc[i]
-            a = actual
-            if p > 0:
-                p = p + 1
-                pr = p * a
-            elif p < 0:
-                p = 1 + p
-                pr = a * p
-            else:
-                pr = a
+    for i in range(1,15):
+        p = perc[i]
+        a = actual
+        if p > 0:
+            p = p + 1
+            pr = p * a
+        elif p < 0:
+            p = 1 + p
+            pr = a * p
+        else:
+            pr = a
             predicted.append(pr)
-        return predicted
+    return predicted
 
 class cryptic():
     def format_LSTM(self,data):
@@ -307,8 +307,8 @@ class cryptic():
         
         s = lstm.sample(h, c, lstm.seq_size)
         pred = s[-15:]
-
-        pred = output_l(data[3,-1],pred)
+        act = data[-1,3]
+        pred = output_l(act,pred)
 
         return date,pred
     
@@ -369,7 +369,7 @@ class cryptic():
 
             val.append(out[a])
         s = lstm.sample(h, c, lstm.seq_size)
-        pred.append(s[-(len(out))])
+        pred = s[-len(out):]
             
         progress(len(data)+1, len(data)+1, status='Done Testing')
         #actual,pred = output_l(actual,pred)
