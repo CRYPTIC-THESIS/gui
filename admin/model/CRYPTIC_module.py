@@ -44,7 +44,7 @@ def output_l(actual,pred):
             pr = a * p
         else:
             pr = a
-            predicted.append(pr)
+        predicted.append(pr)
     return predicted
 
 class cryptic():
@@ -309,7 +309,7 @@ class cryptic():
         pred = s[-15:]
         act = data[-1,3]
         pred = output_l(act,pred)
-
+        print(len(pred))
         return date,pred
     
     def test_b(self,epochs,data,crypto):
