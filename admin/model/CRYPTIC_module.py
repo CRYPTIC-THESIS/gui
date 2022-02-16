@@ -368,8 +368,8 @@ class cryptic():
                     print(e) 
 
             val.append(out[a])
-            s = lstm.sample(h, c, lstm.seq_size)
-            pred.append(s[-1])
+        s = lstm.sample(h, c, lstm.seq_size)
+        pred.append(s[-(len(out))])
             
         progress(len(data)+1, len(data)+1, status='Done Testing')
         #actual,pred = output_l(actual,pred)
