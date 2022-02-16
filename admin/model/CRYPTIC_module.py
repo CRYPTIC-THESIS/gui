@@ -33,21 +33,19 @@ def output_l(actual,pred):
         perc = series.pct_change()
         predicted = []
 
-        for i in range(1,len(actual)):
+        for i in range(1,15):
             p = perc[i]
-            a = actual[i-1]
+            a = actual
             if p > 0:
                 p = p + 1
                 pr = p * a
             elif p < 0:
-                p = 1 - p
-                pr = p * a
+                p = 1 + p
+                pr = a * p
             else:
                 pr = a
             predicted.append(pr)
-
-        actual = actual[1:]
-        return predicted, actual
+        return predicted
 
 class cryptic():
     def format_LSTM(self,data):
@@ -308,7 +306,9 @@ class cryptic():
         print('Sending Predictions to Database')
         
         s = lstm.sample(h, c, lstm.seq_size)
-        pred = s[-14:]
+        pred = s[-15:]
+
+        pred = output_l(data[3,-1],pred)
 
         return date,pred
     
