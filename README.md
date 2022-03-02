@@ -1,50 +1,86 @@
-# gui
-Cryptic thesis GUI
-#
-Checking the status and what branch you are currenly on
-> git status
-
-> git branch
-#
-Creating a New Branch (where you can edit and change the code)
-> git checkout -b BranchName
-#
-Going to other branch
-> git checkout BranchName
-#
-Commiting and Pushing changes to the Main Branch (After editing the code on your created branch)
-*Note: This is done in your created branch*
-
-> git add .
-
-OR
-
-> git add directory/of/the/file/changed.py
+# Introduction #
+`CRYPTIC` is a CNN-LSTM based application that forecast cryptocurrency prices of Bitcoin, Ethereum, and Dogecoin.
 
 
-> git commit -m "Commit Description"
+# Requirements #
+1. To run the application, the latest Python version needs to be installed.
 
-> git push origin BranchName
+2. A disk space of 2GB or more.
 
-After Pushing, click the pull request link then Merge Pull Request if there are no errors or problems
-#
-*Note: Update the Main Branch Before Editing so that the code is up to date*
-> git pull
+3. Windows 10 or above
 
-#
-Needed Packages/Libraries
-> pip install tk
+4. Stable internet connection
 
-> pip install tkcalendar
+* Visual Studio Code is the recommended IDE to run the application
 
-> pip install Pillow
+# Installation #
 
-> pip install Pandas
+### For Git:
+> Note: Make sure to setup first your ssh key. You can follow the steps in this link: https://www.youtube.com/watch?v=8X4u9sca3Io
 
-> pip install firebase-admin
+1. Copy the SSH key of the repository: `git@github.com:CRYPTIC-THESIS/gui.git`
 
-#
-Update a Branch to the latest code from the Main Branch
->git checkout BranchName
+2. Create a new workspace or folder in Visual Studio Code
 
->git merge main
+3. Then open a terminal in VS Code and type:
+    
+    ```
+    git clone git@github.com:CRYPTIC-THESIS/gui.git
+    ```
+    
+4. Go to the directory of the repository you copied
+
+    ```
+    cd gui
+    ```
+
+5. Then install the `requirements.txt`
+
+    ```
+    pip install -r requirements.txt
+    ```
+
+### For Manual Installation:
+
+1. Download the zip file at: 
+    `https://drive.google.com/drive/folders/1bIkprBhCTrWB2cyxxRAFtUJ0GQo4eXmT?usp=sharing`
+
+2. Extract the zip file to a new folder
+
+3. Open the folder in VS Code then open a terminal, setting the directory at:
+
+    ```
+    cd gui
+    ```
+
+4. Then install the `requirements.txt`
+
+    ```
+    pip install -r requirements.txt
+    ```
+
+# Run the Application #
+### For Admin:
+1. Open a terminal and make sure that the directory is in `.../gui/admin`
+   
+    ```
+    cd gui/admin
+    ```
+    
+2. Then run:
+
+    ```
+    python main.py
+    ```
+### For User:
+1. Open a terminal and make sure that the directory is in `.../gui/user`
+   
+    ```
+    cd gui/user
+    ```
+    
+2. Then run:
+
+    ```
+    python main.py
+    ```
