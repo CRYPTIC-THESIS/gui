@@ -201,11 +201,7 @@ class MainWindow(QMainWindow):
         widgets.btn_dash.setStyleSheet(UIFunctions.selectMenu(widgets.btn_dash.styleSheet()))
 
         widgets.btn_all.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_all.styleSheet()))
-        # widgets.btc_card.setStyleSheet(UIFunctions.selectCard(widgets.btc_card.styleSheet()))
-        
-        # widgets.btn_pred_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_pred_closing.styleSheet()))
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
-
         widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
 
         # TRAIN PAGE
@@ -283,6 +279,10 @@ class MainWindow(QMainWindow):
         self.disable('deploy')
         widgets.btn_reset.clicked.connect(self.reset_all)
 
+        # HELP
+        url = QUrl('https://bit.ly/3vr9xGI')
+        widgets.btn_help.clicked.connect(lambda: QDesktopServices.openUrl(url))
+
     
     # ///////////////////////////////////////////
     # SIDE MENU
@@ -332,7 +332,6 @@ class MainWindow(QMainWindow):
         if self.selected_crypto == 'btn_all':
             self.timer.stop()
             self.lblHidden = True
-            # self.labels = ['BTC: BUY NOW!', 'ETH: SELL NOW!', 'DOGE: HOLD',]
             self.lblcolors = ['#F9AA4B;', '#2082FA;', '#8C88BF;']
             self.ctr = 0
             self.timer.timeout.connect(self.flashLbl_all)
@@ -454,14 +453,10 @@ class MainWindow(QMainWindow):
             widgets.deployTable.show()
             widgets.deployTable.resizeRowsToContents()
 
-            # print(xy)
 
     def print(self):
-        # print(self.dct)
-
         widgets.deployCryptoCombo.currentTextChanged.connect(self.get_deploy_crypto)
         self.deploy_crypto = str(widgets.deployCryptoCombo.currentText())
-        # print(self.deploy_crypto)
         self.display_deploy_crypto()
         
 
@@ -870,6 +865,9 @@ class MainWindow(QMainWindow):
                 item = QTableWidgetItem(str(my_df.iat[i, j]))
                 item.setTextAlignment(Qt.AlignCenter)
                 widgets.trainTable.setItem(i, j, item)
+
+                if len(my_df.index) == 14:
+                    widgets.trainTable.resizeColumnsToContents()
         
         
         widgets.trainTable.resizeColumnsToContents()
@@ -884,12 +882,6 @@ class MainWindow(QMainWindow):
         btc = list()
         eth = list()
         doge = list()
-
-        # print('histodata', histo_data)
-
-        # if pd.to_datetime(self.selected_date).date() == datetime.now().date():
-        #     print(self.selected_date)
-        #     print(datetime.now().date())
 
         if self.selected_crypto == 'btn_all':
             for i, data in enumerate(histo_data):

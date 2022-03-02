@@ -14,6 +14,7 @@
     <file>images/images/next-purple.png</file>
   </qresource>
   <qresource prefix="icons">
+    <file>images/icons/btn_help.png</file>
     <file>images/icons/dash-icon.png</file>
     <file>images/icons/cil-3d.png</file>
     <file>images/icons/cil-4k.png</file>

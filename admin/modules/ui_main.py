@@ -665,6 +665,14 @@ class Ui_MainWindow(object):
         self.verticalLayout_116.setSpacing(0)
         self.verticalLayout_116.setObjectName(u"verticalLayout_116")
         self.verticalLayout_116.setContentsMargins(0, 0, 0, 0)
+
+        self.btn_help = QPushButton(self.logoutButtonFrame)
+        self.btn_help.setObjectName(u"btn_help")
+        self.btn_help.setMinimumSize(QSize(0, 59))
+        self.btn_help.setStyleSheet(u"background-image: url(:/icons/images/icons/btn_help.png);")
+
+        self.verticalLayout_116.addWidget(self.btn_help)
+
         self.btn_logout = QPushButton(self.logoutButtonFrame)
         self.btn_logout.setObjectName(u"btn_logout")
         self.btn_logout.setMinimumSize(QSize(0, 59))
@@ -3466,6 +3474,7 @@ class Ui_MainWindow(object):
         self.btn_train.setText(QCoreApplication.translate("MainWindow", u"Train", None))
         self.btn_test.setText(QCoreApplication.translate("MainWindow", u"Test", None))
         self.btn_deploy.setText(QCoreApplication.translate("MainWindow", u"Deploy", None))
+        self.btn_help.setText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
         self.titleRightInfo.setText(QCoreApplication.translate("MainWindow", u"Welcome to CRYPTIC! A system made to forecast cryptocurrency prices.", None))
         self.minimizeAppBtn.setText("")

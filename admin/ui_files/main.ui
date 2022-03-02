@@ -817,9 +817,9 @@ Button */
                 <enum>QFrame::NoFrame</enum>
                </property>
                <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
+                <enum>QFrame::Plain</enum>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_116">
+               <layout class="QVBoxLayout" name="verticalLayout_93">
                 <property name="spacing">
                  <number>0</number>
                 </property>
@@ -837,6 +837,22 @@ Button */
                 </property>
                 <item>
                  <widget class="QPushButton" name="btn_logout">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>59</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-image: url(:/icons/images/icons/btn_help.png);</string>
+                  </property>
+                  <property name="text">
+                   <string>Help</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_logout_2">
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
