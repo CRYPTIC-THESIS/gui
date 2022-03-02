@@ -21,6 +21,10 @@ class AccessDatabase(QObject):
         rt_eth = get_current('ETH')
         rt_doge = get_current('DOGE')
 
+        df_len = [len(rt_btc), len(rt_eth), len(rt_doge)]
+        df_len.sort()
+        min_len = df_len[0]
+
         try:
             p_btc = get_pred_table('BTC_predict')
             p_eth = get_pred_table('ETH_predict')
@@ -43,6 +47,8 @@ class AccessDatabase(QObject):
                 df.columns = ['Price', 'Date']
                 df['Price'] = df['Price'].round(4)
                 df = df.reindex(columns=['Date', 'Price'])
+            elif i >= 3 and i <= 5:
+                df = df[:min_len]
             df.to_csv(fn[i])
         # print(today)
         # print(past)

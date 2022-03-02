@@ -103,21 +103,13 @@ class MainWindow(QMainWindow):
     def default_values(self):
         # HOME
         widgets.btn_home.setStyleSheet(UIFunctions.selectCrypto(widgets.btn_home.styleSheet()))
-        # widgets.btn_homePredClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homePredClosing.styleSheet()))
         
         widgets.btn_homeHistoClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_homeHistoClosing.styleSheet()))
         widgets.btn_home1d.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_home1d.styleSheet()))
 
-        # widgets.btn_homeHistoHigh.setEnabled(False)
-        # widgets.btn_homeHistoLow.setEnabled(False)
-
         # BTC, ETH, DOGE
         widgets.btn_0.setStyleSheet(UIFunctions.selectHistoDay(widgets.btn_0.styleSheet()))
         widgets.btn_histo_closing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_histo_closing.styleSheet()))
-        # widgets.btn_predPriceClosing.setStyleSheet(UIFunctions.selectPrice(widgets.btn_predPriceClosing.styleSheet()))
-
-        # widgets.btn_histo_high.setEnabled(False)
-        # widgets.btn_histo_low.setEnabled(False)
 
         # VALUES
         self.lblHidden = None
