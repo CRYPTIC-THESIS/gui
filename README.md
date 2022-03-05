@@ -43,7 +43,7 @@
 ### For Manual Installation:
 
 1. Download the zip file at: 
-    `https://drive.google.com/drive/folders/1bIkprBhCTrWB2cyxxRAFtUJ0GQo4eXmT?usp=sharing`
+    `https://drive.google.com/drive/folders/1BAcaEYVct1MrRuKuIeZOwxwQmNxMF5Y3?usp=sharing`
 
 2. Extract the zip file to a new folder
 
